@@ -38,7 +38,7 @@
 					</div>
 					<div id="collapse-1" class="panel-collapse collapse">
 						<div class="panel-body">
-							<a href="#">C.S. 3.2.8</a>
+							<a href="?page=view2">C.S. 3.2.8</a>
 						</div>
 					</div>
 				</div>

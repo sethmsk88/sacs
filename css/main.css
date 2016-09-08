@@ -29,3 +29,9 @@
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
+
+.subheader {
+	font-style: italic;
+	padding-top: 6px;
+	padding-bottom: 10px;
+}
