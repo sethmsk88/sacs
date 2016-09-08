@@ -30,6 +30,10 @@
 	padding-bottom: 8px;
 }
 
+h5 {
+	font-weight: bold;
+}
+
 .subheader {
 	font-style: italic;
 	padding-top: 6px;
