@@ -1,0 +1,31 @@
+.panel-group {
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.panel-group > .panel {
+	background-color: #337ab7;
+	cursor: pointer;
+}
+
+.panel-group > .panel:hover {
+	background-color: #286090;
+}
+
+.panel-group > .panel > .panel-heading {
+	line-height: 1.25;
+}
+
+.panel-group > .panel > .panel-heading > a {
+	color: white;
+}
+
+.panel-group > .panel .panel-body {
+	background-color: white;
+}
+
+.panel-collapse > .panel-body {
+	line-height: 1.5;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
