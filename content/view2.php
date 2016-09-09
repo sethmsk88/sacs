@@ -46,7 +46,7 @@
 	</p>
 
 	<p>
-		The following narrative <a href="?page=view3">[ROSTER]</a> provides augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Additionally, <a href="#">Appendix A</a> (Summary of Qualified Administrative and Academic Officers) provides an ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. 
+		The following narrative <a href="?page=view3">[ROSTER]</a> provides augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Additionally, <a href="?page=view3#appendixA">Appendix A</a> (Summary of Qualified Administrative and Academic Officers) provides an ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. 
 	</p>
 	<br>
 	
