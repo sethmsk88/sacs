@@ -137,6 +137,8 @@
 			for ($i = 0; $i < 67; $i++) {
 				if ($i == 5)
 					echo '<li><a href="#6">Elmira Mangum, President and CEO</a></li>';
+				else if ($i == 0)
+					echo '<li><a href="?page=view2#1">FAMU Board of Trustees (BOT) Regulation 10.015</a></li>';
 				else
 					echo '<li>&nbsp;</li>';
 			}
