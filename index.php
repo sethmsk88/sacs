@@ -1,5 +1,5 @@
 <?php
-	define("APP_NAME", "SACS Accredidation");
+	define("APP_NAME", "SACS Accreditation");
 	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "./bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
 
