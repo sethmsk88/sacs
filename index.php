@@ -30,6 +30,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/apps/shared/api/tinymce/js/tinymce/tinymce.min.js"></script>
 
     <!-- Included Scripts -->
     <script src="./js/main.js"></script>
