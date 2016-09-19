@@ -33,7 +33,7 @@
 				<textarea
 					name="intro"
 					id="intro"
-					class="form-control textarea-md"><?= $intro ?></textarea>
+					class="form-control richtext textarea-md"><?= $intro ?></textarea>
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 				<textarea
 					name="narrative"
 					id="narrative"
-					class="form-control textarea-lg"><?= $narrative ?></textarea>
+					class="form-control richtext textarea-lg"><?= $narrative ?></textarea>
 			</div>
 		</div>
 
@@ -53,23 +53,17 @@
 				<textarea
 					name="summary"
 					id="summary"
-					class="form-control textarea-md"><?= $summary ?></textarea>
+					class="form-control richtext textarea-md"><?= $summary ?></textarea>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-lg-12 form-group">
-				<button id="save-btn" class="btn btn-primary">Save</button>
+			<div class="col-lg-3 col-md-4 col-sm-6 form-group">
+				<button id="save-btn" class="btn btn-success" style="width:100%;">Save</button>
 			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-lg-12">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-4 col-md-5 col-sm-6">
+				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted Standard/Requirement</button>
 			</div>
 		</div>
 	</form>
