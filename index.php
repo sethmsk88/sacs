@@ -58,22 +58,23 @@
 
             // Check to see if User is logged in
             // $loggedIn = login_check($conn);
+            $loggedIn = false; // set to false for TESTING purposes
         ?>
 
         <!-- Nav Bar -->
         <nav
             id="pageNavBar"
             class="navbar navbar-default navbar-custom1 navbar-static-top"
-            role="navigation"
-            >
+            role="navigation">
+
             <div class="container">
                 <div class="navbar-header">
                     <button
                         type="button"
                         class="navbar-toggle"
                         data-toggle="collapse"
-                        data-target="#navbarCollapse"
-                        >
+                        data-target="#navbarCollapse">
+
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -92,7 +93,6 @@
                         </li>
                     </ul>
 
-<?php /*
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($loggedIn) { ?>
                         <li class="dropdown" style="cursor:pointer;">
@@ -119,7 +119,6 @@
                         </li>
                         <?php } ?>
                     </ul>
-*/?>
                 </div>
             </div>
         </nav>
