@@ -87,6 +87,9 @@
                         <li id="homepage-link">
                             <a id="navLink-view1" href="./?page=<?=APP_HOMEPAGE?>">View 1</a> 
                         </li>
+                        <li id="admin-link">
+                            <a id="navLink-admin" href="./?page=admin">Admin</a>
+                        </li>
                     </ul>
 
 <?php /*
