@@ -2,6 +2,33 @@
 <link href="./css/editSR.css" rel="stylesheet">
 
 <?php
+	// Make sure the SR id GET var exists
+	if (!isset($_GET['id'])) {
+		echo '<div class="text-danger">Error: Standard/Requirement ID not found</div>';
+		exit;
+	}
+
+	// Get SR info from DB
+	$sel_sr = "
+		SELECT id, intro, narrative, summary, sr_type
+		FROM sacs.standard_requirement
+		WHERE id = ?
+	";
+	$stmt = $conn->prepare($sel_sr);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($SRID, $intro, $narrative, $summmary, $sr_type);
+	$stmt->fetch();
+
+	// Check to see if any results were returned
+	if ($stmt->num_rows == 0) {
+		echo '<div class="text-danger">Error: Standard/Requirement does not exist in database</div>';
+		exit;
+	}
+
+
+
 	// An SR_ID will be available as a GET variable to this page
 	$_GET['SR_ID'] = 1; // TESTING
 
@@ -15,6 +42,47 @@
 
 <div class="container">
 	<form>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-lg-12">
+					<label>Type</label>
+				</div>
+			</div>
+
+			<?php
+				// Set Type selection
+				$CR_checked = "";
+				$CS_checked = "";
+				if ($sr_type == 'r')
+					$CR_checked = "checked";
+				else if ($sr_type == 's')
+					$CS_checked = "checked";
+			?>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="radio">
+						<label>
+							<input
+								type="radio"
+								name="SRType"
+								value="r"
+								checked="<?= $CR_checked ?>">Core Requirement
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input
+								type="radio"
+								name="SRType"
+								value="s"
+								checked="<?= $CS_checked ?>">Comprehensive Standard
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-lg-3 col-md-4 col-sm-5 form-group">
 				<label for="header">Header</label>
