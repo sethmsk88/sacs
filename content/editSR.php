@@ -18,7 +18,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summmary, $sr_type);
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -26,18 +26,6 @@
 		echo '<div class="text-danger">Error: Standard/Requirement does not exist in database</div>';
 		exit;
 	}
-
-
-
-	// An SR_ID will be available as a GET variable to this page
-	$_GET['SR_ID'] = 1; // TESTING
-
-	// TESTING vars
-	$header = "C.S. 3.2.8";
-	$intro = "This is the intro.";
-	$narrative = "This is the narrative.";
-	$summary = "This is the summary.";
-
 ?>
 
 <div class="container">
@@ -135,5 +123,7 @@
 				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted Standard/Requirement</button>
 			</div>
 		</div>
+
+		<input type="hidden" name="SRID" value="<?= $SRID ?>">
 	</form>
 </div>

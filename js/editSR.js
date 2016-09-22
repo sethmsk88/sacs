@@ -4,11 +4,18 @@ $(document).ready(function () {
 	$('#save-btn').click(function(e) {
 		e.preventDefault();
 
-		var form = $(e).parent('form').get(0);
+		$btn = $(e.target); // convert clicked button to jQuery obj
+
+		// Get parent form of clicked button
+		var form = $btn.closest('form');
+
+		// Save contents of tinymce rich textareas
+		// This is required for richtext to be posted
+		tinymce.triggerSave();
 
 		$.ajax({
 			url: './content/act_editSR.php',
-			method: 'post',
+			type: 'post',
 			data: $(form).serialize(),
 			success: function(response) {
 				alert("Changes have been saved!");
