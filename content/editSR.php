@@ -10,7 +10,7 @@
 
 	// Get SR info from DB
 	$sel_sr = "
-		SELECT id, intro, narrative, summary, sr_type
+		SELECT id, number, intro, narrative, summary, sr_type
 		FROM sacs.standard_requirement
 		WHERE id = ?
 	";
@@ -18,7 +18,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $intro, $narrative, $summmary, $sr_type);
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summmary, $sr_type);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -66,8 +66,8 @@
 							<input
 								type="radio"
 								name="SRType"
-								value="r"
-								checked="<?= $CR_checked ?>">Core Requirement
+								value="s"
+								checked="<?= $CS_checked ?>">Comprehensive Standard
 						</label>
 					</div>
 					<div class="radio">
@@ -75,8 +75,8 @@
 							<input
 								type="radio"
 								name="SRType"
-								value="s"
-								checked="<?= $CS_checked ?>">Comprehensive Standard
+								value="r"
+								checked="<?= $CR_checked ?>">Core Requirement
 						</label>
 					</div>
 				</div>
@@ -85,13 +85,14 @@
 
 		<div class="row">
 			<div class="col-lg-3 col-md-4 col-sm-5 form-group">
-				<label for="header">Header</label>
+				<label for="srNum">Standard/Requirement Number</label>
 				<input
 					type="text"
-					name="header"
-					id="header"
+					name="srNum"
+					id="srNum"
 					class="form-control"
-					value="<?= $header ?>">
+					value="<?= $srNum ?>"
+					placeholder="(example: 3.2.6)">
 			</div>
 		</div>
 
