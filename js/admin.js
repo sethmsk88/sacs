@@ -1,8 +1,14 @@
 $(document).ready(function () {
 
 	// Add new SR event handler
-	addSR_ajax_submit = function(e) {
+	$('.add-btn').click(function(e) {
 		e.preventDefault(); // not sure if needed
+
+		// Set hidden form field
+		if ($(this).attr('id') == "newCR-btn")
+			$('#SRType').val('CR');
+		else
+			$('#SRType').val('CS');
 
 		$form = $('#addSR-form');
 
@@ -10,20 +16,26 @@ $(document).ready(function () {
 			url: './content/act_admin.php',
 			method: 'post',
 			data: $form.serialize(),
+			dataType: 'json',
 			success: function(response) {
-				location.href = "?page=editSR";
+
+				$uploadResponse = "";
+
+				// if response is an error, display error
+				if (response.hasOwnProperty('errors')) {
+					$uploadResponse += response['errors'];					
+				} else {
+					// No errors, so redirect
+					location.href = "?page=editSR&id=" + response['sr_id'];
+				}
 			}
 		});
-	}
+	});
 
 	// Edit SR event handler
-	editSR_ajax_submit = function(e) {
+	$('.edit-sel').change(function(e) {
 		e.preventDefault(); // not sure if needed
 
 		alert("Edit not yet implemented!");
-	}
-
-	$('.add-btn').click(addSR_ajax_submit);
-	$('.edit-sel').change(editSR_ajax_submit);
-	
+	});	
 });

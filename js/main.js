@@ -13,6 +13,5 @@ $(document).ready(function (){
 		height: 300,
 		plugins: 'advlist anchor autolink charmap code contextmenu hr image imagetools link lists paste preview searchreplace spellchecker table textcolor wordcount',
 		paste_data_images: true
-
 	});
 });
