@@ -15,5 +15,12 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	// View button event handler
+	$('#view-btn').click(function(e) {
+		e.preventDefault();
+
+		location.href = "?page=view2&id=" ;
+	});
 	
 });
