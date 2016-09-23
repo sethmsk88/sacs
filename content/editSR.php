@@ -42,9 +42,9 @@
 				$CR_checked = "";
 				$CS_checked = "";
 				if ($sr_type == 'r')
-					$CR_checked = "checked";
+					$CR_checked = 'checked="checked"';
 				else if ($sr_type == 's')
-					$CS_checked = "checked";
+					$CS_checked = 'checked="checked"';
 			?>
 
 			<div class="row">
@@ -55,7 +55,7 @@
 								type="radio"
 								name="SRType"
 								value="s"
-								checked="<?= $CS_checked ?>">Comprehensive Standard
+								<?= $CS_checked ?>>Comprehensive Standard
 						</label>
 					</div>
 					<div class="radio">
@@ -64,7 +64,7 @@
 								type="radio"
 								name="SRType"
 								value="r"
-								checked="<?= $CR_checked ?>">Core Requirement
+								<?= $CR_checked ?>>Core Requirement
 						</label>
 					</div>
 				</div>
