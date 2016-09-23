@@ -2,7 +2,7 @@
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
 	// Make sure required variable has been posted to this page
-	if (!isset($_POST['SRType']) {
+	if (!isset($_POST['SRType'])) {
 		echo '<div class="text-danger">Error! SRType is missing</div>';
 		exit;
 	}

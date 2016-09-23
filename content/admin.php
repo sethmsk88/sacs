@@ -1,3 +1,28 @@
+<?php
+	$sel_all_SR = "
+		SELECT id, number, sr_type
+		FROM sacs.standard_requirement
+		ORDER BY sr_type, number
+	";
+	$stmt = $conn->prepare($sel_all_SR);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($SRID, $number, $sr_type);
+
+	// create arrays to hold different types of SRs
+	$sr_cr = array();
+	$sr_cs = array();
+
+	// Sort SRs into their appropriate array
+	while ($stmt->fetch()) {
+		if ($sr_type == 'r')
+			$sr_cr[$SRID] = 'C.R. ' . $number;
+		else if ($sr_type == 's')
+			$sr_cs[$SRID] = 'C.S. ' . $number;
+	}
+
+?>
+
 <script src="./js/admin.js"></script>
 
 <div class="container">
@@ -51,7 +76,12 @@
 					<label for="existingCR">Edit an existing Core Requirement</label>
 					<select class="form-control edit-sel" id="existingCR">
 						<option value="-1" selected="selected">Select...</option>
-						<option value="0">C.R. 1.1.1</option>
+						<!-- <option value="0">C.R. 1.1.1</option> -->
+						<?php
+							foreach ($sr_cr as $SRID => $cr) {
+								echo '<option value="'. $SRID .'">' . $cr . '</option>';
+							}
+						?>
 					</select>
 				</div>
 			</div>
@@ -60,7 +90,12 @@
 					<label for="existingCS ">Edit an existing Comprehensive Standard</label>
 					<select class="form-control edit-sel" id="existingCS">
 						<option value="-1" selected="selected">Select...</option>
-						<option value="0">C.S. 3.2.8</option>
+						<!-- <option value="0">C.S. 3.2.8</option> -->
+						<?php
+							foreach ($sr_cs as $SRID => $cs) {
+								echo '<option value="' . $SRID . '">' . $cs . '</option>';
+							}
+						?>
 					</select>
 				</div>
 			</div>
