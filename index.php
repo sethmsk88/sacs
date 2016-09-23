@@ -85,9 +85,6 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <!-- Nav Links -->
                     <ul class="nav navbar-nav">
-                        <li id="homepage-link">
-                            <a id="navLink-view1" href="./?page=<?=APP_HOMEPAGE?>">View 1</a> 
-                        </li>
                         <li id="admin-link">
                             <a id="navLink-admin" href="./?page=admin">Admin</a>
                         </li>
