@@ -36,6 +36,8 @@ $(document).ready(function () {
 	$('.edit-sel').change(function(e) {
 		e.preventDefault(); // not sure if needed
 
-		alert("Edit not yet implemented!");
+		$el = $(e.target); // convert to jQuery obj
+		var SRID = $el.val(); // get ID of selected SR
+		location.href = "?page=editSR&id=" + SRID; // redirect to edit page
 	});	
 });
