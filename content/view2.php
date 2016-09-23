@@ -1,17 +1,50 @@
+<?php
+	if (!isset($_GET['id'])) {
+		echo '<div class="text-danger">Error: Standard/Requirement ID not found</div>';
+		exit;
+	}
+
+	// Get SR info from DB
+	$sel_sr = "
+		SELECT id, number, intro, narrative, summary, sr_type
+		FROM sacs.standard_requirement
+		WHERE id = ?
+	";
+	$stmt = $conn->prepare($sel_sr);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type);
+	$stmt->fetch();
+
+	// Check to see if any results were returned
+	if ($stmt->num_rows == 0) {
+		echo '<div class="text-danger">Error: Standard/Requirement does not exist in database</div>';
+		exit;
+	}
+
+	// create header
+	$header = "";
+	if ($sr_type == 'r')
+		$header .= 'C.R. ';
+	else if ($sr_type == 's')
+		$header .= 'C.S. ';
+	$header .= $srNum;
+?>
+
+
 <div class="container">
 
-	<table style="width:100%;">
-		<tr class="h4">
-			<td>CS 3.2.8</td>
-			<td>DRAFT, June 29, 2016</td>
-		</tr>
-	</table>
+	<h4><?= $header ?></h4>
 	<br>
 
-	<p>
+	<!-- Intro -->
+	<?= $intro ?>
+	<!-- <p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. In convallis augue vel neque rhoncus varius.
-	</p>
+	</p> -->
 
+	<!-- Compliance Status -->
 	<table style="width:35%;">
 		<tr>
 			<td><span class="glyphicon glyphicon-remove"></span>&nbsp;Compliance</td>
@@ -21,38 +54,41 @@
 	<br>
 
 	<h4>Narrative</h4>
-	<p>
+	<?= $narrative ?>
+	<!-- Narrative -->
+	<!-- <p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. In convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Etiam at diam lacinia, ornare leo sed, aliquam nunc. Sed nec ipsum in erat tristique feugiat vel ac velit. Ut ex elit, consequat eu porttitor eu, faucibus eu nibh. Donec quis ligula at lacus dignissim viverra a non dui. In porttitor nisi a nibh facilisis pharetra. Quisque ipsum dolor, posuere at eleifend vel, ultricies nec sapien. Nunc nunc dui, consectetur in tortor a, finibus faucibus velit. 
-	</p>
+	</p> -->
 
-	<div class="subheader">Personnel Systems</div>
+	<!-- <div class="subheader">Personnel Systems</div>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. governed by the <a href="./docs/regulation_10-015.pdf" target="_blank">FAMU Board of Trustees (BOT) Regulation 10.015</a> <a href="./docs/regulation_10-015.pdf" target="_blank" class="ref">[1]</a>. Depending on the position level convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Etiam at diam lacinia, ornare leo sed, aliquam nunc. Sed nec ipsum in erat tristique feugiat vel ac velit. Ut ex elit, consequat eu porttitor eu, faucibus eu nibh. Donec quis ligula at lacus dignissim viverra a non dui. In porttitor nisi a nibh facilisis pharetra. Quisque ipsum dolor, posuere at eleifend vel, ultricies nec sapien. Nunc nunc dui, consectetur in tortor a, finibus faucibus velit. 
 	</p>
-
+	
 	<div class="subheader">Qualifications</div>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. In convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui.
 	</p>
-
+	
 	<div class="subheader">Evaluations</div>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. In convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui.
 	</p>
-
+	
 	<div class="subheader">Evidence of the qualifications</div>
 	<p>
 		Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. In convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui.
 	</p>
-
+	
 	<p>
 		The following narrative <a href="?page=view3">[ROSTER]</a> provides augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Additionally, <a href="?page=view3#appendixA">Appendix A</a> (Summary of Qualified Administrative and Academic Officers) provides an ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. 
-	</p>
+	</p> -->
 	<br>
 	
 	<h4>Summary Statement</h4>
-	<p>
+	<?= $summary ?>
+	<!-- Summary -->
+	<!-- <p>
 		In convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Etiam at diam lacinia, ornare leo sed, aliquam nunc. Sed nec ipsum in erat tristique feugiat vel ac velit. Ut ex elit, consequat eu porttitor eu, faucibus eu nibh. Donec quis ligula at lacus dignissim viverra a non dui. In porttitor nisi a nibh facilisis pharetra. Quisque ipsum dolor, posuere at eleifend vel, ultricies nec sapien. Nunc nunc dui, consectetur in tortor a, finibus faucibus velit. 
-	</p>	
-
+	</p>-->
 </div>

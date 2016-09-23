@@ -27,7 +27,10 @@ $(document).ready(function () {
 	$('#view-btn').click(function(e) {
 		e.preventDefault();
 
-		location.href = "?page=view2&id=" ;
+		// get SRID from hidden input field
+		var SRID = $('#SRID').val();
+
+		location.href = "?page=view2&id=" + SRID;
 	});
 	
 });

@@ -124,6 +124,6 @@
 			</div>
 		</div>
 
-		<input type="hidden" name="SRID" value="<?= $SRID ?>">
+		<input type="hidden" name="SRID" id="SRID" value="<?= $SRID ?>">
 	</form>
 </div>
