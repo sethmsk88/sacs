@@ -1,3 +1,29 @@
+<?php
+	// Get all SRs
+	$sel_SR = "
+		SELECT id, number, intro, narrative, summary, sr_type, compliance
+		FROM sacs.standard_requirement
+		ORDER BY sr_type, number
+	";
+	$stmt = $conn->prepare($sel_SR);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $srType, $compliance);
+
+	// Put SRs into appropriate array
+	$cr_arr = array();
+	$cs_arr = array();
+	while ($stmt->fetch()) {
+		if ($srType == 'r')
+			$cr_arr[$SRID] = $srNum;
+		else
+			$cs_arr[$SRID] = $srNum;
+	}
+
+	
+	
+?>
+
 <div class="container">
 	
 	<!-- First button -->
@@ -10,12 +36,18 @@
 							data-toggle="collapse"
 							data-parent="#collapse-group-0"
 							href="#collapse-0">
-							C.R.
+							Core Requirements
 						</a>
 					</div>
 					<div id="collapse-0" class="panel-collapse collapse">
 						<div class="panel-body">
-							<!-- No links yet -->
+							<?php
+								foreach ($cr_arr as $cr_SRID => $cr_srNum) {
+									echo '<div>';
+									echo '<a href="?page=view2&id=' . $cr_SRID . '">C.R. ' . $cr_srNum . '</a>';
+									echo '</div>';
+								}
+							?>
 						</div>
 					</div>
 				</div>
@@ -33,12 +65,18 @@
 							data-toggle="collapse"
 							data-parent="#collapse-group-1"
 							href="#collapse-1">
-							C.S.
+							Comprehensive Standards
 						</a>
 					</div>
 					<div id="collapse-1" class="panel-collapse collapse">
 						<div class="panel-body">
-							<a href="?page=view2">C.S. 3.2.8</a>
+							<?php
+								foreach ($cs_arr as $cs_SRID => $cs_srNum) {
+									echo '<div>';
+									echo '<a href="?page=view2&id=' . $cs_SRID . '">C.S. ' . $cs_srNum . '</a>';
+									echo '</div>';
+								}
+							?>
 						</div>
 					</div>
 				</div>
