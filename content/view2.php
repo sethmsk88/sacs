@@ -6,7 +6,7 @@
 
 	// Get SR info from DB
 	$sel_sr = "
-		SELECT id, number, intro, narrative, summary, sr_type
+		SELECT id, number, intro, narrative, summary, sr_type, compliance
 		FROM sacs.standard_requirement
 		WHERE id = ?
 	";
@@ -14,7 +14,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type);
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type, $compliance);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -30,6 +30,12 @@
 	else if ($sr_type == 's')
 		$header .= 'C.S. ';
 	$header .= $srNum;
+
+	// set compliance selection
+	$complianceChoice_arr[-1] = "";
+	$complianceChoice_arr[0] = "";
+	$complianceChoice_arr[1] = "";
+	$complianceChoice_arr[$compliance] = "glyphicon glyphicon-remove";
 ?>
 
 
@@ -47,8 +53,9 @@
 	<!-- Compliance Status -->
 	<table style="width:35%;">
 		<tr>
-			<td><span class="glyphicon glyphicon-remove"></span>&nbsp;Compliance</td>
-			<td><span class="hidden glyphicon glyphicon-remove"></span>&nbsp;Non-Compliance</td>
+			<td><span class="<?= $complianceChoice_arr[-1] ?>"></span>&nbsp;Non-Compliance</td>
+			<td><span class="<?= $complianceChoice_arr[0] ?>"></span>&nbsp;Partial Compliance</td>
+			<td><span class="<?= $complianceChoice_arr[1] ?>"></span>&nbsp;Compliance</td>
 		</tr>
 	</table>
 	<br>
