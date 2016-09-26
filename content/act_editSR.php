@@ -13,17 +13,25 @@
 			intro = ?,
 			narrative = ?,
 			summary = ?,
-			sr_type = ?
+			sr_type = ?,
+			compliance = ?
 		WHERE id = ?
 	";
-	$stmt = $conn->prepare($update_sr);
-	$stmt->bind_param("sssssi",
+	if (!$stmt = $conn->prepare($update_sr)) {
+		echo 'error: (' . $conn->errno . ') ' . $conn->error;
+	}
+	else if (!$stmt->bind_param("sssssii",
 		$_POST['srNum'],
 		$_POST['intro'],
 		$_POST['narrative'],
 		$_POST['summary'],
 		$_POST['SRType'],
-		$_POST['SRID']);
-	$stmt->execute();
+		$_POST['compliance'],
+		$_POST['SRID'])) {
+		echo 'error: (' . $stmt->errno . ') ' . $stmt->error;
+	}
+	else if (!$stmt->execute()) {
+		echo 'error: (' . $stmt->errno . ') ' . $stmt->error;
+	}
 
 ?>

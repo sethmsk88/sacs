@@ -10,7 +10,7 @@
 
 	// Get SR info from DB
 	$sel_sr = "
-		SELECT id, number, intro, narrative, summary, sr_type
+		SELECT id, number, intro, narrative, summary, sr_type, compliance
 		FROM sacs.standard_requirement
 		WHERE id = ?
 	";
@@ -18,7 +18,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type);
+	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type, $compliance);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -31,12 +31,6 @@
 <div class="container">
 	<form>
 		<div class="form-group">
-			<div class="row">
-				<div class="col-lg-12">
-					<label>Type</label>
-				</div>
-			</div>
-
 			<?php
 				// Set Type selection
 				$CR_checked = "";
@@ -49,6 +43,7 @@
 
 			<div class="row">
 				<div class="col-lg-12">
+					<label>Type</label>
 					<div class="radio">
 						<label>
 							<input
@@ -81,6 +76,49 @@
 					class="form-control"
 					value="<?= $srNum ?>"
 					placeholder="(example: 3.2.6)">
+			</div>
+		</div>
+
+		<?php
+			// Set compliance selection
+			$compChecked_arr[-1] = ""; // non-compliance
+			$compChecked_arr[0] = ""; // partial-compliance
+			$compChecked_arr[1] = ""; // compliance
+			$compChecked_arr[$compliance] = ' checked="checked"';
+		?>
+
+		<div class="form-group">
+			<div class="row">
+				<div class="col-lg-12">
+					<label>Compliance</label>
+					<div class="radio">
+						<label>
+							<input
+								type="radio"
+								name="compliance"
+								value="-1"
+								<?= $compChecked_arr[-1] ?>>Non-Compliance
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input
+								type="radio"
+								name="compliance"
+								value="0"
+								<?= $compChecked_arr[0] ?>>Partial-Compliance
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input
+								type="radio"
+								name="compliance"
+								value="1"
+								<?= $compChecked_arr[1] ?>>Compliance
+						</label>
+					</div>
+				</div>
 			</div>
 		</div>
 
