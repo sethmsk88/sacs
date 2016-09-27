@@ -1,3 +1,5 @@
+<script src="./js/view2.js"></script>
+
 <?php
 	if (!isset($_GET['id'])) {
 		echo '<div class="text-danger">Error: Standard/Requirement ID not found</div>';
@@ -66,8 +68,8 @@
 	</p>
 	-->
 	
-	<!-- ROSTER -->
-	<a href="?page=view3&id=<?= $SRID ?>">ROSTER</a>
+	<!-- Sub-Narrative -->
+	<button id="subNarrative-<?= $SRID ?>" class="btn btn-primary">Sub-Narrative</button>
 
 	<h4>Summary Statement</h4>
 	<?= $summary ?>
