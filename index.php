@@ -3,11 +3,31 @@
 	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "./bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
 
+    // Set current page variable
+    if (isset($_GET['page']))
+        define("APP_CURRENTPAGE", $_GET['page']);
+    else
+        define("APP_CURRENTPAGE", "");
+
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/dbInfo.php';
     require_once "./includes/functions.php";
 
     // Open connection to Database
     require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+
+    // Array showing which navlinks should be present on which pages
+    // e.g. currentPage => array(link1, link2, ...)
+    $navbarLinks = array(
+        "editSR" => array(
+            "editSR" => "Edit Narrative",
+            "editSubNarrative" => "Edit Sub-Narrative"
+        ),
+        "editSubNarrative" => array(
+            "editSR" => "Edit Narrative",
+            "editSubNarrative" => "Edit Sub-Narrative"
+        )
+    );
 ?>
 
 <!DOCTYPE html>
@@ -88,12 +108,30 @@
                         <li id="admin-link">
                             <a id="navLink-admin" href="./?page=admin">Admin</a>
                         </li>
+                        
+                        <?php
+                            // Show navbar links specific to certain pages
+                            if (array_key_exists(APP_CURRENTPAGE, $navbarLinks)) { 
+
+                                foreach ($navbarLinks as $page => $links) {
+                                    if ($page == APP_CURRENTPAGE) {
+                                        foreach ($links as $link => $linkName) {
+                        ?>
+                        <li>
+                            <a class="navbar-link" href="?page=<?= $link ?>"><?= $linkName ?></a>
+                        </li>
+                        <?php
+                                        }
+                                    }
+                                }
+                            }
+                        ?>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($loggedIn) { ?>
                         <li class="dropdown" style="cursor:pointer;">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" style="margin-right:8px;"></span><?php echo $_SESSION['firstName']; ?> <span class="glyphicon glyphicon-triangle-bottom" style="margin-left:4px;"></span></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" style="margin-right:8px;"></span><?= $_SESSION['firstName'] ?> <span class="glyphicon glyphicon-triangle-bottom" style="margin-left:4px;"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a id="settings-link" href="?page=settings">Settings</a>
