@@ -12,7 +12,7 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12">
-			<button id="addSection-btn" class="btn btn-primary">Add New Section</button>
+			<button id="addSection-btn" srid="<?= $_GET['id'] ?>" class="btn btn-primary">Add New Section</button>
 		</div>
 	</div>
 	

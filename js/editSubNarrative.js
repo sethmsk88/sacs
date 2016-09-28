@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 	// Add Section button click handler
 	$('#addSection-btn').click(function() {
-		location.href = "?page=addSection";
+		var srid = $(this).attr('srid');
+		location.href = "?page=addSection&id=" + srid;
 	});
 });
