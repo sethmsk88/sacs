@@ -14,7 +14,7 @@ ol.begin li,
 ol.continue li {
 	list-style: none;
 	list-style-position: outside;
-	text-indent: -1.2em;
+	text-indent: -2.5em;
 }
 
 /* Display numbers from the listcounter */
@@ -26,5 +26,10 @@ ol.continue li:before {
 
 .h5 {
 	font-weight: bold;
+}
+
+.section-body {
+	margin-left: .25em;
+	margin-bottom: 16px;
 }
 
