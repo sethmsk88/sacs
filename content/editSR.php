@@ -10,7 +10,7 @@
 
 	// Get SR info from DB
 	$sel_sr = "
-		SELECT id, number, intro, narrative, summary, sr_type, compliance
+		SELECT id, number, descr, narrative, summary, sr_type, compliance
 		FROM sacs.standard_requirement
 		WHERE id = ?
 	";
@@ -18,7 +18,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type, $compliance);
+	$stmt->bind_result($SRID, $srNum, $descr, $narrative, $summary, $sr_type, $compliance);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -124,11 +124,11 @@
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="intro">Intro</label>
+				<label for="descr">Title/Description</label>
 				<textarea
-					name="intro"
-					id="intro"
-					class="form-control richtext textarea-md"><?= $intro ?></textarea>
+					name="descr"
+					id="descr"
+					class="form-control richtext textarea-md"><?= $descr ?></textarea>
 			</div>
 		</div>
 

@@ -1,14 +1,14 @@
 <?php
 	// Get all SRs
 	$sel_SR = "
-		SELECT id, number, intro, narrative, summary, sr_type, compliance
+		SELECT id, number, descr, narrative, summary, sr_type, compliance
 		FROM sacs.standard_requirement
 		ORDER BY sr_type, number
 	";
 	$stmt = $conn->prepare($sel_SR);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $srType, $compliance);
+	$stmt->bind_result($SRID, $srNum, $descr, $narrative, $summary, $srType, $compliance);
 
 	// Put SRs into appropriate array
 	$cr_arr = array();

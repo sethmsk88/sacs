@@ -10,7 +10,7 @@
 	$update_sr = "
 		UPDATE sacs.standard_requirement
 		SET number = ?,
-			intro = ?,
+			descr = ?,
 			narrative = ?,
 			summary = ?,
 			sr_type = ?,
@@ -22,7 +22,7 @@
 	}
 	else if (!$stmt->bind_param("sssssii",
 		$_POST['srNum'],
-		$_POST['intro'],
+		$_POST['descr'],
 		$_POST['narrative'],
 		$_POST['summary'],
 		$_POST['SRType'],

@@ -8,7 +8,7 @@
 
 	// Get SR info from DB
 	$sel_sr = "
-		SELECT id, number, intro, narrative, summary, sr_type, compliance
+		SELECT id, number, descr, narrative, summary, sr_type, compliance
 		FROM sacs.standard_requirement
 		WHERE id = ?
 	";
@@ -16,7 +16,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($SRID, $srNum, $intro, $narrative, $summary, $sr_type, $compliance);
+	$stmt->bind_result($SRID, $srNum, $descr, $narrative, $summary, $sr_type, $compliance);
 	$stmt->fetch();
 
 	// Check to see if any results were returned
@@ -46,8 +46,8 @@
 	<h4><?= $header ?></h4>
 	<br>
 
-	<!-- Intro -->
-	<?= $intro ?>
+	<!-- Title/Description -->
+	<?= $descr ?>
 
 	<!-- Compliance Status -->
 	<table style="width:35%;">
