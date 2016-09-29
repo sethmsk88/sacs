@@ -5,6 +5,6 @@ $(document).ready(function() {
 		var id_parts = $(this).attr('id').split('-');
 		var srid = id_parts[1];
 
-		location.href = "?page=view3&id=" + srid;
+		location.href = "?page=subNarrative&id=" + srid;
 	});
 });
