@@ -1,11 +1,91 @@
 <?php
-	function printParagraph() {
-		echo 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus suscipit mollis felis, eu tincidunt lacus pellentesque et. Nunc in arcu fermentum, efficitur orci non, scelerisque turpis. Vestibulum leo nulla, egestas at vehicula vitae, condimentum eget magna. Sed condimentum sit amet tortor at ultrices. Nullam condimentum, nibh id elementum malesuada, orci diam suscipit ante, vel facilisis felis nisi in nulla. Donec at vestibulum enim. Maecenas odio felis, lacinia vel leo non, euismod ultricies velit. Curabitur fermentum, diam eget ultrices eleifend, odio magna eleifend lectus, nec lacinia ipsum est id tellus. Praesent iaculis tortor nulla, id suscipit elit tincidunt vitae. Ut varius iaculis convallis. Maecenas quis vestibulum justo, eu dictum mi. ';
-	}
+	// Get SR type and SR number
+	$sel_sr = "
+		SELECT number, sr_type
+		FROM sacs.standard_requirement
+		WHERE id = ?
+	";
+	$stmt = $conn->prepare($sel_sr);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($srNum, $srType);
+	$stmt->fetch();
+
+	// Create SR header
+	$srHeader = "";
+	if ($srType == 'r')
+		$srHeader = "C.R. ";
+	else if ($srType == 's')
+		$srHeader = "C.S. ";
+	$srHeader .= $srNum;
+
+	// Get all sections for this SR
+	$sel_sections = "
+		SELECT id, name, body
+		FROM sacs.section
+		WHERE srid = ?
+	";
+	$stmt = $conn->prepare($sel_sections);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($sid, $sectionName, $body);
 ?>
 
 <div class="container">
-	<h4>ROSTER</h4>
+	The Roster narratives for <?= $srHeader ?> are organized as follows:
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h4>Table of Contents</h4>
+
+			<ol class="begin">
+				<?php
+					// output sectionName for each section
+					while ($stmt->fetch()) {
+						echo '<li>' . $sectionName . '</li>';
+					}
+				?>
+			</ol>
+		</div>
+	</div>
+
+	<!-- Divider -->
+	<div class="row">
+		<div class="divider"></div>
+	</div>
+
+	<?php
+		// Output each section header and body
+		$stmt->data_seek(0); // rewind result object pointer
+		$sectionNum = 1; // initialize section counter
+		while ($stmt->fetch()) {
+			
+			// Use "begin" numbering class for first section only
+			if ($sectionNum == 1)
+				$numberingClass = "begin";
+			else
+				$numberingClass = "continue";
+	?>
+	<!-- Section Header -->
+	<ol class="<?= $numberingClass ?>">
+		<li class="h5"><?= $sectionName ?></li>
+	</ol>
+
+	<!-- Section Body -->
+	<div class="section-body">
+		<?= $body ?>
+	</div>
+	<?php
+			$sectionNum++;
+		}
+	?>
+</div>
+
+
+
+<?php /*
 	The Roster narratives for C.S. 3.2.8 are organized as follows:
 
 	<ol type="I" style="line-height:1.65em;">
@@ -28,7 +108,8 @@
 		<li style="list-style:none; text-indent:-1.3em;"><a href="#appendixA">Appendix A</a></li>
 	</ol>
 
-	<hr />
+
+
 
 	<a name="I"></a>
 	<h5>I. President/Chief Executive Officer</h5>
@@ -133,7 +214,7 @@
 	<h4>DOCUMENTATION</h4>
 	<h5>3.2.8 Appendix A</h5>
 	<ol>
-		<?php
+		<?php 
 			for ($i = 0; $i < 67; $i++) {
 				if ($i == 5)
 					echo '<li><a href="#6">Elmira Mangum, President and CEO</a></li>';
@@ -142,6 +223,10 @@
 				else
 					echo '<li>&nbsp;</li>';
 			}
+			
 		?>
 	</ol>
-</div>
+	*/
+?>
+
+

@@ -1,33 +1,3 @@
-.divider {
-	margin-top: 12px;
-	margin-bottom: 12px;
-	border-top: 1px solid #ddd;
-}
-
-/* Create a counter */
-.begin {
-	counter-reset: listcounter;
-}
-
-/* Remove default margin and numbering */
-ol.begin li,
-ol.continue li {
-	list-style: none;
-	list-style-position: outside;
-	text-indent: -2.5em;
-}
-
-/* Display numbers from the listcounter */
-ol.begin li:before,
-ol.continue li:before {
-	content: counter(listcounter, upper-roman) ". ";
-	counter-increment: listcounter;
-}
-
-.h5 {
-	font-weight: bold;
-}
-
 .section-body {
 	margin-left: .25em;
 	margin-bottom: 16px;
