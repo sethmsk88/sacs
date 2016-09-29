@@ -6,13 +6,20 @@
 	// Determine what type of action should be performed
 	if (isset($_POST['srid'])) {
 
+		// Set parent section
+		if (isset($_POST['parentSection'])) {
+			$parentID = $_POST['parentSection'];
+		} else {
+			$parentID = -1; // No parent
+		}
+
 		// Insert new section into section table
 		$ins_section = "
-			INSERT INTO sacs.section (srid, name)
-			VALUES (?,?)
+			INSERT INTO sacs.section (srid, name, parent_id)
+			VALUES (?,?,?)
 		";
 		$stmt = $conn->prepare($ins_section);
-		$stmt->bind_param("is", $_POST['srid'], $_POST['sectionName']);
+		$stmt->bind_param("isi", $_POST['srid'], $_POST['sectionName'], $parentID);
 		$stmt->execute();
 
 		header('Location: ' . APP_PATH . '?page=editSubNarrative&id=' . $_POST['srid']);

@@ -8,7 +8,7 @@ $(document).ready(function () {
 	navLink2.attr('href', navLink2.attr('href') + "&id=" + SRID);
 
 	// Add Section button click handler
-	$('#addSection-btn').click(function() {
+	$('#addSection-btn').click(function(e) {
 		e.preventDefault();
 
 		var srid = $(this).attr('srid');
