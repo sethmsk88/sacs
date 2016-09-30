@@ -81,7 +81,7 @@
 
 				// Show edit button if editable
 				if ($editable) {
-					echo '<button id="editSectionBody-' . $sid . '" class="btn btn-primary">Edit Section Body</button><br />';
+					echo '<button id="editSectionBody-' . $sid . '" class="btn btn-primary btn-sm">Edit Section Body</button><br />';
 				}
 
 				echo '<span style="font-weight:normal">' . $body . '</span>';
