@@ -30,7 +30,7 @@
 	padding-bottom: 8px;
 }
 
-h5 {
+h5, .h5 {
 	font-weight: bold;
 }
 
@@ -42,4 +42,55 @@ h5 {
 
 .ref {
 	font-weight: bold;
+}
+
+.divider {
+	margin-top: 12px;
+	margin-bottom: 12px;
+	border-top: 1px solid #ddd;
+}
+
+/* Create a counter */
+.begin {
+	counter-reset: listcounter;
+}
+
+/* Remove default margin and numbering */
+ol.begin li,
+ol.continue li {
+	list-style: none;
+	list-style-position: outside;
+	text-indent: -2.5em;
+}
+
+/* Display numbers from the listcounter */
+ol.begin li:before,
+ol.continue li:before {
+	content: counter(listcounter, upper-roman) ". ";
+	counter-increment: listcounter;
+}
+
+/** CSS to make dropdown look correct in nav-bar **/
+.navbar-nav > li > .dropdown > a {
+	padding: 15px;
+	color: #fff;
+	display: block;
+}
+.nav .open > a, .nav .open > a:focus,
+.nav .open > a:hover {
+    background-color: #b1441d;
+    text-decoration: none;
+}
+
+.loginForm{
+	border-radius:4px;
+	padding:10px 10px 8px 10px;
+	background-color:#EFEFEF;
+	position:absolute;
+	display: block;
+	box-shadow: 0px 0px 3px #888888;
+	position:absolute;
+	display:block;
+	z-index:1001;
+	width: 225px;
 }

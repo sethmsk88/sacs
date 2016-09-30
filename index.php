@@ -1,13 +1,33 @@
 <?php
 	define("APP_NAME", "SACS Accreditation");
-	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "./bootstrap/apps/sacs/");
+	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
+
+    // Set current page variable
+    if (isset($_GET['page']))
+        define("APP_CURRENTPAGE", $_GET['page']);
+    else
+        define("APP_CURRENTPAGE", "");
+
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/dbInfo.php';
     require_once "./includes/functions.php";
 
     // Open connection to Database
     require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+
+    // Array showing which navlinks should be present on which pages
+    // e.g. currentPage => array(link1, link2, ...)
+    $navbarLinks = array(
+        "editSR" => array(
+            "editSR" => "Edit Narrative",
+            "editSubNarrative" => "Edit Sub-Narrative"
+        ),
+        "editSubNarrative" => array(
+            "editSR" => "Edit Narrative",
+            "editSubNarrative" => "Edit Sub-Narrative"
+        )
+    );
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +50,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/apps/shared/api/tinymce/js/tinymce/tinymce.min.js"></script>
 
     <!-- Included Scripts -->
     <script src="./js/main.js"></script>
@@ -57,22 +78,23 @@
 
             // Check to see if User is logged in
             // $loggedIn = login_check($conn);
+            $loggedIn = false; // set to false for TESTING purposes
         ?>
 
         <!-- Nav Bar -->
         <nav
             id="pageNavBar"
             class="navbar navbar-default navbar-custom1 navbar-static-top"
-            role="navigation"
-            >
+            role="navigation">
+
             <div class="container">
                 <div class="navbar-header">
                     <button
                         type="button"
                         class="navbar-toggle"
                         data-toggle="collapse"
-                        data-target="#navbarCollapse"
-                        >
+                        data-target="#navbarCollapse">
+
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -83,16 +105,33 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <!-- Nav Links -->
                     <ul class="nav navbar-nav">
-                        <li id="homepage-link">
-                            <a id="navLink-view1" href="./?page=<?=APP_HOMEPAGE?>">View 1</a> 
+                        <li id="admin-link">
+                            <a id="navLink-admin" href="./?page=admin">Admin</a>
                         </li>
+                        
+                        <?php
+                            // Show navbar links specific to certain pages
+                            if (array_key_exists(APP_CURRENTPAGE, $navbarLinks)) { 
+
+                                foreach ($navbarLinks as $page => $links) {
+                                    if ($page == APP_CURRENTPAGE) {
+                                        foreach ($links as $link => $linkName) {
+                        ?>
+                        <li>
+                            <a class="navbar-link" href="?page=<?= $link ?>"><?= $linkName ?></a>
+                        </li>
+                        <?php
+                                        }
+                                    }
+                                }
+                            }
+                        ?>
                     </ul>
 
-<?php /*
                     <ul class="nav navbar-nav navbar-right">
                         <?php if ($loggedIn) { ?>
                         <li class="dropdown" style="cursor:pointer;">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" style="margin-right:8px;"></span><?php echo $_SESSION['firstName']; ?> <span class="glyphicon glyphicon-triangle-bottom" style="margin-left:4px;"></span></a>
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" style="margin-right:8px;"></span><?= $_SESSION['firstName'] ?> <span class="glyphicon glyphicon-triangle-bottom" style="margin-left:4px;"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a id="settings-link" href="?page=settings">Settings</a>
@@ -115,7 +154,6 @@
                         </li>
                         <?php } ?>
                     </ul>
-*/?>
                 </div>
             </div>
         </nav>
