@@ -76,7 +76,6 @@
 					<label for="existingCR">Edit an existing Core Requirement</label>
 					<select class="form-control edit-sel" id="existingCR">
 						<option value="-1" selected="selected">Select...</option>
-						<!-- <option value="0">C.R. 1.1.1</option> -->
 						<?php
 							foreach ($sr_cr as $SRID => $cr) {
 								echo '<option value="'. $SRID .'">' . $cr . '</option>';
@@ -90,7 +89,6 @@
 					<label for="existingCS ">Edit an existing Comprehensive Standard</label>
 					<select class="form-control edit-sel" id="existingCS">
 						<option value="-1" selected="selected">Select...</option>
-						<!-- <option value="0">C.S. 3.2.8</option> -->
 						<?php
 							foreach ($sr_cs as $SRID => $cs) {
 								echo '<option value="' . $SRID . '">' . $cs . '</option>';
