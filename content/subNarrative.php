@@ -49,7 +49,7 @@
 					printTOCSection($rootID, $conn);
 				?>
 			</ol>
-			<a href="">Appendix A</a>
+			<a href="?page=appendix&id=<?= $_GET['id'] ?>">Appendix A</a>
 		</div>
 	</div>
 
