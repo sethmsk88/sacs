@@ -69,7 +69,7 @@
 	-->
 	
 	<!-- Sub-Narrative -->
-	<button id="subNarrative-<?= $SRID ?>" class="btn btn-primary">Sub-Narrative</button>
+	<button id="subNarrative-<?= $SRID ?>" class="btn btn-primary btn-sm">Sub-Narrative</button>
 
 	<h4>Summary Statement</h4>
 	<?= $summary ?>
