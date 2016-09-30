@@ -7,4 +7,11 @@ $(document).ready(function() {
 
 		location.href = "?page=subNarrative&id=" + srid;
 	});
+
+	$("button[id*='appendix-'").click(function() {
+		var id_parts = $(this).attr('id').split('-');
+		var srid = id_parts[1];
+
+		location.href = "?page=appendix&id=" + srid;
+	});
 });
