@@ -54,10 +54,8 @@
 
     <!-- Included Scripts -->
     <script src="./js/main.js"></script>
-    <!--
     <script src="./js/login.js"></script>
     <script src="/bootstrap/js/sha512.js"></script>
-    -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -74,11 +72,11 @@
             include "../templates/header_3.php";
 
             // Start session or regenerate session id
-            // sec_session_start();
+             sec_session_start();
 
             // Check to see if User is logged in
-            // $loggedIn = login_check($conn);
-            $loggedIn = false; // set to false for TESTING purposes
+            $loggedIn = login_check($conn);
+            //$loggedIn = false; // set to false for TESTING purposes
         ?>
 
         <!-- Nav Bar -->
@@ -133,9 +131,9 @@
                         <li class="dropdown" style="cursor:pointer;">
                             <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" style="margin-right:8px;"></span><?= $_SESSION['firstName'] ?> <span class="glyphicon glyphicon-triangle-bottom" style="margin-left:4px;"></span></a>
                             <ul class="dropdown-menu">
-                                <li>
+                                <!-- <li>
                                     <a id="settings-link" href="?page=settings">Settings</a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a id="logout-link" href="./content/act_logout.php"> Log out</a>
                                 </li>
