@@ -2,6 +2,103 @@
 <link href="./css/editSubNarrative.css" rel="stylesheet">
 
 <?php
+	// Check to see if section has children
+	function hasChildren($sid, $conn) {
+		$sel_sections = "
+			SELECT id
+			FROM sacs.section
+			WHERE parent_id = ?
+		";
+		$stmt = $conn->prepare($sel_sections);
+		$stmt->bind_param("i", $sid);
+		$stmt->execute();
+		$stmt->store_result();
+
+		if ($stmt->num_rows == 0)
+			return false;
+		else
+			return true;
+	}
+
+	// Print table of contents sections that have $pid as a parent_id
+	function printTOCSection($pid, $conn) {
+		$sel_sections = "
+			SELECT id, name, body, parent_id
+			FROM sacs.section
+			WHERE parent_id = ?
+		";
+		$stmt = $conn->prepare($sel_sections);
+		$stmt->bind_param("i", $pid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($sid, $sectionName, $body, $parent_id);
+	
+		// For each section with this $pid
+		while ($stmt->fetch()) {
+			$sectionHasChildren = hasChildren($sid, $conn);
+
+			if ($sectionHasChildren) {
+				echo '<li>' . $sectionName . '<ol class="begin">';
+			} else {
+				echo '<li>' . $sectionName . '</li>';
+			}
+
+			printTOCSection($sid, $conn);
+
+			// if this section does have children, close the <li> tag
+			if ($sectionHasChildren) {
+				echo '</ol></li>';
+			}
+		}
+	}
+
+	function printBodySection($pid, $conn) {
+
+		$sel_sections = "
+			SELECT id, name, body, parent_id
+			FROM sacs.section
+			WHERE parent_id = ?
+		";
+		$stmt = $conn->prepare($sel_sections);
+		$stmt->bind_param("i", $pid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($sid, $sectionName, $body, $parent_id);
+	
+		$sectionNum = 1; // initialize section counter
+
+		// For each section with this $pid
+		while ($stmt->fetch()) {
+			$sectionHasChildren = hasChildren($sid, $conn);
+
+			if ($sectionNum == 1)
+				$numberingClass = "begin";
+			else
+				$numberingClass = "continue";
+
+			if ($sectionHasChildren) {
+				// echo '<li>' . $sectionName . '<ol class="begin">';
+				echo '<ol class="' . $numberingClass . '"><li class="h5">' . $sectionName;
+			} else {
+				// echo '<li>' . $sectionName . '</li>';
+				echo '<ol class="' . $numberingClass . '"><li class="h5">' . $sectionName . '</li></ol>';
+				echo '<div class="section-body">';
+				echo '<button id="editSectionBody-' . $sid . '" class="btn btn-primary">Edit Section Body</button><br />';
+				echo $body;
+				echo '</div>';
+			}
+
+			printBodySection($sid, $conn);
+
+			// if this section does have children, close the <li> tag
+			if ($sectionHasChildren) {
+				echo '</li></ol>';
+			}
+
+			$sectionNum++;
+		}
+	}
+
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
@@ -23,7 +120,7 @@
 		$srHeader = "C.S. ";
 	$srHeader .= $srNum;
 
-	// Get all sections for this SR
+	// Get all root sections for this SR
 	$sel_sections = "
 		SELECT id, name, body
 		FROM sacs.section
@@ -45,10 +142,9 @@
 
 			<ol class="begin">
 				<?php
-					// output sectionName for each section
-					while ($stmt->fetch()) {
-						echo '<li>' . $sectionName . '</li>';
-					}
+					// Print sections and their subsections
+					$rootID = -1;
+					printTOCSection($rootID, $conn);
 				?>
 			</ol>
 		</div>
@@ -65,36 +161,7 @@
 	</div>
 
 	<?php
-		// Output each section header and body
-		$stmt->data_seek(0); // rewind result object pointer
-		$sectionNum = 1; // initialize section counter
-		while ($stmt->fetch()) {
-			
-			// Use "begin" numbering class for first section only
-			if ($sectionNum == 1)
-				$numberingClass = "begin";
-			else
-				$numberingClass = "continue";
-	?>
-	<!-- The row class is throwing off the <ol> numbering. Find alternative method -->
-	<!-- <div class="row"> -->
-	<!-- Section Header -->
-	<ol class="<?= $numberingClass ?>">
-		<li class="h5"><?= $sectionName ?></li>
-	</ol>
-	<!-- </div> -->
-	<!-- <div class="row"> -->
-	
-	<!-- Section Body -->
-	<div class="section-body">
-		<button id="editSectionBody-<?= $sid ?>" class="btn btn-primary">Edit Section Body</button><br />
-		<?= $body ?>
-	</div>
-	
-	<!-- </div> -->
-	<?php
-			$sectionNum++;
-		}
+		printBodySection($rootID, $conn);
 	?>
 </div>
 
