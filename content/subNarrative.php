@@ -1,4 +1,6 @@
 <?php
+	require "./includes/subNarrative_functions.php";
+
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
@@ -42,10 +44,9 @@
 
 			<ol class="begin">
 				<?php
-					// output sectionName for each section
-					while ($stmt->fetch()) {
-						echo '<li>' . $sectionName . '</li>';
-					}
+					// Print sections and their subsections
+					$rootID = -1;
+					printTOCSection($rootID, $conn);
 				?>
 			</ol>
 		</div>
@@ -57,29 +58,7 @@
 	</div>
 
 	<?php
-		// Output each section header and body
-		$stmt->data_seek(0); // rewind result object pointer
-		$sectionNum = 1; // initialize section counter
-		while ($stmt->fetch()) {
-			
-			// Use "begin" numbering class for first section only
-			if ($sectionNum == 1)
-				$numberingClass = "begin";
-			else
-				$numberingClass = "continue";
-	?>
-	<!-- Section Header -->
-	<ol class="<?= $numberingClass ?>">
-		<li class="h5"><?= $sectionName ?></li>
-	</ol>
-
-	<!-- Section Body -->
-	<div class="section-body">
-		<?= $body ?>
-	</div>
-	<?php
-			$sectionNum++;
-		}
+		printBodySection($rootID, false, $conn);
 	?>
 </div>
 
