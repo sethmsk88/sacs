@@ -1,8 +1,5 @@
 <?php
-	define("APP_NAME", "SACS Accreditation");
-	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/bootstrap/apps/sacs/");
-    define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
-    define("APP_HOMEPAGE", "view1");
+	require_once("./includes/globals.php");
 
     // Set current page variable
     if (isset($_GET['page']))

@@ -15,7 +15,7 @@
 
 		// Insert new section into section table
 		$ins_section = "
-			INSERT INTO sacs.section (srid, name, parent_id)
+			INSERT INTO " . $TABLE_SECTION . " (srid, name, parent_id)
 			VALUES (?,?,?)
 		";
 		$stmt = $conn->prepare($ins_section);
@@ -28,7 +28,7 @@
 
 		// Update section body in section table
 		$update_section = "
-			UPDATE sacs.section
+			UPDATE " . $TABLE_SECTION . "
 			SET	body = ?
 			WHERE id = ?
 		";
@@ -39,7 +39,7 @@
 		// Get srid for redirect
 		$sel_srid = "
 			SELECT srid
-			FROM sacs.section
+			FROM " . $TABLE_SECTION . "
 			WHERE id = ?
 		";
 		$stmt = $conn->prepare($sel_srid);

@@ -2,7 +2,7 @@
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
-		FROM sacs.standard_requirement
+		FROM " . $TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);

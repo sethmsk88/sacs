@@ -19,7 +19,7 @@
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
-		FROM sacs.standard_requirement
+		FROM " . $TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);
@@ -40,7 +40,7 @@
 	// Get all root sections for this SR
 	$sel_sections = "
 		SELECT id, name, body
-		FROM sacs.section
+		FROM " . $TABLE_SECTION. "
 		WHERE srid = ?
 	";
 	$stmt = $conn->prepare($sel_sections);

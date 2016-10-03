@@ -12,7 +12,7 @@
 	// Get section body from DB table
 	$sel_section = "
 		SELECT body
-		FROM sacs.section
+		FROM " . $TABLE_SECTION . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_section);

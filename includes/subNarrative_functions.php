@@ -3,7 +3,7 @@
 	function hasChildren($sid, $conn) {
 		$sel_sections = "
 			SELECT id
-			FROM sacs.section
+			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
@@ -21,7 +21,7 @@
 	function printTOCSection($pid, $conn) {
 		$sel_sections = "
 			SELECT id, name, body, parent_id
-			FROM sacs.section
+			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
@@ -53,7 +53,7 @@
 
 		$sel_sections = "
 			SELECT id, name, body, parent_id
-			FROM sacs.section
+			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
