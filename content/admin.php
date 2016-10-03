@@ -1,4 +1,14 @@
 <?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+
 	$sel_all_SR = "
 		SELECT id, number, sr_type
 		FROM sacs.standard_requirement

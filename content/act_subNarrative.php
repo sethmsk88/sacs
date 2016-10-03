@@ -1,5 +1,5 @@
 <?php
-	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
+	define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
@@ -22,7 +22,7 @@
 		$stmt->bind_param("isi", $_POST['srid'], $_POST['sectionName'], $parentID);
 		$stmt->execute();
 
-		header('Location: ' . APP_PATH . '?page=editSubNarrative&id=' . $_POST['srid']);
+		header('Location: ' . APP_PATH_URL . '?page=editSubNarrative&id=' . $_POST['srid']);
 
 	} else if (isset($_POST['sid'])) {
 
@@ -49,6 +49,6 @@
 		$stmt->bind_result($srid);
 		$stmt->fetch();
 
-		header('Location: ' . APP_PATH . '?page=editSubNarrative&id=' . $srid);
+		header('Location: ' . APP_PATH_URL . '?page=editSubNarrative&id=' . $srid);
 	}
 ?>

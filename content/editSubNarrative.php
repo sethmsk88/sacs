@@ -1,3 +1,15 @@
+<?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+?>
+
 <script src="./js/editSubNarrative.js"></script>
 <link href="./css/editSubNarrative.css" rel="stylesheet">
 

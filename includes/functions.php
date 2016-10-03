@@ -214,4 +214,12 @@ function esc_url($url) {
     	return $url;
     }
 }
+
+// redirect if not logged in
+function require_login($loggedIn) {
+	if (!$loggedIn) {
+		echo '<script>location.href="?page=' . APP_HOMEPAGE . '"</script>';
+		exit;
+	}
+}
 ?>

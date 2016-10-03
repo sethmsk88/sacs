@@ -1,6 +1,7 @@
 <?php
 	define("APP_NAME", "SACS Accreditation");
-	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
+	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/bootstrap/apps/sacs/");
+    define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
 
     // Set current page variable
@@ -76,7 +77,6 @@
 
             // Check to see if User is logged in
             $loggedIn = login_check($conn);
-            //$loggedIn = false; // set to false for TESTING purposes
         ?>
 
         <!-- Nav Bar -->
@@ -103,9 +103,12 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <!-- Nav Links -->
                     <ul class="nav navbar-nav">
+
+                        <?php if ($loggedIn) { ?>
                         <li id="admin-link">
                             <a id="navLink-admin" href="./?page=admin">Admin</a>
                         </li>
+                        <?php } ?>
                         
                         <?php
                             // Show navbar links specific to certain pages
