@@ -77,5 +77,10 @@ $(document).ready(function () {
 		}
 	});
 
+	// New SR button handler
+	$('#newSR-btn').click(function(e) {
+		e.preventDefault();
 
+		location.href = "?page=addSR";
+	});
 });

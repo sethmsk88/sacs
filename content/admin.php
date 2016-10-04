@@ -79,7 +79,7 @@
 		?>
 		<tr>	
 			<td>
-				<button class="btn btn-success" style="width:100%">
+				<button id="newSR-btn" class="btn btn-success" style="width:100%">
 					<span class="glyphicon glyphicon-plus"></span> New
 				</button>
 			</td>
