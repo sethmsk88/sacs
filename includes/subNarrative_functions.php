@@ -1,13 +1,16 @@
 <?php
 	// Check to see if section has children
-	function hasChildren($sid, $conn) {
+	function hasChildren($sid, $srid, $conn) {
+		global $TABLE_SECTION;
+
 		$sel_sections = "
 			SELECT id
 			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
+				AND srid = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
-		$stmt->bind_param("i", $sid);
+		$stmt->bind_param("ii", $sid, $srid);
 		$stmt->execute();
 		$stmt->store_result();
 
@@ -18,21 +21,24 @@
 	}
 
 	// Print table of contents sections that have $pid as a parent_id
-	function printTOCSection($pid, $conn) {
+	function printTOCSection($pid, $srid, $conn) {
+		global $TABLE_SECTION;		
+
 		$sel_sections = "
 			SELECT id, name, body, parent_id
 			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
+				AND srid = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
-		$stmt->bind_param("i", $pid);
+		$stmt->bind_param("ii", $pid, $srid);
 		$stmt->execute();
 		$stmt->store_result();
 		$stmt->bind_result($sid, $sectionName, $body, $parent_id);
 	
 		// For each section with this $pid
 		while ($stmt->fetch()) {
-			$sectionHasChildren = hasChildren($sid, $conn);
+			$sectionHasChildren = hasChildren($sid, $srid, $conn);
 
 			if ($sectionHasChildren) {
 				echo '<li>' . $sectionName . '<ol class="begin">';
@@ -40,7 +46,7 @@
 				echo '<li>' . $sectionName . '</li>';
 			}
 
-			printTOCSection($sid, $conn);
+			printTOCSection($sid, $srid, $conn);
 
 			// if this section does have children, close the <li> tag
 			if ($sectionHasChildren) {
@@ -49,15 +55,17 @@
 		}
 	}
 
-	function printBodySection($pid, $editable, $conn) {
+	function printBodySection($pid, $srid, $editable, $conn) {
+		global $TABLE_SECTION;
 
 		$sel_sections = "
 			SELECT id, name, body, parent_id
 			FROM " . $TABLE_SECTION . "
 			WHERE parent_id = ?
+				AND srid = ?
 		";
 		$stmt = $conn->prepare($sel_sections);
-		$stmt->bind_param("i", $pid);
+		$stmt->bind_param("ii", $pid, $srid);
 		$stmt->execute();
 		$stmt->store_result();
 		$stmt->bind_result($sid, $sectionName, $body, $parent_id);
@@ -66,7 +74,7 @@
 
 		// For each section with this $pid
 		while ($stmt->fetch()) {
-			$sectionHasChildren = hasChildren($sid, $conn);
+			$sectionHasChildren = hasChildren($sid, $srid, $conn);
 
 			if ($sectionNum == 1)
 				$numberingClass = "begin";
@@ -88,7 +96,7 @@
 				echo '</div>';
 			}
 
-			printBodySection($sid, $editable, $conn);
+			printBodySection($sid, $srid, $editable, $conn);
 
 			// if this section does have children, close the <li> tag
 			if ($sectionHasChildren) {

@@ -21,18 +21,6 @@
 	else if ($srType == 's')
 		$srHeader = "C.S. ";
 	$srHeader .= $srNum;
-
-	// Get all sections for this SR
-	$sel_sections = "
-		SELECT id, name, body
-		FROM " . $TABLE_SECTION . "
-		WHERE srid = ?
-	";
-	$stmt = $conn->prepare($sel_sections);
-	$stmt->bind_param("i", $_GET['id']);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($sid, $sectionName, $body);
 ?>
 
 <div class="container">
@@ -46,7 +34,7 @@
 				<?php
 					// Print sections and their subsections
 					$rootID = -1;
-					printTOCSection($rootID, $conn);
+					printTOCSection($rootID, $_GET['id'], $conn);
 				?>
 			</ol>
 			<a href="?page=appendix&id=<?= $_GET['id'] ?>">Appendix A</a>
@@ -59,7 +47,7 @@
 	</div>
 
 	<?php
-		printBodySection($rootID, false, $conn);
+		printBodySection($rootID, $_GET['id'], false, $conn);
 	?>
 </div>
 
