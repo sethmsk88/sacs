@@ -140,7 +140,7 @@
 				<textarea
 					name="descr"
 					id="descr"
-					class="form-control richtext textarea-md"><?= $descr ?></textarea>
+					class="form-control richtext-sm"><?= $descr ?></textarea>
 			</div>
 		</div>
 
@@ -150,7 +150,7 @@
 				<textarea
 					name="narrative"
 					id="narrative"
-					class="form-control richtext textarea-lg"><?= $narrative ?></textarea>
+					class="form-control richtext-lg"><?= $narrative ?></textarea>
 			</div>
 		</div>
 
@@ -160,7 +160,7 @@
 				<textarea
 					name="summary"
 					id="summary"
-					class="form-control richtext textarea-md"><?= $summary ?></textarea>
+					class="form-control richtext-md"><?= $summary ?></textarea>
 			</div>
 		</div>
 
