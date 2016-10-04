@@ -47,10 +47,13 @@
 				// Set Type selection
 				$CR_checked = "";
 				$CS_checked = "";
-				if ($sr_type == 'r')
+				if ($sr_type == 'r') {
 					$CR_checked = 'checked="checked"';
-				else if ($sr_type == 's')
+					$SR_prefix = 'C.R.';
+				} else if ($sr_type == 's') {
 					$CS_checked = 'checked="checked"';
+					$SR_prefix = 'C.S.';
+				}
 			?>
 
 			<div class="row">
@@ -170,7 +173,7 @@
 			</div>
 
 			<div class="col-lg-4 col-md-5 col-sm-6">
-				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted Standard/Requirement</button>
+				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted <?= $SR_prefix ?></button>
 			</div>
 		</div>
 

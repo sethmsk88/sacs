@@ -39,5 +39,17 @@ $(document).ready(function () {
 
 		location.href = "?page=view2&id=" + SRID;
 	});
+
+	// When SR type changes, change the text on the "View" button
+	$("input[name='SRType']").change(function() {
+		$btn = $('#view-btn');
+		var btn_text = "View Formatted ";
+
+		if ($(this).val() == 'r')
+			$btn.text(btn_text + 'C.R.');
+		else if ($(this).val() == 's')
+			$btn.text(btn_text + 'C.S.');
+
+	});
 	
 });
