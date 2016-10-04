@@ -1,0 +1,19 @@
+#admin-table th {
+	font-size: 1.15em;
+	border-top: none;
+}
+
+#admin-table td:nth-child(1) {
+	font-size: 1.15em;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+#admin-table th,
+#admin-table td {
+	text-align: center;
+}
+#admin-table th:nth-child(1),
+#admin-table td:nth-child(1) {
+	text-align: left;
+}
