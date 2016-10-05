@@ -1,14 +1,14 @@
 <script src="./js/addSR.js"></script>
 
 <div class="container">
-	<form>
+	<form id="addSR-form">
 		<div class="row">
 			<div class="col-lg-4 form-group">
 				<label for="type">Select Type</label>
 				<select name="type" id="type" class="form-control">
 					<option value=""></option>
-					<option value="cs">Comprehensive Standard (C.S.)</option>
-					<option value="cr">Core Requirement (C.R.)</option>
+					<option value="s">Comprehensive Standard (C.S.)</option>
+					<option value="r">Core Requirement (C.R.)</option>
 				</select>
 			</div>
 		</div>

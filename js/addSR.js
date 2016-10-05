@@ -7,16 +7,29 @@ $(document).ready(function() {
 		$newCR = $('#newCR').closest('div.row');
 
 		// Hide/show Parent Section input
-		if ($(this).val() == 'cs') {
+		if ($(this).val() == 's') {
 			$newCR.hide();
 			$newCS.slideDown();
 		}
-		else if ($(this).val() == 'cr') {
+		else if ($(this).val() == 'r') {
 			$newCS.hide();
 			$newCR.slideDown();
 		} else {
 			$newCR.hide();
 			$newCS.hide();
 		}
+	});
+
+	$(".add-btn").click(function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			url: './content/act_addSR.php',
+			method: 'post',
+			data: $('#addSR-form').serialize(),
+			success: function(response) {
+				location.href = "?page=admin";
+			}
+		});
 	});
 });
