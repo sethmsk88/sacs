@@ -1,9 +1,21 @@
+<?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+?>
+
 <script src="./js/addSection.js"></script>
 
 <?php
 	$sel_sections = "
 		SELECT id, name
-		FROM sacs.section
+		FROM " . TABLE_SECTION . "
 		WHERE srid = ?
 	";
 	$stmt = $conn->prepare($sel_sections);

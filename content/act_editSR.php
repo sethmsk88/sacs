@@ -8,7 +8,7 @@
 
 	// update SR in DB
 	$update_sr = "
-		UPDATE sacs.standard_requirement
+		UPDATE " . TABLE_STANDARD_REQUIREMENT . "
 		SET number = ?,
 			descr = ?,
 			narrative = ?,

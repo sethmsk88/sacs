@@ -1,3 +1,15 @@
+<?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+?>
+
 <script src="./js/editSubNarrative.js"></script>
 <link href="./css/editSubNarrative.css" rel="stylesheet">
 
@@ -7,7 +19,7 @@
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
-		FROM sacs.standard_requirement
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);
@@ -24,18 +36,6 @@
 	else if ($srType == 's')
 		$srHeader = "C.S. ";
 	$srHeader .= $srNum;
-
-	// Get all root sections for this SR
-	$sel_sections = "
-		SELECT id, name, body
-		FROM sacs.section
-		WHERE srid = ?
-	";
-	$stmt = $conn->prepare($sel_sections);
-	$stmt->bind_param("i", $_GET['id']);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($sid, $sectionName, $body);
 ?>
 
 <div class="container">
@@ -49,7 +49,7 @@
 				<?php
 					// Print sections and their subsections
 					$rootID = -1;
-					printTOCSection($rootID, $conn);
+					printTOCSection($rootID, $_GET['id'], $conn);
 				?>
 			</ol>
 		</div>
@@ -66,7 +66,7 @@
 	</div>
 
 	<?php
-		printBodySection($rootID, true, $conn);
+		printBodySection($rootID, $_GET['id'], true, $conn);
 	?>
 </div>
 

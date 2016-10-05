@@ -1,3 +1,15 @@
+<?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+?>
+
 <script src="./js/editSR.js"></script>
 <link href="./css/editSR.css" rel="stylesheet">
 
@@ -11,7 +23,7 @@
 	// Get SR info from DB
 	$sel_sr = "
 		SELECT id, number, descr, narrative, summary, sr_type, compliance
-		FROM sacs.standard_requirement
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);
@@ -35,10 +47,13 @@
 				// Set Type selection
 				$CR_checked = "";
 				$CS_checked = "";
-				if ($sr_type == 'r')
+				if ($sr_type == 'r') {
 					$CR_checked = 'checked="checked"';
-				else if ($sr_type == 's')
+					$SR_prefix = 'C.R.';
+				} else if ($sr_type == 's') {
 					$CS_checked = 'checked="checked"';
+					$SR_prefix = 'C.S.';
+				}
 			?>
 
 			<div class="row">
@@ -128,7 +143,7 @@
 				<textarea
 					name="descr"
 					id="descr"
-					class="form-control richtext textarea-md"><?= $descr ?></textarea>
+					class="form-control richtext-sm"><?= $descr ?></textarea>
 			</div>
 		</div>
 
@@ -138,7 +153,7 @@
 				<textarea
 					name="narrative"
 					id="narrative"
-					class="form-control richtext textarea-lg"><?= $narrative ?></textarea>
+					class="form-control richtext-lg"><?= $narrative ?></textarea>
 			</div>
 		</div>
 
@@ -148,7 +163,7 @@
 				<textarea
 					name="summary"
 					id="summary"
-					class="form-control richtext textarea-md"><?= $summary ?></textarea>
+					class="form-control richtext-md"><?= $summary ?></textarea>
 			</div>
 		</div>
 
@@ -158,7 +173,7 @@
 			</div>
 
 			<div class="col-lg-4 col-md-5 col-sm-6">
-				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted Standard/Requirement</button>
+				<button id="view-btn" class="btn btn-primary" style="width:100%;">View Formatted <?= $SR_prefix ?></button>
 			</div>
 		</div>
 

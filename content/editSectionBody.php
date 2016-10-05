@@ -1,8 +1,18 @@
 <?php
+	// Include on ALL pages
+	require_once(APP_PATH . "includes/functions.php");
+
+	// Require Login
+	if (!isset($loggedIn)) {
+		exit;
+	} else {
+		require_login($loggedIn);
+	}
+
 	// Get section body from DB table
 	$sel_section = "
 		SELECT body
-		FROM sacs.section
+		FROM " . TABLE_SECTION . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_section);

@@ -1,5 +1,5 @@
 <?php
-	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
+	define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
@@ -15,20 +15,20 @@
 
 		// Insert new section into section table
 		$ins_section = "
-			INSERT INTO sacs.section (srid, name, parent_id)
+			INSERT INTO " . TABLE_SECTION . " (srid, name, parent_id)
 			VALUES (?,?,?)
 		";
 		$stmt = $conn->prepare($ins_section);
 		$stmt->bind_param("isi", $_POST['srid'], $_POST['sectionName'], $parentID);
 		$stmt->execute();
 
-		header('Location: ' . APP_PATH . '?page=editSubNarrative&id=' . $_POST['srid']);
+		header('Location: ' . APP_PATH_URL . '?page=editSubNarrative&id=' . $_POST['srid']);
 
 	} else if (isset($_POST['sid'])) {
 
 		// Update section body in section table
 		$update_section = "
-			UPDATE sacs.section
+			UPDATE " . TABLE_SECTION . "
 			SET	body = ?
 			WHERE id = ?
 		";
@@ -39,7 +39,7 @@
 		// Get srid for redirect
 		$sel_srid = "
 			SELECT srid
-			FROM sacs.section
+			FROM " . TABLE_SECTION . "
 			WHERE id = ?
 		";
 		$stmt = $conn->prepare($sel_srid);
@@ -49,6 +49,6 @@
 		$stmt->bind_result($srid);
 		$stmt->fetch();
 
-		header('Location: ' . APP_PATH . '?page=editSubNarrative&id=' . $srid);
+		header('Location: ' . APP_PATH_URL . '?page=editSubNarrative&id=' . $srid);
 	}
 ?>

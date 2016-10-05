@@ -39,5 +39,48 @@ $(document).ready(function () {
 		$el = $(e.target); // convert to jQuery obj
 		var SRID = $el.val(); // get ID of selected SR
 		location.href = "?page=editSR&id=" + SRID; // redirect to edit page
-	});	
+	});
+
+	// View button handler
+	$("button[id*='view-']").click(function(e) {
+		e.preventDefault();
+
+		// get the srid
+		var id_parts = $(this).attr('id').split('-');
+		var type = id_parts[1];
+		var srid = id_parts[2];
+
+		if (type == "narrative") {
+			location.href = "?page=view2&id=" + srid;
+		} else if (type == "supplemental") {
+			location.href = "?page=subNarrative&id=" + srid;
+		} else if (type == "appendix") {
+			location.href = "?page=appendix&id=" + srid;
+		}
+	});
+
+	// Edit button handler
+	$("button[id*='edit-']").click(function(e) {
+		e.preventDefault();
+
+		// get the srid
+		var id_parts = $(this).attr('id').split('-');
+		var type = id_parts[1];
+		var srid = id_parts[2];
+
+		if (type == "narrative") {
+			location.href = "?page=editSR&id=" + srid;
+		} else if (type == "supplemental") {
+			location.href = "?page=editSubNarrative&id=" + srid;
+		} else if (type == "appendix") {
+			location.href = "?page=appendix&id=" + srid;
+		}
+	});
+
+	// New SR button handler
+	$('#newSR-btn').click(function(e) {
+		e.preventDefault();
+
+		location.href = "?page=addSR";
+	});
 });

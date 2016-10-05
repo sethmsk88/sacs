@@ -2,7 +2,7 @@
 	// Get all SRs
 	$sel_SR = "
 		SELECT id, number, descr, narrative, summary, sr_type, compliance
-		FROM sacs.standard_requirement
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		ORDER BY sr_type, number
 	";
 	$stmt = $conn->prepare($sel_SR);

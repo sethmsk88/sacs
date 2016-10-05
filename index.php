@@ -1,7 +1,5 @@
 <?php
-	define("APP_NAME", "SACS Accreditation");
-	define("APP_PATH", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
-    define("APP_HOMEPAGE", "view1");
+	require_once("./includes/globals.php");
 
     // Set current page variable
     if (isset($_GET['page']))
@@ -15,19 +13,6 @@
 
     // Open connection to Database
     require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
-
-    // Array showing which navlinks should be present on which pages
-    // e.g. currentPage => array(link1, link2, ...)
-    $navbarLinks = array(
-        "editSR" => array(
-            "editSR" => "Edit Narrative",
-            "editSubNarrative" => "Edit Sub-Narrative"
-        ),
-        "editSubNarrative" => array(
-            "editSR" => "Edit Narrative",
-            "editSubNarrative" => "Edit Sub-Narrative"
-        )
-    );
 ?>
 
 <!DOCTYPE html>
@@ -72,11 +57,10 @@
             include "../templates/header_3.php";
 
             // Start session or regenerate session id
-             sec_session_start();
+            sec_session_start();
 
             // Check to see if User is logged in
             $loggedIn = login_check($conn);
-            //$loggedIn = false; // set to false for TESTING purposes
         ?>
 
         <!-- Nav Bar -->
@@ -103,27 +87,12 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <!-- Nav Links -->
                     <ul class="nav navbar-nav">
+                        
+                        <?php if ($loggedIn) { ?>
                         <li id="admin-link">
                             <a id="navLink-admin" href="./?page=admin">Admin</a>
                         </li>
-                        
-                        <?php
-                            // Show navbar links specific to certain pages
-                            if (array_key_exists(APP_CURRENTPAGE, $navbarLinks)) { 
-
-                                foreach ($navbarLinks as $page => $links) {
-                                    if ($page == APP_CURRENTPAGE) {
-                                        foreach ($links as $link => $linkName) {
-                        ?>
-                        <li>
-                            <a class="navbar-link" href="?page=<?= $link ?>"><?= $linkName ?></a>
-                        </li>
-                        <?php
-                                        }
-                                    }
-                                }
-                            }
-                        ?>
+                        <?php } ?>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
