@@ -1,5 +1,5 @@
 <?php
-	define("APP_DEV_MODE", true);
+	define("APP_DEV_MODE", false); // This should be set to true while developing
 	define("APP_NAME", "SACS Accreditation");
 	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/bootstrap/apps/sacs/");
     define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
