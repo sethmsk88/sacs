@@ -2,7 +2,7 @@
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
-		FROM " . $TABLE_STANDARD_REQUIREMENT . "
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);

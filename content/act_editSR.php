@@ -8,7 +8,7 @@
 
 	// update SR in DB
 	$update_sr = "
-		UPDATE " . $TABLE_STANDARD_REQUIREMENT . "
+		UPDATE " . TABLE_STANDARD_REQUIREMENT . "
 		SET number = ?,
 			descr = ?,
 			narrative = ?,

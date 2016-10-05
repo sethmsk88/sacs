@@ -6,10 +6,11 @@
     define("APP_HOMEPAGE", "view1");
 
     if (APP_DEV_MODE == true) {
-    	$TABLE_SECTION = "sacs.dev_section";
-    	$TABLE_STANDARD_REQUIREMENT = "sacs.dev_standard_requirement";
+    	define("TABLE_SECTION", "sacs.dev_section");
+        define("TABLE_STANDARD_REQUIREMENT", "sacs.dev_standard_requirement");
     } else {
-    	$TABLE_SECTION = "sacs.section";
-    	$TABLE_STANDARD_REQUIREMENT = "sacs.standard_requirement";
+    	// TABLE_SECTION = "sacs.section";
+        define("TABLE_SECTION", "sacs.section");
+        define("TABLE_STANDARD_REQUIREMENT", "sacs.standard_requirement");
     }
 ?>

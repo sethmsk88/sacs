@@ -17,7 +17,7 @@
 	// if no duplicate, insert SR into DB
 	$sel_duplicate = "
 		SELECT number
-		FROM " . $TABLE_STANDARD_REQUIREMENT .  "
+		FROM " . TABLE_STANDARD_REQUIREMENT .  "
 		WHERE number = ?
 	";
 	$stmt = $conn->prepare($sel_duplicate);
@@ -31,7 +31,7 @@
 	} else {
 		// Else, insert new SR
 		$ins_sr = "
-			INSERT INTO " . $TABLE_STANDARD_REQUIREMENT . " (number, sr_type)
+			INSERT INTO " . TABLE_STANDARD_REQUIREMENT . " (number, sr_type)
 			VALUES (?,?)
 		";
 		$stmt = $conn->prepare($ins_sr);

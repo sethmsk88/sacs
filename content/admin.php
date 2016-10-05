@@ -15,7 +15,7 @@
 <?php
 	$sel_all_SR = "
 		SELECT id, number, sr_type
-		FROM " . $TABLE_STANDARD_REQUIREMENT . "
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		ORDER BY sr_type, number
 	";
 	$stmt = $conn->prepare($sel_all_SR);

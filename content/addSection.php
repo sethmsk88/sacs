@@ -15,7 +15,7 @@
 <?php
 	$sel_sections = "
 		SELECT id, name
-		FROM " . $TABLE_SECTION . "
+		FROM " . TABLE_SECTION . "
 		WHERE srid = ?
 	";
 	$stmt = $conn->prepare($sel_sections);

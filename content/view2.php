@@ -9,7 +9,7 @@
 	// Get SR info from DB
 	$sel_sr = "
 		SELECT id, number, descr, narrative, summary, sr_type, compliance
-		FROM " . $TABLE_STANDARD_REQUIREMENT . "
+		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
 	$stmt = $conn->prepare($sel_sr);

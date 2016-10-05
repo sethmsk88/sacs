@@ -1,11 +1,10 @@
 <?php
 	// Check to see if section has children
 	function hasChildren($sid, $srid, $conn) {
-		global $TABLE_SECTION;
 
 		$sel_sections = "
 			SELECT id
-			FROM " . $TABLE_SECTION . "
+			FROM " . TABLE_SECTION . "
 			WHERE parent_id = ?
 				AND srid = ?
 		";
@@ -22,11 +21,10 @@
 
 	// Print table of contents sections that have $pid as a parent_id
 	function printTOCSection($pid, $srid, $conn) {
-		global $TABLE_SECTION;		
 
 		$sel_sections = "
 			SELECT id, name, body, parent_id
-			FROM " . $TABLE_SECTION . "
+			FROM " . TABLE_SECTION . "
 			WHERE parent_id = ?
 				AND srid = ?
 		";
@@ -56,11 +54,10 @@
 	}
 
 	function printBodySection($pid, $srid, $editable, $conn) {
-		global $TABLE_SECTION;
 
 		$sel_sections = "
 			SELECT id, name, body, parent_id
-			FROM " . $TABLE_SECTION . "
+			FROM " . TABLE_SECTION . "
 			WHERE parent_id = ?
 				AND srid = ?
 		";
