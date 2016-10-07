@@ -1,3 +1,6 @@
+<link href="./css/appendix.css" rel="stylesheet">
+<script src="./js/appendix.js"></script>
+
 <?php
 	// Get SR type and SR number
 	$sel_sr = "
@@ -14,7 +17,7 @@
 
 	// Get appendix items
 	$sel_appendixLinks = "
-		SELECT linkName, linkURL, refNum
+		SELECT appendix_link_id, linkName, linkURL, refNum
 		FROM " . TABLE_APPENDIX_LINK . "
 		WHERE srid = ?
 		ORDER BY refNum
@@ -23,7 +26,7 @@
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($linkName, $linkURL, $refNum);
+	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum);
 
 
 ?>
@@ -31,15 +34,30 @@
 <div class="container">
 	<h5>DOCUMENTATION</h5>
 	<h5><?= $srNum ?> Appendix A</h5>
-	<ol>
+	<table id="appendix-table" style="width:100%;">
 	<?php
 		while ($stmt->fetch()) {
 	?>
-		<li><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></li>
+		<tr>
+			<td><?= $refNum ?>.</td>
+
+			<!-- Create link for reference if $linkURL exists -->
+			<?php if ($linkURL != "") { ?>
+				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
+				<td><button id="edit-link-<?= $linkID ?>" class="btn btn-sm btn-warning">Edit Link</button></td>
+			<?php } else { ?>
+				<td><?= $linkName ?></td>
+				<td><button id="add-link-<?= $linkID ?>" class="btn btn-sm btn-primary">Add Link</button></td>
+			<?php
+				}
+			?>
+		</tr>
+
 	<?php
 		}
 	?>
-	</ol>
+	</table>
+	
 
 	<!-- <ol>
 		<li><a href="http://www.leg.state.fl.us/Statutes/index.cfm?App_mode=Display_Statute&Search_String=&URL=1000-1099/1001/Sections/1001.706.html" target="_blank">Section 7 of the Constitution of the State of Florida</a></li>

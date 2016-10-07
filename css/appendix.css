@@ -1,0 +1,20 @@
+#appendix-table {
+	width: 100%;
+}
+
+#appendix-table tr td{
+	padding: 2px 0;
+}
+
+#appendix-table tr td:first-child {
+	padding-left: 4px;
+}
+
+#appendix-table tr td:last-child {
+	padding-right: 4px;
+	text-align: right;
+}
+
+#appendix-table tr:hover {
+	background-color: rgba(255,136,0,.2);
+}
