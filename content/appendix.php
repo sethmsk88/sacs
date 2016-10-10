@@ -44,13 +44,12 @@
 			<!-- Create link for reference if $linkURL exists -->
 			<?php if ($linkURL != "") { ?>
 				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
-				<td><button id="edit-link-<?= $linkID ?>" class="btn btn-sm btn-warning">Edit Link</button></td>
 			<?php } else { ?>
 				<td><?= $linkName ?></td>
-				<td><button id="add-link-<?= $linkID ?>" class="btn btn-sm btn-primary">Add Link</button></td>
 			<?php
 				}
 			?>
+			<td><button id="editRef-<?= $linkID ?>" class="btn btn-sm btn-primary">Edit Reference</button></td>
 		</tr>
 
 	<?php

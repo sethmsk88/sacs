@@ -1,16 +1,25 @@
 $(document).ready(function() {
-	$("button[id*='edit-link-']").click(function(e) {
+	$("button[id*='editRef-']").click(function(e) {
 		e.preventDefault();
 
 		var id_parts = $(this).attr('id').split('-');
-		var action = id_parts[0];
-		var link_id = id_parts[2];
+		var link_id = id_parts[1];
 
-		// Do something here
-		if (action == 'edit') {
+		// Navigate to edit page
+		location.href = "?page=editRef&lid=" + link_id;
 
-		} else if (action == 'add') {
-			
+		// Show addEdit-ref form
+		//$('#addEdit-ref-dialog').show();
+	});
+
+	// Reference Type handler
+	$('input[name="refType"]').change(function() {
+		if ($(this).val() == 0) {
+			$('#fileUploadForm-container').hide();
+			$('#URLForm-container').show();
+		} else if ($(this).val() == 1) {
+			$('#URLForm-container').hide();
+			$('#fileUploadForm-container').show();
 		}
 	});
 });
