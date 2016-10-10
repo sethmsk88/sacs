@@ -1,4 +1,5 @@
 <?php
+require_once("../includes/globals.php");
 include_once '../includes/functions.php';
 
 sec_session_start();
