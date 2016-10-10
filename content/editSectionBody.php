@@ -33,7 +33,7 @@
 				<textarea
 					name="sectionBody"
 					id="sectionBody"
-					class="form-control richtext"><?= $sectionBody ?></textarea>
+					class="form-control richtext-md"><?= $sectionBody ?></textarea>
 			</div>
 		</div>
 		<div class="row">
