@@ -50,19 +50,13 @@ $(document).ready(function () {
 		e.preventDefault();
 	
 		// get id of related textarea
-		var textarea_id = $(this).closest('div.row').find('textarea').attr('id');
+		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
 
 		// insert textarea_id into modal form
 		$('#textarea_id').val(textarea_id);
 
 		// Show insert reference modal, and pass id of textarea as param
 		showModal('insertRef-modal');
-
-		/*
-		$richTextArea.tinymce_append('<a href="#">[5]</a> I\'m testing this</b>');
-		*/
-		
-		//$('#descr').tinymce_append('<a href="#">[5]</a> I\'m testing this</b>');
 	});
 
 	hideOverlay = function() {
@@ -89,10 +83,10 @@ $(document).ready(function () {
 			success: function(response) {
 				
 				/*
-					NOTE: for the selector below to work, the richtextarea must be within the same row div as the "Insert Reference" button
+					NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
 				*/
 				// Select the richTextArea iframe
-				$richTextArea = $('#' + response['textarea_id']).closest('div.row').find('iframe');
+				$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
 				// Create ref link
 				var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';

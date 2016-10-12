@@ -138,17 +138,24 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-11 form-group">
-				<label for="descr">Title/Description</label>
+			<div class="col-lg-12 form-group">
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="descr">Title/Description</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<!-- <button id="insertRef-btn2" class="tinymce_btn">Another Button</button> -->
+					</div>
+				</div>
 				<textarea
 					name="descr"
 					id="descr"
 					class="form-control richtext-sm"><?= $descr ?></textarea>
 			</div>
-			<div class="col-lg-1">
-				<br />
-				<button id="insertRef-btn" class="btn btn-default">Insert Reference</button>
-			</div>
+
 		</div>
 
 		<div class="row">
