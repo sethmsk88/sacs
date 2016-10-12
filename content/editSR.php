@@ -206,6 +206,9 @@
 			role="form">
 			
 			<div class="row">
+				<div class="col-lg-12" style="margin-bottom:8px;">
+					Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
+				</div>
 				<div class="col-lg-12 form-group">
 					<label for="refName">Reference Name</label>
 					<input
