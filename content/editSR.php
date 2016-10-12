@@ -138,12 +138,16 @@
 		</div>
 
 		<div class="row">
-			<div class="col-lg-12 form-group">
+			<div class="col-lg-11 form-group">
 				<label for="descr">Title/Description</label>
 				<textarea
 					name="descr"
 					id="descr"
 					class="form-control richtext-sm"><?= $descr ?></textarea>
+			</div>
+			<div class="col-lg-1">
+				<br />
+				<button id="insertRef-btn" class="btn btn-default">Insert Reference</button>
 			</div>
 		</div>
 
@@ -180,3 +184,55 @@
 		<input type="hidden" name="SRID" id="SRID" value="<?= $SRID ?>">
 	</form>
 </div>
+
+
+<!-------------- MODALS BELOW ---------------->
+<!-- Insert Reference Modal -->
+<div id="insertRef-modal" class="modalForm" style="width:500px;">
+	<div class="modalForm-header">
+		Insert Reference
+	</div>
+	<div class="modalForm-content">
+		<form
+			name="insertRef-form"
+			id="insertRef-form"
+			role="form">
+			
+			<div class="row">
+				<div class="col-lg-12 form-group">
+					<label for="refName">Reference Name</label>
+					<input
+						type="text"
+						name="refName"
+						id="refName"
+						class="form-control">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12" class="form-group">
+					<label for="refURL">Reference URL</label>
+					<input
+						type="text"
+						name="refURL"
+						id="refURL"
+						class="form-control">
+				</div>
+			</div>
+
+			<input type="hidden" name="srid" value="<?= $SRID ?>">
+			<input type="hidden" name="textarea_id" id="textarea_id" value="">
+
+			<div class="row" style="margin-top:12px;">
+				<div class="col-lg-12">
+					<input type="submit" class="btn btn-primary" value="Save">
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+</div>
+
+
+
