@@ -71,7 +71,7 @@ $(document).ready(function () {
 	});
 
 	// Insert Reference button click handler
-	$('#insertRef-btn').click(function(e) {
+	$('.tinymce_btn').click(function(e) {
 		e.preventDefault();
 	
 		// Reset insertRef-form inputs
@@ -93,7 +93,10 @@ $(document).ready(function () {
 
 		$form = $(this);
 
-		if ($('input[name="refChoice"]').val() == 0) {
+		var id_parts = $('input[name="refChoice"]:checked').attr('id').split('-');
+		var refChoice = id_parts[1];
+
+		if (refChoice === "0") {
 			// pull info from inputs and use it to create a ref link
 			$existingRef = $('#existingRef').children(':selected');
 			var refURL = $existingRef.attr('data-url');
@@ -101,6 +104,9 @@ $(document).ready(function () {
 			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
 
 			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+
+			// Append ref link to richtextarea
+			$richTextArea.tinymce_append(refLink);
 		} else {
 
 			$.ajax({
@@ -117,11 +123,12 @@ $(document).ready(function () {
 
 					// Create ref link
 					var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+
+					// Append ref link to richtextarea
+					$richTextArea.tinymce_append(refLink);
 				}
 			});
 		}
-		// Append ref link to richtextarea
-		$richTextArea.tinymce_append(refLink);
 
 		// Clear fields in modal
 		resetInputFields('insertRef-form');
@@ -132,9 +139,9 @@ $(document).ready(function () {
 	// Reference choice change handler
 	$('input[name="refChoice"]').change(function() {
 		var refChoice = $(this).val();
-		
+
 		// Show the appropriate input fields
-		if (refChoice == 0) {
+		if (refChoice === "0") {
 			$('#refChoice-1-container').hide();
 			$('#refChoice-0-container').slideDown();
 		} else {

@@ -173,7 +173,16 @@
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="narrative">Narrative</label>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="narrative">Narrative</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+					</div>
+				</div>
 				<textarea
 					name="narrative"
 					id="narrative"
@@ -183,7 +192,16 @@
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="summary">Summary</label>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="summary">Summary</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+					</div>
+				</div>
 				<textarea
 					name="summary"
 					id="summary"
