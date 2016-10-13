@@ -29,7 +29,7 @@
 		$_POST['refName'],
 		$_POST['refURL'],
 		$highestRefNum);
-	$stmt->execute();
+	// $stmt->execute();
 
 	// Send AJAX response containing textarea id and new reference number
 	$json_array = array();

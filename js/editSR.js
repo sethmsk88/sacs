@@ -1,5 +1,30 @@
 $(document).ready(function () {
 
+	hideOverlay = function() {
+		$('#overlay').fadeOut();
+	}
+
+	hideModalForms = function() {
+		$('.modalForm:visible').each(function() {
+			$(this).slideUp(hideOverlay);
+		});
+	}
+
+	resetInputFields = function(formID) {
+		if (formID == "insertRef-form") {
+			$('#' + formID + ' input[name="refChoice"]').removeAttr('checked');
+			$('#' + formID + ' input[type="text"]').val('');
+			$('#' + formID + ' [id="textarea_id"]').val('');
+
+			// set select box to first selection
+			$('#' + formID + ' #existingRef').val('');
+
+			// hide appropriate sections
+			$('#' + formID + ' #refChoice-0-container').hide();
+			$('#' + formID + ' #refChoice-1-container').hide();
+		}
+	}
+
 	// Save button event handler
 	$('#save-btn').click(function(e) {
 		e.preventDefault();
@@ -49,6 +74,9 @@ $(document).ready(function () {
 	$('#insertRef-btn').click(function(e) {
 		e.preventDefault();
 	
+		// Reset insertRef-form inputs
+		resetInputFields('insertRef-form');
+
 		// get id of related textarea
 		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
 
@@ -59,48 +87,65 @@ $(document).ready(function () {
 		showModal('insertRef-modal');
 	});
 
-	hideOverlay = function() {
-		$('#overlay').fadeOut();
-	}
-
-	hideModalForms = function() {
-		$('.modalForm:visible').each(function() {
-			$(this).slideUp(hideOverlay);
-		});
-	}
-
 	// Insert Reference Form Submission Handler
 	$('#insertRef-form').submit(function(e) {
 		e.preventDefault();
 
 		$form = $(this);
 
-		$.ajax({
-			type: 'post',
-			url: './content/act_insertRef.php',
-			data: $form.serialize(),
-			dataType: 'json',
-			success: function(response) {
-				
-				/*
-					NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
-				*/
-				// Select the richTextArea iframe
-				$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
+		if ($('input[name="refChoice"]').val() == 0) {
+			// pull info from inputs and use it to create a ref link
+			$existingRef = $('#existingRef').children(':selected');
+			var refURL = $existingRef.attr('data-url');
+			var refNum = $existingRef.val();
+			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
 
-				// Create ref link
-				var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+		} else {
 
-				// Append ref link to richtextarea
-				$richTextArea.tinymce_append(refLink);
+			$.ajax({
+				type: 'post',
+				url: './content/act_insertRef.php',
+				data: $form.serialize(),
+				dataType: 'json',
+				success: function(response) {
+					/*
+						NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
+					*/
+					// Select the richTextArea iframe
+					$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
-				// Clear fields in modal
-				$('input[type="text"]').val('');
-				$('input[id="textarea_id"]').val('');
+					// Create ref link
+					var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+				}
+			});
+		}
+		// Append ref link to richtextarea
+		$richTextArea.tinymce_append(refLink);
 
-				hideModalForms();
-			}
-		});
+		// Clear fields in modal
+		resetInputFields('insertRef-form');
+
+		hideModalForms();
+	});
+
+	// Reference choice change handler
+	$('input[name="refChoice"]').change(function() {
+		var refChoice = $(this).val();
+		
+		// Show the appropriate input fields
+		if (refChoice == 0) {
+			$('#refChoice-1-container').hide();
+			$('#refChoice-0-container').slideDown();
+		} else {
+			$('#refChoice-0-container').hide();
+			$('#refChoice-1-container').slideDown();
+		}
+
+		// if submit button is hidde, show it
+		if (!$('#submitRef-btn').is(':visible')) {
+			$('#submitRef-btn').show();
+		}
 	});
 	
 });

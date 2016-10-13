@@ -38,6 +38,19 @@
 		echo '<div class="text-danger">Error: Standard/Requirement does not exist in database</div>';
 		exit;
 	}
+
+	// Get all references for this SR
+	$sel_ref = "
+		SELECT linkName, linkURL, refNum
+		FROM " . TABLE_APPENDIX_LINK . "
+		WHERE srid = ?
+		ORDER BY refNum ASC
+	";
+	$stmt2 = $conn->prepare($sel_ref);
+	$stmt2->bind_param("i", $_GET['id']);
+	$stmt2->execute();
+	$stmt2->store_result();
+	$stmt2->bind_result($linkName, $linkURL, $refNum);
 ?>
 
 <div class="container">
@@ -206,36 +219,64 @@
 			role="form">
 			
 			<div class="row">
-				<div class="col-lg-12" style="margin-bottom:8px;">
-					Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
-				</div>
-				<div class="col-lg-12 form-group">
-					<label for="refName">Reference Name</label>
-					<input
-						type="text"
-						name="refName"
-						id="refName"
-						class="form-control">
+				<div class="col-lg-12">
+					<div class="radio">
+						<label><input type="radio" name="refChoice" id="refChoice-0" value="0">Add an Existing Reference</label>
+					</div>
+					<div class="radio">
+						<label><input type="radio" name="refChoice" id="refChoice-1" value="1">Add a New Reference</label>
+					</div>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-lg-12" class="form-group">
-					<label for="refURL">Reference URL</label>
-					<input
-						type="text"
-						name="refURL"
-						id="refURL"
-						class="form-control">
+			<!-- Existing Reference -->
+			<div id="refChoice-0-container" style="display:none;">
+				<select name="existingRef" id="existingRef" class="form-control">
+					<option value=""></option>
+					<?php
+						while ($stmt2->fetch()) {
+					?>
+						<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
+					<?php
+						}
+					?>
+				</select>
+			</div>
+
+			<!-- New Reference -->
+			<div id="refChoice-1-container" style="display:none;">
+				<div class="row">
+					<div class="col-lg-12" style="margin-bottom:8px;">
+						Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
+					</div>
+					<div class="col-lg-12 form-group">
+						<label for="refName">Reference Name</label>
+						<input
+							type="text"
+							name="refName"
+							id="refName"
+							class="form-control">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12" class="form-group">
+						<label for="refURL">Reference URL</label>
+						<input
+							type="text"
+							name="refURL"
+							id="refURL"
+							class="form-control">
+					</div>
 				</div>
 			</div>
 
 			<input type="hidden" name="srid" value="<?= $SRID ?>">
 			<input type="hidden" name="textarea_id" id="textarea_id" value="">
 
-			<div class="row" style="margin-top:12px;">
+			<div id="submitRef-btn" class="row" style="display:none; margin-top:12px;">
 				<div class="col-lg-12">
-					<input type="submit" class="btn btn-primary" value="Save">
+					<input type="submit" class="btn btn-primary" value="Submit">
 				</div>
 			</div>
 
