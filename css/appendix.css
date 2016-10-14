@@ -1,31 +1,33 @@
-#appendix-table {
+#appendix-table-edit,
+#appendix-table-view {
 	width: 100%;
 }
 
-#appendix-table tr td{
+#appendix-table-edit tr td,
+#appendix-table-view tr td{
 	padding: 2px 0;
 }
 
-#appendix-table tr.up-row td {
+#appendix-table-edit tr.up-row td {
 	border-top: 1px solid #ddd;
 	padding-top: 4px;
 }
 
-#appendix-table tr.down-row td {
+#appendix-table-edit tr.down-row td {
 	border-bottom: 1px solid #ddd;
 	padding-bottom: 4px;
 }
 
-#appendix-table tr td:first-child {
+#appendix-table-edit tr td:first-child {
 	padding-left: 4px;
 }
 
-#appendix-table tr td:last-child {
+#appendix-table-edit tr td:last-child {
 	padding-right: 4px;
 	text-align: right;
 }
 
-#appendix-table tr:hover {
+#appendix-table-edit tr:hover {
 	background-color: rgba(255,136,0,.2);
 }
 
@@ -41,6 +43,6 @@
 	top: 3px;
 }
 
-#appendix-table tr td:nth-child(1) {
+#appendix-table-edit tr td:nth-child(1) {
 	text-align: center;
 }

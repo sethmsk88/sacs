@@ -33,12 +33,16 @@
 <div class="container">
 	<h5>DOCUMENTATION</h5>
 	<h5><?= $srNum ?> Appendix A</h5>
-	<table id="appendix-table">
+
 	<?php
-		$row_i = 0;
-		while ($stmt->fetch()) {
-			// don't show up arrow on first row
-			if ($row_i > 0) {
+		/*********** Begin Edit Mode ***********/
+		if (isset($_GET['mode']) && $_GET['mode'] == 'edit') {
+			echo '<table id="appendix-table-edit">';
+
+			$row_i = 0;
+			while ($stmt->fetch()) {
+				// don't show up arrow on first row
+				if ($row_i > 0) {
 	?>
 		<tr class="up-row row-<?= $row_i ?>">
 			<td><button class="btn btn-default up-arrow"><span class="glyphicon glyphicon-arrow-up" style="font-size:22px;"></span></button></td>
@@ -46,7 +50,7 @@
 			<td></td>
 		</tr>
 	<?php
-			} // end first row test
+				} // end first row test
 	?>
 		<tr class="row-<?= $row_i ?>" data-linkid="<?= $linkID ?>">
 			<td><?= $refNum ?>.</td>
@@ -56,14 +60,12 @@
 				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
 			<?php } else { ?>
 				<td><?= $linkName ?></td>
-			<?php
-				}
-			?>
+			<?php }	?>
 			<td><button id="editRef-<?= $linkID ?>" class="btn btn-sm btn-primary">Edit Reference</button></td>
 		</tr>
 	<?php
-			// don't show down arrow on last row
-			if ($row_i < $numRows - 1) {
+				// don't show down arrow on last row
+				if ($row_i < $numRows - 1) {
 	?>
 		<tr class="down-row row-<?= $row_i ?>">
 			<td><button class="btn btn-default down-arrow"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
@@ -71,11 +73,33 @@
 			<td></td>
 		</tr>
 	<?php
-			} // end last row test
-			$row_i++;
-		}
+				} // end last row test
+				$row_i++;
+			} // end while loop
+		} /*********** End Edit Mode ***********/
+		else {
+			
+			/*********** Begin View Mode ***********/
+			echo '<table id="appendix-table-view">';
+			while ($stmt->fetch()) {
+	?>
+		<tr>
+			<td><?= $refNum ?>.</td>
+
+			<!-- Create link for reference if $linkURL exists -->
+			<?php if ($linkURL != "") { ?>
+				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
+			<?php } else { ?>
+				<td><?= $linkName ?></td>
+			<?php } ?>
+		</tr>
+	<?php
+			} // End while loop
+		} /*********** End View Mode ***********/
 	?>
 	</table>
+
+
 	
 
 	<!-- <ol>
