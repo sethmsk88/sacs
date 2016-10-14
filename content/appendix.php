@@ -27,18 +27,28 @@
 	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum);
-
-
+	$numRows = $stmt->num_rows;
 ?>
 
 <div class="container">
 	<h5>DOCUMENTATION</h5>
 	<h5><?= $srNum ?> Appendix A</h5>
-	<table id="appendix-table" style="width:100%;">
+	<table id="appendix-table">
 	<?php
+		$row_i = 0;
 		while ($stmt->fetch()) {
+			// don't show up arrow on first row
+			if ($row_i > 0) {
 	?>
-		<tr>
+		<tr class="up-row row-<?= $row_i ?>">
+			<td><button class="btn btn-default up-arrow"><span class="glyphicon glyphicon-arrow-up" style="font-size:22px;"></span></button></td>
+			<td></td>
+			<td></td>
+		</tr>
+	<?php
+			} // end first row test
+	?>
+		<tr class="row-<?= $row_i ?>" data-linkid="<?= $linkID ?>">
 			<td><?= $refNum ?>.</td>
 
 			<!-- Create link for reference if $linkURL exists -->
@@ -51,8 +61,18 @@
 			?>
 			<td><button id="editRef-<?= $linkID ?>" class="btn btn-sm btn-primary">Edit Reference</button></td>
 		</tr>
-
 	<?php
+			// don't show down arrow on last row
+			if ($row_i < $numRows - 1) {
+	?>
+		<tr class="down-row row-<?= $row_i ?>">
+			<td><button class="btn btn-default down-arrow"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
+			<td></td>
+			<td></td>
+		</tr>
+	<?php
+			} // end last row test
+			$row_i++;
 		}
 	?>
 	</table>

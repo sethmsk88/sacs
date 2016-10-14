@@ -22,4 +22,46 @@ $(document).ready(function() {
 			$('#fileUploadForm-container').show();
 		}
 	});
+
+	// Up Arrow Click Handler
+	$('button.up-arrow').click(function(e) {
+		e.preventDefault();
+
+		// get link ids for this arrow and the arrow above it
+		var this_linkID = $(this).closest('tr').next().attr('data-linkid');
+		var above_linkID = $(this).closest('tr').prev().prev().attr('data-linkid');
+
+		$.ajax({
+			url: './content/act_appendix.php',
+			type: 'post',
+			data: {
+				'linkID_1': this_linkID,
+				'linkID_2': above_linkID
+			},
+			success: function(response) {
+				location.reload();
+			}
+		});
+	});
+
+	// Down Arrow Click Handler
+	$('button.down-arrow').click(function(e) {
+		e.preventDefault();
+
+		// get link ids for this arrow and the arrow above it
+		var this_linkID = $(this).closest('tr').prev().attr('data-linkid');
+		var below_linkID = $(this).closest('tr').next().next().attr('data-linkid');
+
+		$.ajax({
+			url: './content/act_appendix.php',
+			type: 'post',
+			data: {
+				'linkID_1': this_linkID,
+				'linkID_2': below_linkID
+			},
+			success: function(response) {
+				location.reload();
+			}
+		});
+	});
 });
