@@ -61,7 +61,10 @@
 			<?php } else { ?>
 				<td><?= $linkName ?></td>
 			<?php }	?>
-			<td><button id="editRef-<?= $linkID ?>" class="btn btn-sm btn-primary">Edit Reference</button></td>
+			<td>
+				<button id="editRef-<?= $linkID ?>" title="Edit Reference" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>
+				<button id="delRef-<?= $linkID ?>" title="Delete Reference" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+			</td>
 		</tr>
 	<?php
 				// don't show down arrow on last row

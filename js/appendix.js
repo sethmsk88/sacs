@@ -12,6 +12,25 @@ $(document).ready(function() {
 		//$('#addEdit-ref-dialog').show();
 	});
 
+	$("button[id*='delRef-']").click(function(e) {
+		e.preventDefault();
+
+		var id_parts = $(this).attr('id').split('-');
+		var link_id = id_parts[1];
+
+		$.ajax({
+			url: './content/act_appendix.php',
+			type: 'post',
+			data: {
+				'actionType': 1, // delete reference action type
+				'linkID': link_id
+			},
+			success: function(response) {
+				location.reload();
+			}
+		});
+	});
+
 	// Reference Type handler
 	$('input[name="refType"]').change(function() {
 		if ($(this).val() == 0) {
@@ -35,6 +54,7 @@ $(document).ready(function() {
 			url: './content/act_appendix.php',
 			type: 'post',
 			data: {
+				'actionType': 0, // change order action type
 				'linkID_1': this_linkID,
 				'linkID_2': above_linkID
 			},
