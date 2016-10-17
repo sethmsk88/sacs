@@ -2,6 +2,8 @@
 <script src="./js/appendix.js"></script>
 
 <?php
+	require_once './includes/delete_confirm.php'; // delete confirm modal
+
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
@@ -62,8 +64,22 @@
 				<td><?= $linkName ?></td>
 			<?php }	?>
 			<td>
-				<button id="editRef-<?= $linkID ?>" title="Edit Reference" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-pencil"></span></button>
-				<button id="delRef-<?= $linkID ?>" title="Delete Reference" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+				<button
+					id="editRef-<?= $linkID ?>"
+					title="Edit Reference"
+					class="btn btn-sm btn-warning">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</button>
+				<button
+					id="delRef-<?= $linkID ?>"
+					title="Delete Reference"
+					class="btn btn-sm btn-danger"
+					data-toggle="modal"
+					data-target="#confirmDelete"
+					data-title="Delete Reference"
+					data-message="Are you sure you want to delete this reference?">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
 			</td>
 		</tr>
 	<?php
