@@ -45,6 +45,7 @@ $(document).ready(function() {
 			url: './content/act_appendix.php',
 			type: 'post',
 			data: {
+				'actionType': 0, // change order action type
 				'linkID_1': this_linkID,
 				'linkID_2': below_linkID
 			},
