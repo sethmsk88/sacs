@@ -121,5 +121,20 @@
 		$stmt = $conn->prepare($del_ref);
 		$stmt->bind_param("i", $_POST['linkID']);
 		$stmt->execute();
+
+	// Edit Reference
+	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
+		$update_ref = "
+			UPDATE " . TABLE_APPENDIX_LINK . "
+			SET linkName = ?,
+				linkURL = ?
+			WHERE appendix_link_id = ?
+		";
+		$stmt = $conn->prepare($update_ref);
+		$stmt->bind_param("ssi",
+			$_POST['refName'],
+			$_POST['refURL'],
+			$_POST['linkID']);
+		$stmt->execute();
 	}
 ?>

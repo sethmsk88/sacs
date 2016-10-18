@@ -3,6 +3,7 @@
 
 <?php
 	require_once './includes/delete_confirm.php'; // delete confirm modal
+	require_once './includes/editRef_modal.php'; // edit reference modal
 
 	// Get SR type and SR number
 	$sel_sr = "
@@ -67,7 +68,9 @@
 				<button
 					id="editRef-<?= $linkID ?>"
 					title="Edit Reference"
-					class="btn btn-sm btn-warning">
+					class="btn btn-sm btn-warning"
+					data-toggle="modal"
+					data-target="#editRefModal">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<button
