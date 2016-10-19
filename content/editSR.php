@@ -244,6 +244,9 @@
 					<div class="radio">
 						<label><input type="radio" name="refChoice" id="refChoice-1" value="1">Add a New Reference</label>
 					</div>
+					<div class="radio">
+						<label><input type="radio" name="refChoice" id="refChoice-2" value="2">Insert Link to Supplemental</label>
+					</div>
 				</div>
 			</div>
 
@@ -284,6 +287,19 @@
 							type="text"
 							name="refURL"
 							id="refURL"
+							class="form-control">
+					</div>
+				</div>
+			</div>
+
+			<div id="refChoice-2-container" style="display:none;">
+				<div class="row">
+					<div class="col-lg-12" class="form-group">
+						<label for="linkName">What would you like the link name to be?</label>
+						<input
+							type="text"
+							name="linkName"
+							id="linkName"
 							class="form-control">
 					</div>
 				</div>
