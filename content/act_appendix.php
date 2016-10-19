@@ -11,6 +11,20 @@
 		return $str;
 	}
 
+	function deleteReference($str, $ref) {
+		// $refLink_pattern = "/<a(.)*\[" . $ref . "+\]<\/a>/";
+		// echo preg_replace($refLink_pattern, '[?]', $str);
+		$str = str_replace('['. $ref .']', '[?]', $str);
+
+		return $str;
+	}
+
+	function decrementReference($str, $ref) {
+		$str = str_replace('['. $ref .']', '['. $ref - 1 .']', $str);
+
+		return $str;
+	}
+
 
 	// Change Order
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
@@ -55,6 +69,7 @@
 		$stmt->bind_param("ii", $refNum_1, $_POST['linkID_2']);
 		$stmt->execute();
 
+		// Update reference numbers in title/description, narrative, and summary
 		// Get standard/requirement
 		$sel_sr = "
 			SELECT descr, narrative, summary
@@ -68,7 +83,7 @@
 		$stmt->bind_result($descr, $narrative, $summary);
 		$stmt->fetch();
 
-		// Swap all occurrences of ref nums
+		// Swap all occurrences of ref nums in this standard/requirement
 		$descr = swapReferences($descr, $refNum_1, $refNum_2);
 		$narrative = swapReferences($narrative, $refNum_1, $refNum_2);
 		$summary = swapReferences($summary, $refNum_1, $refNum_2);
@@ -102,6 +117,45 @@
 		$deleteRefNum = $result_row['refNum'];
 		$srid = $result_row['srid'];
 
+		// Get title/descr, narrative, and summary
+		$sel_sr = "
+			SELECT descr, narrative, summary
+			FROM " . TABLE_STANDARD_REQUIREMENT . "
+			WHERE id = ?
+		";
+		$stmt = $conn->prepare($sel_sr);
+		$stmt->bind_param("i", $srid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($descr, $narrative, $summary);
+		$stmt->fetch();
+
+		// Replace deleted reference with '[?]' in title/descr, narrative, and summary
+		$descr = deleteReference($descr, $deleteRefNum);
+		$narrative = deleteReference($narrative, $deleteRefNum);
+		$summary = deleteReference($summary, $deleteRefNum);
+
+		// Get all references greater than the deleted reference
+		$sel_greaterRefNums = "
+			SELECT refNum
+			FROM " . TABLE_APPENDIX_LINK . "
+			WHERE srid = ?
+				AND refNum > ?
+			ORDER BY refNum ASC
+		";
+		$stmt = $conn->prepare($sel_greaterRefNums);
+		$stmt->bind_param("ii", $srid, $deleteRefNum);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($greaterRefNum);
+
+		// For each reference greater than the deleted reference, decrement the refNum within the text of the title/descr, narrative, and summary
+		while ($stmt->fetch()) {
+			$descr = decrementReference($descr, $greaterRefNum);
+			$narrative = decrementReference($narrative, $greaterRefNum);
+			$summary = decrementReference($summary, $greaterRefNum);
+		}
+
 		// Decrement each of the SR's refNums that are greater than this one
 		$update_refNum = "
 			UPDATE " . TABLE_APPENDIX_LINK . "
@@ -120,6 +174,18 @@
 		";
 		$stmt = $conn->prepare($del_ref);
 		$stmt->bind_param("i", $_POST['linkID']);
+		$stmt->execute();
+	
+		// Update standard/requirement
+		$update_sr = "
+			UPDATE " . TABLE_STANDARD_REQUIREMENT . "
+			SET descr = ?,
+				narrative = ?,
+				summary = ?
+			WHERE id = ?
+		";
+		$stmt = $conn->prepare($update_sr);
+		$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid);
 		$stmt->execute();
 
 	// Edit Reference

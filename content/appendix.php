@@ -38,6 +38,23 @@
 	<h5><?= $srNum ?> Appendix A</h5>
 
 	<?php
+		/*echo 'TESTING regex<br />';
+		//$phrase = 'Hello there, here is a <a href="http://www.google.com" target="_blank">[5]</a>.';
+		$phrase = '
+		<div id="lipsum">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dictum libero tellus, ac ultricies dolor viverra vitae. Aenean auctor, neque sed convallis dictum, arcu est iaculis tortor, non iaculis risus dui ullamcorper erat. Praesent&nbsp;<a href="http://www.famu.edu/index.cfm?BOT&amp;AbouttheTrustees" target="_blank">[2]</a> et quam nibh. Pellentesque pretium, lacus semper aliquam consequat, magna magna sollicitudin sapien, aliquam tristique turpis erat volutpat tortor. Mauris ligula turpis, eleifend eu enim ac, pulvinar gravida odio. Praesent ac lectus gravida, sodales felis cursus, cursus lorem. Sed viverra dolor velit. Curabitur lacus felis, hendrerit ac quam ac, luctus ullamcorper leo. Praesent mauris est, malesuada id iaculis quis, faucibus eget lectus. Etiam elementum, magna quis fringilla ultrices, quam arcu auctor tortor, vel consectetur dui quam nec metus.</p>
+<p>Maecenas sit amet turpis tristique, elementum sem eu, maximus felis. Nunc tortor ipsum, pretium et orci sit amet, tristique accumsan nisl. Aliquam erat volutpat. Cras sagittis blandit massa at iaculis. Nam gravida nisi in malesuada bibendum. Quisque luctus nisi eu lorem imperdiet euismod. Fusce egestas interdum sem sed ultricies. Morbi rhoncus justo ante, fermentum pellentesque purus faucibus ut. Sed lacinia massa sagittis nunc malesuada, non feugiat enim egestas.</p>
+<p>Maecenas sed nibh sit amet ligula blandit tristique id et sem. Ut ut erat dolor. Aenean dui nunc, vulputate a ex vitae, maximus aliquam dui. Mauris porta tristique dictum. Aenean tincidunt elit ut ipsum tempus condimentum. Etiam at orci magna. Maecenas vulputate molestie nulla a condimentum. In in erat mollis, dignissim est a, faucibus sem. Proin nec massa velit. Sed et massa turpis. Nulla sodales arcu sit amet<a href="http://www.flbog.edu/documents_regulations/regulations/1_001_PowersandDuties_Final.pdf" target="_blank">[3]</a> purus iaculis dictum nec a mi. Morbi posuere purus nisl. Vivamus molestie, ligula bibendum pharetra vehicula, lectus sapien ultrices dui, eu consequat sem leo vel magna. Maecenas et erat a nisi ornare elementum et at turpis. Cras commodo lacus in sapien laoreet sagittis.</p>
+</div>
+<p>&nbsp;</p>';
+		echo $phrase . '<br />';
+		$refNum = 3;
+		// $refLink_pattern = "/<a(.)*\[" . $refNum . "+\]<\/a>/";
+		$refLink_pattern = '/<a href=""(.)*\[[0-9]+\]<\/a>/';
+		echo preg_replace($refLink_pattern, '[?]', $phrase);*/
+	?>
+
+	<?php
 		/*********** Begin Edit Mode ***********/
 		if (isset($_GET['mode']) && $_GET['mode'] == 'edit') {
 			echo '<table id="appendix-table-edit">';
