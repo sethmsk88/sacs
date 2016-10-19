@@ -22,6 +22,7 @@ $(document).ready(function () {
 			// hide appropriate sections
 			$('#' + formID + ' #refChoice-0-container').hide();
 			$('#' + formID + ' #refChoice-1-container').hide();
+			$('#' + formID + ' #refChoice-2-container').hide();
 		}
 	}
 
@@ -96,7 +97,9 @@ $(document).ready(function () {
 		var id_parts = $('input[name="refChoice"]:checked').attr('id').split('-');
 		var refChoice = id_parts[1];
 
+		// Adding and Existing Reference
 		if (refChoice === "0") {
+
 			// pull info from inputs and use it to create a ref link
 			$existingRef = $('#existingRef').children(':selected');
 			var refURL = $existingRef.attr('data-url');
@@ -107,7 +110,9 @@ $(document).ready(function () {
 
 			// Append ref link to richtextarea
 			$richTextArea.tinymce_append(refLink);
-		} else {
+
+		// Adding a New Reference
+		} else if (refChoice === "1") {
 
 			$.ajax({
 				type: 'post',
@@ -128,6 +133,20 @@ $(document).ready(function () {
 					$richTextArea.tinymce_append(refLink);
 				}
 			});
+
+		// Inserting Link to Supplemental
+		} else if (refChoice === "2") {
+
+			var supURL = "?page=subNarrative&id=" + $('#SRID').val();
+			var linkName = $('#linkName').val();
+			
+			// create link
+			var supLink = '<a href="' + supURL + '">' + linkName + '</a>';
+
+			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+
+			// Append ref link to richtextarea
+			$richTextArea.tinymce_append(supLink);
 		}
 
 		// Clear fields in modal
@@ -143,10 +162,16 @@ $(document).ready(function () {
 		// Show the appropriate input fields
 		if (refChoice === "0") {
 			$('#refChoice-1-container').hide();
+			$('#refChoice-2-container').hide();
 			$('#refChoice-0-container').slideDown();
-		} else {
+		} else if (refChoice === "1") {
 			$('#refChoice-0-container').hide();
+			$('#refChoice-2-container').hide();
 			$('#refChoice-1-container').slideDown();
+		} else if (refChoice === "2") {
+			$('#refChoice-0-container').hide();
+			$('#refChoice-1-container').hide();
+			$('#refChoice-2-container').slideDown();
 		}
 
 		// if submit button is hidde, show it
