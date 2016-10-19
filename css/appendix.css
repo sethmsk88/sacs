@@ -1,0 +1,48 @@
+#appendix-table-edit,
+#appendix-table-view {
+	width: 100%;
+}
+
+#appendix-table-edit tr td,
+#appendix-table-view tr td{
+	padding: 2px 0;
+}
+
+#appendix-table-edit tr.up-row td {
+	border-top: 1px solid #ddd;
+	padding-top: 4px;
+}
+
+#appendix-table-edit tr.down-row td {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 4px;
+}
+
+#appendix-table-edit tr td:first-child {
+	padding-left: 4px;
+}
+
+#appendix-table-edit tr td:last-child {
+	padding-right: 4px;
+	text-align: right;
+}
+
+#appendix-table-edit tr:hover {
+	background-color: rgba(255,136,0,.2);
+}
+
+.up-row button,
+.down-row button {
+	padding: 0px 5px;
+	font-size: 22px;
+}
+
+.up-row button .glyphicon,
+.down-row button .glyphicon {
+	position: relative;
+	top: 3px;
+}
+
+#appendix-table-edit tr td:nth-child(1) {
+	text-align: center;
+}

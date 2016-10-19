@@ -34,5 +34,4 @@
 	else if (!$stmt->execute()) {
 		echo 'error: (' . $stmt->errno . ') ' . $stmt->error;
 	}
-
 ?>

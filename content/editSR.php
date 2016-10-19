@@ -38,6 +38,19 @@
 		echo '<div class="text-danger">Error: Standard/Requirement does not exist in database</div>';
 		exit;
 	}
+
+	// Get all references for this SR
+	$sel_ref = "
+		SELECT linkName, linkURL, refNum
+		FROM " . TABLE_APPENDIX_LINK . "
+		WHERE srid = ?
+		ORDER BY refNum ASC
+	";
+	$stmt2 = $conn->prepare($sel_ref);
+	$stmt2->bind_param("i", $_GET['id']);
+	$stmt2->execute();
+	$stmt2->store_result();
+	$stmt2->bind_result($linkName, $linkURL, $refNum);
 ?>
 
 <div class="container">
@@ -139,17 +152,37 @@
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="descr">Title/Description</label>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="descr">Title/Description</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<!-- <button id="insertRef-btn2" class="tinymce_btn">Another Button</button> -->
+					</div>
+				</div>
 				<textarea
 					name="descr"
 					id="descr"
 					class="form-control richtext-sm"><?= $descr ?></textarea>
 			</div>
+
 		</div>
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="narrative">Narrative</label>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="narrative">Narrative</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+					</div>
+				</div>
 				<textarea
 					name="narrative"
 					id="narrative"
@@ -159,7 +192,16 @@
 
 		<div class="row">
 			<div class="col-lg-12 form-group">
-				<label for="summary">Summary</label>
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="summary">Summary</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+					</div>
+				</div>
 				<textarea
 					name="summary"
 					id="summary"
@@ -180,3 +222,86 @@
 		<input type="hidden" name="SRID" id="SRID" value="<?= $SRID ?>">
 	</form>
 </div>
+
+
+<!-------------- MODALS BELOW ---------------->
+<!-- Insert Reference Modal -->
+<div id="insertRef-modal" class="modalForm" style="width:500px;">
+	<div class="modalForm-header">
+		Insert Reference
+	</div>
+	<div class="modalForm-content">
+		<form
+			name="insertRef-form"
+			id="insertRef-form"
+			role="form">
+			
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="radio">
+						<label><input type="radio" name="refChoice" id="refChoice-0" value="0">Add an Existing Reference</label>
+					</div>
+					<div class="radio">
+						<label><input type="radio" name="refChoice" id="refChoice-1" value="1">Add a New Reference</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Existing Reference -->
+			<div id="refChoice-0-container" style="display:none;">
+				<select name="existingRef" id="existingRef" class="form-control">
+					<option value=""></option>
+					<?php
+						while ($stmt2->fetch()) {
+					?>
+						<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
+					<?php
+						}
+					?>
+				</select>
+			</div>
+
+			<!-- New Reference -->
+			<div id="refChoice-1-container" style="display:none;">
+				<div class="row">
+					<div class="col-lg-12" style="margin-bottom:8px;">
+						Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
+					</div>
+					<div class="col-lg-12 form-group">
+						<label for="refName">Reference Name</label>
+						<input
+							type="text"
+							name="refName"
+							id="refName"
+							class="form-control">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12" class="form-group">
+						<label for="refURL">Reference URL</label>
+						<input
+							type="text"
+							name="refURL"
+							id="refURL"
+							class="form-control">
+					</div>
+				</div>
+			</div>
+
+			<input type="hidden" name="srid" value="<?= $SRID ?>">
+			<input type="hidden" name="textarea_id" id="textarea_id" value="">
+
+			<div id="submitRef-btn" class="row" style="display:none; margin-top:12px;">
+				<div class="col-lg-12">
+					<input type="submit" class="btn btn-primary" value="Submit">
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+</div>
+
+
+

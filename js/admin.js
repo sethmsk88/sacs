@@ -73,7 +73,7 @@ $(document).ready(function () {
 		} else if (type == "supplemental") {
 			location.href = "?page=editSubNarrative&id=" + srid;
 		} else if (type == "appendix") {
-			location.href = "?page=appendix&id=" + srid;
+			location.href = "?page=appendix&mode=edit&id=" + srid;
 		}
 	});
 
