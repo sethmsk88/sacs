@@ -13,8 +13,18 @@
 
 	// Delete reference link from text
 	function deleteReference($str, $ref) {
-		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\[". $ref ."\]</a>~siU";
+		/*
+			Match reference link with href attribute and other optional unknown attributes. Matching link name with the following format [#] where # = the reference number. Spaces on either side of the link name are also captured in case the User accidentally adds spaces to the link.
+		*/
+		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\s*\[". $ref ."\]\s*</a>~siU";
 		return preg_replace($refLink_pattern, '', $str);
+	}
+
+	// Replace reference links in text with new links
+	function editReference($str, $ref, $url) {
+		$newLink = '<a href="'. $url .'" target="_blank">['. $ref .']</a>';
+		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\s*\[". $ref ."\]\s*</a>~siU";
+		return preg_replace($refLink_pattern, $newLink, $str);
 	}
 
 	function decrementReference($str, $ref) {
@@ -187,6 +197,46 @@
 
 	// Edit Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
+
+		// Make sure link begins with http or https
+		$refURL = $_POST['refURL'];
+		$parsedURL = parse_url($refURL);
+		if (empty($parsedURL['scheme'])) {
+		    $refURL = 'http://' . ltrim($refURL, '/');
+		}
+
+		// get refNum of this ref
+		$sel_refNum = "
+			SELECT refNum, srid
+			FROM " . TABLE_APPENDIX_LINK . "
+			WHERE appendix_link_id = ?
+		";
+		$stmt = $conn->prepare($sel_refNum);
+		$stmt->bind_param("i", $_POST['linkID']);
+		$stmt->execute();
+		
+		$result = $stmt->get_result();
+		$result_row = $result->fetch_assoc();
+		$editLinkRefNum = $result_row['refNum'];
+		$srid = $result_row['srid'];
+
+		// Get title/descr, narrative, and summary
+		$sel_sr = "
+			SELECT descr, narrative, summary
+			FROM " . TABLE_STANDARD_REQUIREMENT . "
+			WHERE id = ?
+		";
+		$stmt = $conn->prepare($sel_sr);
+		$stmt->bind_param("i", $srid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($descr, $narrative, $summary);
+		$stmt->fetch();
+
+		$descr = editReference($descr, $editLinkRefNum, $refURL);
+		$narrative = editReference($narrative, $editLinkRefNum, $refURL);
+		$summary = editReference($summary, $editLinkRefNum, $refURL);
+
 		$update_ref = "
 			UPDATE " . TABLE_APPENDIX_LINK . "
 			SET linkName = ?,
@@ -196,8 +246,20 @@
 		$stmt = $conn->prepare($update_ref);
 		$stmt->bind_param("ssi",
 			$_POST['refName'],
-			$_POST['refURL'],
+			$refURL,
 			$_POST['linkID']);
+		$stmt->execute();
+
+		// Update standard/requirement
+		$update_sr = "
+			UPDATE " . TABLE_STANDARD_REQUIREMENT . "
+			SET descr = ?,
+				narrative = ?,
+				summary = ?
+			WHERE id = ?
+		";
+		$stmt = $conn->prepare($update_sr);
+		$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid);
 		$stmt->execute();
 	}
 ?>
