@@ -18,9 +18,9 @@
 	}
 
 	function decrementReference($str, $ref) {
-		$str = str_replace('['. $ref .']', '['. $ref - 1 .']', $str);
+		$decrementedRef = intval($ref) - 1;
 
-		return $str;
+		return str_replace('['. $ref .']', '['. $decrementedRef .']', $str);
 	}
 
 
@@ -52,7 +52,6 @@
 
 		// Get standard/requirement id for these links
 		$srid = $result_row['srid'];
-
 
 		// Swap rep nums
 		$update_refNum = "
