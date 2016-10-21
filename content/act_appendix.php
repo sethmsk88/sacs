@@ -11,12 +11,10 @@
 		return $str;
 	}
 
+	// Delete reference link from text
 	function deleteReference($str, $ref) {
-		// $refLink_pattern = "/<a(.)*\[" . $ref . "+\]<\/a>/";
-		// echo preg_replace($refLink_pattern, '[?]', $str);
-		$str = str_replace('['. $ref .']', '[?]', $str);
-
-		return $str;
+		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\[". $ref ."\]</a>~siU";
+		return preg_replace($refLink_pattern, '', $str);
 	}
 
 	function decrementReference($str, $ref) {
@@ -130,7 +128,7 @@
 		$stmt->bind_result($descr, $narrative, $summary);
 		$stmt->fetch();
 
-		// Replace deleted reference with '[?]' in title/descr, narrative, and summary
+		// Remove deleted reference link from title/descr, narrative, and summary
 		$descr = deleteReference($descr, $deleteRefNum);
 		$narrative = deleteReference($narrative, $deleteRefNum);
 		$summary = deleteReference($summary, $deleteRefNum);
