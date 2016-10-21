@@ -198,13 +198,6 @@
 	// Edit Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
 
-		// Make sure link begins with http or https
-		$refURL = $_POST['refURL'];
-		$parsedURL = parse_url($refURL);
-		if (empty($parsedURL['scheme'])) {
-		    $refURL = 'http://' . ltrim($refURL, '/');
-		}
-
 		// get refNum of this ref
 		$sel_refNum = "
 			SELECT refNum, srid
@@ -219,6 +212,18 @@
 		$result_row = $result->fetch_assoc();
 		$editLinkRefNum = $result_row['refNum'];
 		$srid = $result_row['srid'];
+
+		// If refURL was left blank, set to appendix page
+		$refURL = $_POST['refURL'];
+		if ($refURL == "") {
+			$refURL =  APP_PATH_URL . '?page=appendix&id=' . $srid;
+		}
+
+		// Make sure link begins with http or https
+		$parsedURL = parse_url($refURL);
+		if (empty($parsedURL['scheme'])) {
+		    $refURL = 'http://' . ltrim($refURL, '/');
+		}
 
 		// Get title/descr, narrative, and summary
 		$sel_sr = "
