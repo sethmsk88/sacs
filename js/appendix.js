@@ -1,5 +1,21 @@
 $(document).ready(function() {
 	
+	hideOverlay = function() {
+		$('#overlay').fadeOut();
+	}
+
+	hideModalForms = function() {
+		$('.modalForm:visible').each(function() {
+			$(this).slideUp(hideOverlay);
+		});
+	}
+
+	resetInputFields = function(formID) {
+		if (formID == "insertRef-form") {
+			$('#' + formID + ' input[type="text"]').val('');
+		}
+	}
+
 	// Reference Type handler
 	$('input[name="refType"]').change(function() {
 		if ($(this).val() == 0) {
@@ -53,5 +69,33 @@ $(document).ready(function() {
 				location.reload();
 			}
 		});
+	});
+
+	// Add New Reference button click handler
+	$('#newRef-btn').click(function(e) {
+		e.preventDefault();
+	
+		// Reset insertRef-form inputs
+		resetInputFields('insertRef-form');
+
+		// Show insert reference modal, and pass id of textarea as param
+		showModal('insertRef-modal');
+	});
+
+	// Insert New Reference Form Submission Handler
+	$('#insertRef-form').submit(function(e) {
+		e.preventDefault();
+
+		$form = $(this);
+
+		$.ajax({
+			type: 'post',
+			url: './content/act_insertRef.php',
+			data: $form.serialize(),
+			dataType: 'json',
+			success: function(response) {
+				location.reload();
+			}
+		});		
 	});
 });

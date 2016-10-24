@@ -98,6 +98,15 @@
 				} // end last row test
 				$row_i++;
 			} // end while loop
+	?>
+		<tr>
+			<td colspan="3">
+				<button id="newRef-btn" class="btn btn-success" style="width:100%">
+					<span class="glyphicon glyphicon-plus"></span> New
+				</button>
+			</td>
+		</tr>
+	<?php
 		} /*********** End Edit Mode ***********/
 		else {
 			
@@ -120,25 +129,56 @@
 		} /*********** End View Mode ***********/
 	?>
 	</table>
+</div>
 
 
-	
+<!-------------- MODALS BELOW ---------------->
+<!-- Insert Reference Modal -->
+<div id="insertRef-modal" class="modalForm" style="width:500px;">
+	<div class="modalForm-header">
+		Insert a New Reference
+	</div>
+	<div class="modalForm-content">
+		<form
+			name="insertRef-form"
+			id="insertRef-form"
+			role="form">
+			
+			<div class="row">
+				<div class="col-lg-12" style="margin-bottom:8px;">
+					Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
+				</div>
+				<div class="col-lg-12 form-group">
+					<label for="refName">Reference Name</label>
+					<input
+						type="text"
+						name="refName"
+						id="refName"
+						class="form-control">
+				</div>
+			</div>
 
-	<!-- <ol>
-		<li><a href="http://www.leg.state.fl.us/Statutes/index.cfm?App_mode=Display_Statute&Search_String=&URL=1000-1099/1001/Sections/1001.706.html" target="_blank">Section 7 of the Constitution of the State of Florida</a></li>
-	
-		<li><a href="http://www.flbog.edu/documents_regulations/regulations/1_001_PowersandDuties_Final.pdf" target="_blank">Fl. BOG Regulation 1.001 University Board of Trustees Powers and Duties 1.001</a></li>
-	
-		<li><a href="http://www.famu.edu/index.cfm?BOT&AbouttheTrustees" target="_blank">FAMU BOT</a></li>
-	
-		<li><a href="http://www.famu.edu/regulations/Reg 1 021 12-2012.pdf" target="_blank">University Regulation 1.021, Authority of the President</a></li>
-	
-		<li><a href="http://president.famu.edu/pdfs/UniversityOrgChart.pdf" target="_blank">FAMU Organizational Chart of Direct reports</a></li>
-	
-		<li><a href="http://www.famu.edu/regulations/UserFiles/Image/Regulation_1.017_Succession_9-17.pdf" target="_blank">University Regulation 1.017, Succession to Administration Authority and Responsible to President</a></li>
-	
-		<li><a href="http://president.famu.edu/executivestaff.html" target="_blank">FAMU Website, Homepage, Administration</a></li>
-		
-		<li><a href="https://irattler.famu.edu/psp/famepprd/EMPLOYEE/EMPL/h/?tab=PAPP_GUEST" target="_blank">iRattler Portal</a></li>
-	</ol> -->
+			<div class="row">
+				<div class="col-lg-12" class="form-group">
+					<label for="refURL">Reference URL</label>
+					<input
+						type="text"
+						name="refURL"
+						id="refURL"
+						class="form-control">
+				</div>
+			</div>
+
+			<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
+
+			<!-- the following field is unused, but is needed for the action page to work -->
+			<input type="hidden" name="textarea_id" id="textarea_id" value="">
+
+			<div id="submitRef-btn" class="row" style="margin-top:12px;">
+				<div class="col-lg-12">
+					<input type="submit" class="btn btn-primary" value="Submit">
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
