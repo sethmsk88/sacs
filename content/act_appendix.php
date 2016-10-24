@@ -107,6 +107,33 @@
 		$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid);
 		$stmt->execute();
 
+		// Update reference numbers in sub-narrative sections
+		$sel_section = "
+			SELECT id, body
+			FROM " . TABLE_SECTION . "
+			WHERE srid = ?
+		";
+		$stmt = $conn->prepare($sel_section);
+		$stmt->bind_param("i", $srid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($sectionID, $sectionBody);
+
+		// Update section
+		$update_section = "
+			UPDATE " . TABLE_SECTION . "
+			SET body = ?
+			WHERE id = ?
+		";
+		$stmt2 = $conn->prepare($update_section);
+
+		// For each section in this standard/requirement, swap all occurrences of the ref nums being changed
+		while ($stmt->fetch()) {
+			$sectionBody = swapReferences($sectionBody, $refNum_1, $refNum_2);
+			$stmt2->bind_param("si", $sectionBody, $sectionID);
+			$stmt2->execute();
+		}
+
 	// Delete Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 1) {
 		// get refNum of this ref
