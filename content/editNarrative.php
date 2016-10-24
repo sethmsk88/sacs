@@ -10,8 +10,8 @@
 	}
 ?>
 
-<script src="./js/editSR.js"></script>
-<link href="./css/editSR.css" rel="stylesheet">
+<script src="./js/editNarrative.js"></script>
+<link href="./css/editNarrative.css" rel="stylesheet">
 
 <?php
 	// Make sure the SR id GET var exists

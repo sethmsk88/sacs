@@ -1,4 +1,4 @@
-<script src="./js/view2.js"></script>
+<script src="./js/narrative.js"></script>
 
 <?php
 	if (!isset($_GET['id'])) {

@@ -26,7 +26,7 @@ $(document).ready(function () {
 					$uploadResponse += response['errors'];					
 				} else {
 					// No errors, so redirect
-					location.href = "?page=editSR&id=" + response['sr_id'];
+					location.href = "?page=editNarrative&id=" + response['sr_id'];
 				}
 			}
 		});
@@ -38,7 +38,7 @@ $(document).ready(function () {
 
 		$el = $(e.target); // convert to jQuery obj
 		var SRID = $el.val(); // get ID of selected SR
-		location.href = "?page=editSR&id=" + SRID; // redirect to edit page
+		location.href = "?page=editNarrative&id=" + SRID; // redirect to edit page
 	});
 
 	// View button handler
@@ -51,7 +51,7 @@ $(document).ready(function () {
 		var srid = id_parts[2];
 
 		if (type == "narrative") {
-			location.href = "?page=view2&id=" + srid;
+			location.href = "?page=narrative&id=" + srid;
 		} else if (type == "supplemental") {
 			location.href = "?page=subNarrative&id=" + srid;
 		} else if (type == "appendix") {
@@ -69,7 +69,7 @@ $(document).ready(function () {
 		var srid = id_parts[2];
 
 		if (type == "narrative") {
-			location.href = "?page=editSR&id=" + srid;
+			location.href = "?page=editNarrative&id=" + srid;
 		} else if (type == "supplemental") {
 			location.href = "?page=editSubNarrative&id=" + srid;
 		} else if (type == "appendix") {
