@@ -44,7 +44,7 @@
 							<?php
 								foreach ($cr_arr as $cr_SRID => $cr_srNum) {
 									echo '<div>';
-									echo '<a href="?page=view2&id=' . $cr_SRID . '">C.R. ' . $cr_srNum . '</a>';
+									echo '<a href="?page=narrative&id=' . $cr_SRID . '">C.R. ' . $cr_srNum . '</a>';
 									echo '</div>';
 								}
 							?>
@@ -73,7 +73,7 @@
 							<?php
 								foreach ($cs_arr as $cs_SRID => $cs_srNum) {
 									echo '<div>';
-									echo '<a href="?page=view2&id=' . $cs_SRID . '">C.S. ' . $cs_srNum . '</a>';
+									echo '<a href="?page=narrative&id=' . $cs_SRID . '">C.S. ' . $cs_srNum . '</a>';
 									echo '</div>';
 								}
 							?>

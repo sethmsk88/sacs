@@ -40,7 +40,7 @@ $(document).ready(function () {
 		tinymce.triggerSave();
 
 		$.ajax({
-			url: './content/act_editSR.php',
+			url: './content/act_editNarrative.php',
 			type: 'post',
 			data: $(form).serialize(),
 			success: function(response) {
@@ -56,7 +56,7 @@ $(document).ready(function () {
 		// get SRID from hidden input field
 		var SRID = $('#SRID').val();
 
-		location.href = "?page=view2&id=" + SRID;
+		location.href = "?page=narrative&id=" + SRID;
 	});
 
 	// When SR type changes, change the text on the "View" button
