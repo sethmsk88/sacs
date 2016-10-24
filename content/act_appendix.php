@@ -164,10 +164,28 @@
 		$stmt->bind_result($descr, $narrative, $summary);
 		$stmt->fetch();
 
+		// Get sections for this standard/requirement
+		$sel_section = "
+			SELECT id, body
+			FROM " . TABLE_SECTION . "
+			WHERE srid = ?
+		";
+		$section_stmt = $conn->prepare($sel_section);
+		$section_stmt->bind_param("i", $srid);
+		$section_stmt->execute();
+		$section_stmt->store_result();
+		$section_stmt->bind_result($sectionID, $sectionBody);
+
 		// Remove deleted reference link from title/descr, narrative, and summary
 		$descr = deleteReference($descr, $deleteRefNum);
 		$narrative = deleteReference($narrative, $deleteRefNum);
 		$summary = deleteReference($summary, $deleteRefNum);
+
+		// Remove deleted reference link from all sections of this SR and store sectionBodies in an associative array
+		$sectionBody_arr = array();
+		while ($section_stmt->fetch()) {
+			$sectionBody_arr[$sectionID] = deleteReference($sectionBody, $deleteRefNum);
+		}
 
 		// Get all references greater than the deleted reference
 		$sel_greaterRefNums = "
@@ -188,6 +206,11 @@
 			$descr = decrementReference($descr, $greaterRefNum);
 			$narrative = decrementReference($narrative, $greaterRefNum);
 			$summary = decrementReference($summary, $greaterRefNum);
+
+			// Iterate through sections and decrement references
+			foreach ($sectionBody_arr as $sectionID => $sectionBody) {
+				$sectionBody_arr[$sectionID] = decrementReference($sectionBody, $greaterRefNum);
+			}
 		}
 
 		// Decrement each of the SR's refNums that are greater than this one
@@ -221,6 +244,20 @@
 		$stmt = $conn->prepare($update_sr);
 		$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid);
 		$stmt->execute();
+
+		// Update sections
+		$update_section = "
+			UPDATE " . TABLE_SECTION . "
+			SET body = ?
+			WHERE id = ?
+		";
+		$updateSection_stmt = $conn->prepare($update_section);
+
+		// For each section in this standard/requirement, swap all occurrences of the ref nums being changed
+		foreach ($sectionBody_arr as $sectionID => $sectionBody) {
+			$updateSection_stmt->bind_param("si", $sectionBody, $sectionID);
+			$updateSection_stmt->execute();
+		}
 
 	// Edit Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
