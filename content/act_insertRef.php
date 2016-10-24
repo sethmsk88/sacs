@@ -2,6 +2,18 @@
 	require_once("../includes/globals.php");
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
+	// If refURL was left blank, set to appendix page
+	$refURL = $_POST['refURL'];
+	if ($refURL == "") {
+		$refURL =  APP_PATH_URL . '?page=appendix&id=' . $_POST['srid'];
+	}
+
+	// Make sure link begins with http or https
+	$parsedURL = parse_url($refURL);
+	if (empty($parsedURL['scheme'])) {
+	    $refURL = 'http://' . ltrim($refURL, '/');
+	}
+
 	// Get highest refNum for this srid
 	$sel_refNum = "
 		SELECT refNum
@@ -27,7 +39,7 @@
 	$stmt->bind_param("issi",
 		$_POST['srid'],
 		$_POST['refName'],
-		$_POST['refURL'],
+		$refURL,
 		$highestRefNum);
 	$stmt->execute();
 
@@ -35,7 +47,7 @@
 	$json_array = array();
 	$json_array['textarea_id'] = $_POST['textarea_id'];
 	$json_array['refNum'] = $highestRefNum;
-	$json_array['refURL'] = $_POST['refURL'];
+	$json_array['refURL'] = $refURL;
 
 	echo json_encode($json_array);
 ?>
