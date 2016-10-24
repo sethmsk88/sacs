@@ -26,6 +26,11 @@
 	padding-right: 4px;
 	text-align: right;
 }
+#appendix-table-edit tr:last-child td {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	border-top: 1px solid #ddd;
+}
 
 #appendix-table-edit tr:hover {
 	background-color: rgba(255,136,0,.2);
@@ -45,4 +50,8 @@
 
 #appendix-table-edit tr td:nth-child(1) {
 	text-align: center;
+}
+
+#newRef-btn {
+	max-width: 30%;
 }
