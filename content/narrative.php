@@ -75,11 +75,6 @@
 	<h4>Summary Statement</h4>
 	<?= $summary ?>
 
-	<div class="row">
-		<div class="col-lg-3">
-			<button id="subNarrative-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Supplemental</button>
-		</div>
-	</div>
 	<div class="row" style="margin-top:8px;">
 		<div class="col-lg-3">
 			<button id="appendix-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Appendix A</button>
