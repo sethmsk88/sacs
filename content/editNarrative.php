@@ -226,6 +226,12 @@
 	</form>
 </div>
 
+<!-- Autosave Toast Message -->
+<div class="toastMessage">
+	<!-- Filled with JavaScript -->
+</div>
+
+
 <!-------------- MODALS BELOW ---------------->
 <!-- Insert Reference Modal -->
 <div id="insertRef-modal" class="modalForm" style="width:500px;">
