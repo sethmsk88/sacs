@@ -179,28 +179,6 @@ $(document).ready(function () {
 			$('#submitRef-btn').show();
 		}
 	});
-
-	/*$('#save-btn').click(function(e) {
-		e.preventDefault();
-
-		$btn = $(e.target); // convert clicked button to jQuery obj
-
-		// Get parent form of clicked button
-		var form = $btn.closest('form');
-
-		// Save contents of tinymce rich textareas
-		// This is required for richtext to be posted
-		tinymce.triggerSave();
-
-		$.ajax({
-			url: './content/act_editNarrative.php',
-			type: 'post',
-			data: $(form).serialize(),
-			success: function(response) {
-				alert("Changes have been saved!");
-			}
-		});
-	});*/
 });
 
 // Show the toast message
@@ -246,9 +224,6 @@ var applyEventHandlers = function() {
 		$richTextArea_iframe = $('#' + textArea_id + '_ifr');
 		$richTextArea_body = $richTextArea_iframe.contents().find('body');
 
-		var textInputsSelector = '#editNarrative-form input[type="text"]';
-		var radioInputsSelector = '#editNarrative-form input[type="radio"]';
-
 		// Autosave the form after a change is made within a richtextarea, and there has been 3 seconds of inactivity.
 		var timeout_id;
 		$richTextArea_body.on('input propertychange change paste', function() {
@@ -264,8 +239,6 @@ var applyEventHandlers = function() {
 		saveAfterDelay(timeout_id, delay);
 	});
 }
-
-
 
 // Apply event handlers to richtextareas after a slight delay
 // Waiting on tinymce initialization
