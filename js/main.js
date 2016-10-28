@@ -93,21 +93,24 @@ $(document).ready(function (){
 		selector: 'textarea.richtext-lg',
 		height: 350,
 		plugins: richtext_plugins,
-		paste_data_images: true
+		paste_data_images: true,
+		elementpath: false
 	});
 
 	tinymce.init({
 		selector: 'textarea.richtext-md',
 		height: 200,
 		plugins: richtext_plugins,
-		paste_data_images: true
+		paste_data_images: true,
+		elementpath: false
 	});
 
 	tinymce.init({
 		selector: 'textarea.richtext-sm',
 		height: 80,
 		plugins: richtext_plugins,
-		paste_data_images: true
+		paste_data_images: true,
+		elementpath: false
 	});
 
 	// Prepare overlay for modals

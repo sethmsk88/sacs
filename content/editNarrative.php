@@ -54,7 +54,10 @@
 ?>
 
 <div class="container">
-	<form>
+	<form
+		name="editNarrative-form"
+		id="editNarrative-form"
+		role="form">
 		<div class="form-group">
 			<?php
 				// Set Type selection
@@ -166,7 +169,7 @@
 				<textarea
 					name="descr"
 					id="descr"
-					class="form-control richtext-sm"><?= $descr ?></textarea>
+					class="form-control richtext richtext-sm"><?= $descr ?></textarea>
 			</div>
 
 		</div>
@@ -186,7 +189,7 @@
 				<textarea
 					name="narrative"
 					id="narrative"
-					class="form-control richtext-lg"><?= $narrative ?></textarea>
+					class="form-control richtext richtext-lg"><?= $narrative ?></textarea>
 			</div>
 		</div>
 
@@ -205,7 +208,7 @@
 				<textarea
 					name="summary"
 					id="summary"
-					class="form-control richtext-md"><?= $summary ?></textarea>
+					class="form-control richtext richtext-md"><?= $summary ?></textarea>
 			</div>
 		</div>
 
@@ -221,6 +224,11 @@
 
 		<input type="hidden" name="SRID" id="SRID" value="<?= $SRID ?>">
 	</form>
+</div>
+
+<!-- Autosave Toast Message -->
+<div class="toastMessage">
+	<!-- Filled with JavaScript -->
 </div>
 
 

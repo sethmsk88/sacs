@@ -4,6 +4,7 @@
 
 	// Make sure SRID was posted
 	if (!isset($_POST['SRID'])) {
+		echo 'error: srid is missing';
 		exit; // TODO: Create Error Msg - required variable missing
 	}
 
