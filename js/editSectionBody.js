@@ -117,3 +117,58 @@ $(document).ready(function() {
 		}
 	});
 });
+
+// Show the toast message
+var showToastMessage = function(msg) {
+	$toast = $('.toastMessage');
+	$toast.html(msg);
+
+	// If toast is hidden, show it
+	if ($toast.css('display') == 'none')
+		$toast.slideDown();
+}
+
+var autoSaveForm = function() {
+	// Save contents of tinymce rich textareas
+	// This is required for richtext to be posted
+	tinymce.triggerSave();
+
+	$.ajax({
+		url: './content/act_editNarrative.php',
+		type: 'post',
+		data: $('#editNarrative-form').serialize(),
+		success: function(response) {
+			showToastMessage('<span class="text-success">All Changes Saved</span>')
+		}
+	});
+};
+
+var saveAfterDelay = function(timeout_id, delay) {
+	// show toast message
+	showToastMessage('Saving...');
+
+	clearTimeout(timeout_id);
+	timeout_id = setTimeout(function() {
+		autoSaveForm();
+	}, delay);
+}
+
+var applyEventHandlers = function() {
+	var delay = 3000; // milliseconds
+
+	$('.richtext').each( function() {
+		var textArea_id = $(this).attr('id');
+		$richTextArea_iframe = $('#' + textArea_id + '_ifr');
+		$richTextArea_body = $richTextArea_iframe.contents().find('body');
+
+		// Autosave the form after a change is made within a richtextarea, and there has been 3 seconds of inactivity.
+		var timeout_id;
+		$richTextArea_body.on('input propertychange change paste', function() {
+			saveAfterDelay(timeout_id, delay);
+		});
+	});
+}
+
+// Apply event handlers to richtextareas after a slight delay
+// Waiting on tinymce initialization
+setTimeout(applyEventHandlers, 2000);

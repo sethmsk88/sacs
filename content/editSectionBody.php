@@ -59,7 +59,7 @@
 				<textarea
 					name="sectionBody"
 					id="sectionBody"
-					class="form-control richtext-lg"><?= $sectionBody ?></textarea>
+					class="form-control richtext richtext-lg"><?= $sectionBody ?></textarea>
 			</div>
 		</div>
 		<div class="row">
@@ -70,6 +70,10 @@
 	</form>
 </div>
 
+<!-- Autosave Toast Message -->
+<div class="toastMessage">
+	<!-- Filled with JavaScript -->
+</div>
 
 <!-------------- MODALS BELOW ---------------->
 <!-- Insert Reference Modal -->
