@@ -242,7 +242,8 @@
 		<form
 			name="insertRef-form"
 			id="insertRef-form"
-			role="form">
+			role="form"
+			enctype="multipart/form-data">
 			
 			<div class="row">
 				<div class="col-lg-12">
@@ -276,8 +277,21 @@
 			<div id="refChoice-1-container" style="display:none;">
 				<div class="row">
 					<div class="col-lg-12" style="margin-bottom:8px;">
-						Note: A reference number will automatically be assigned. You may change the reference number from the appendix edit page.
+						<em><b>Note:</b>A reference number will automatically be assigned. You may change the reference number from the appendix edit page.</em>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<label>Select Reference Type</label>
+						<div class="radio" style="margin-top:0;">
+							<label><input type="radio" name="newRefType" id="newRefType-0" value="0">Enter a URL</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="newRefType" id="newRefType-1" value="1">Attach a File</label>
+						</div>
+					</div>
+				</div>
+				<div class="row url-ref file-ref" style="display:none;">
 					<div class="col-lg-12 form-group">
 						<label for="refName">Reference Name</label>
 						<input
@@ -287,8 +301,7 @@
 							class="form-control">
 					</div>
 				</div>
-
-				<div class="row">
+				<div class="row url-ref" style="display:none;">
 					<div class="col-lg-12" class="form-group">
 						<label for="refURL">Reference URL</label>
 						<input
@@ -296,6 +309,19 @@
 							name="refURL"
 							id="refURL"
 							class="form-control">
+					</div>
+				</div>
+				<div class="row file-ref" style="display:none;">
+					<div class="col-lg-12" class="form-group">
+						<label for="fileToUpload">Select a file to upload</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-primary btn-file">
+									Browse <input type="file" name="fileToUpload" id="fileToUpload">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly="readonly">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -316,11 +342,14 @@
 			<input type="hidden" name="srid" value="<?= $SRID ?>">
 			<input type="hidden" name="textarea_id" id="textarea_id" value="">
 
-			<div id="submitRef-btn" class="row" style="display:none; margin-top:12px;">
+			<div id="submitRef-btn" class="row" style="display:none; margin-top:16px;">
 				<div class="col-lg-12">
 					<input type="submit" class="btn btn-primary" value="Submit">
 				</div>
 			</div>
 		</form>
+		<div id="ajax_insertRefResponse">
+			<!-- Filled by ajax response -->
+		</div>
 	</div>
 </div>
