@@ -113,7 +113,7 @@
 
 		// if a FormData object was posted to this page
 		if (isset($_FILES['fileToUpload'])) {
-			$uploads_dir = '../uploads/';
+			$uploads_dir = APP_PATH_URL . 'uploads/';
 
 			// Start timer
 			$timerStart = microtime(true);
@@ -176,10 +176,7 @@
 				// insert the link/file association into table
 				associateFile($link_id, $file_id);
 			}
-
-
 		}
-
 	}
 
 	echo json_encode($json_array);
