@@ -150,10 +150,19 @@ $(document).ready(function () {
 					type: 'post',
 					url: './content/act_insertRef.php',
 					data: formData,
+					dataType: 'json',
 					processData: false,
 					contentType: false,
 					success: function(response) {
-						// no action necessary
+						
+						// Select the richTextArea iframe
+						$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
+
+						// Create ref link
+						var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+
+						// Append ref link to richtextarea
+						$richTextArea.tinymce_append(refLink);
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						var errorMsg = 'Error Status: ' + textStatus + '<br />' +  '<code>' + errorThrown + '</code>';

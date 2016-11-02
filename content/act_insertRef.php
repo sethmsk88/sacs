@@ -102,7 +102,6 @@
 		insertReference($_POST['srid'], $_POST['refName'], $refURL, $highestRefNum);
 
 		// Send AJAX response containing textarea id and new reference number
-		$json_array['textarea_id'] = $_POST['textarea_id'];
 		$json_array['refNum'] = $highestRefNum;
 		$json_array['refURL'] = $refURL;
 
@@ -113,7 +112,7 @@
 
 		// if a FormData object was posted to this page
 		if (isset($_FILES['fileToUpload'])) {
-			$uploads_dir = APP_PATH_URL . 'uploads/';
+			$uploads_dir = 'uploads/';
 
 			// Start timer
 			$timerStart = microtime(true);
@@ -129,7 +128,7 @@
 			// Append timestamp to filename
 			$timeStamp = date("YmdHis"); // 1/2/2016 1:05:12pm = 20160102130512
 			$fileName = $timeStamp . '_' . $fileName_exploded[0] . '.' . $fileExt;
-			$filePath = $uploads_dir . $fileName;
+			$filePath = APP_PATH . $uploads_dir . $fileName;
 
 			// Check to see if extension is valid
 			$extensions = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub");
@@ -166,6 +165,8 @@
 				// move temp uploaded file to uploads directory
 				move_uploaded_file($fileTmpName, $filePath);
 
+				$refURL = APP_PATH_URL . $uploads_dir . $fileName;
+
 				// insert new refLink into reference table
 				$highestRefNum = getNewReferenceNumber($_POST['srid']);
 				$link_id = insertReference($_POST['srid'], $_POST['refName'], $refURL, $highestRefNum);
@@ -175,9 +176,14 @@
 
 				// insert the link/file association into table
 				associateFile($link_id, $file_id);
+
+				$json_array['refNum'] = $highestRefNum;
+				$json_array['refURL'] = $refURL;
 			}
 		}
 	}
+
+	$json_array['textarea_id'] = $_POST['textarea_id'];
 
 	echo json_encode($json_array);
 ?>
