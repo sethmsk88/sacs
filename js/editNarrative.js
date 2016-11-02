@@ -10,19 +10,27 @@ $(document).ready(function () {
 		});
 	}
 
-	resetInputFields = function(formID) {
-		if (formID == "insertRef-form") {
-			$('#' + formID + ' input[name="refChoice"]').removeAttr('checked');
-			$('#' + formID + ' input[type="text"]').val('');
-			$('#' + formID + ' [id="textarea_id"]').val('');
+	resetInputFields = function(containerID) {
+		if (containerID == "insertRef-form") {
+			$('#' + containerID + ' input[name="refChoice"]').removeAttr('checked');
+			$('#' + containerID + ' input[name="newRefType"]').removeAttr('checked');
+			$('#' + containerID + ' input[type="text"]').val('');
+			$('#' + containerID + ' [id="textarea_id"]').val('');
 
 			// set select box to first selection
-			$('#' + formID + ' #existingRef').val('');
+			$('#' + containerID + ' #existingRef').val('');
 
 			// hide appropriate sections
-			$('#' + formID + ' #refChoice-0-container').hide();
-			$('#' + formID + ' #refChoice-1-container').hide();
-			$('#' + formID + ' #refChoice-2-container').hide();
+			$('#' + containerID + ' #refChoice-0-container').hide();
+			$('#' + containerID + ' #refChoice-1-container').hide();
+			$('#' + containerID + ' #refChoice-2-container').hide();
+
+		} else if (containerID == "refChoice-1-container") {
+			$('#' + containerID + ' input[type="radio"]').removeAttr('checked');
+			$('#' + containerID + ' input[type="text"]').val("");
+			$('#' + containerID + ' input[type="file"]').val("");
+			$('#' + containerID + ' .url-ref').hide();
+			$('#' + containerID + ' .file-ref').hide();
 		}
 	}
 
@@ -141,8 +149,10 @@ $(document).ready(function () {
 			// Attach File as Reference
 			} else if (newRefType === "1") {
 
+				$responseDiv = $('#ajax_insertRefResponse');
+
 				// Display Loading gif
-				$('#ajax_insertRefResponse').html('<img src="../shared/img/loading_rounded_blocks.gif" alt="Loading..." class="loading-img">');
+				$responseDiv.html('<img src="../shared/img/loading_rounded_blocks.gif" alt="Loading..." class="loading-img">');
 
 				var formData = new FormData($('#insertRef-form')[0]);
 
@@ -163,11 +173,14 @@ $(document).ready(function () {
 
 						// Append ref link to richtextarea
 						$richTextArea.tinymce_append(refLink);
+
+						// Clear response div
+						$responseDiv.html("");
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						var errorMsg = 'Error Status: ' + textStatus + '<br />' +  '<code>' + errorThrown + '</code>';
 						
-						$('#ajax_insertRefResponse').html(errorMsg);
+						$responseDiv.html(errorMsg);
 					}
 				});
 			}
@@ -199,7 +212,9 @@ $(document).ready(function () {
 
 		// Show the appropriate input fields
 		if (refChoice === "0") {
-			$('#refChoice-1-container').hide();
+			$('#refChoice-1-container').hide(function() {
+				resetInputFields($(this).attr('id'));
+			});
 			$('#refChoice-2-container').hide();
 			$('#refChoice-0-container').slideDown();
 			$('#submitRef-btn').show();
@@ -210,7 +225,9 @@ $(document).ready(function () {
 			$('#submitRef-btn').hide();
 		} else if (refChoice === "2") {
 			$('#refChoice-0-container').hide();
-			$('#refChoice-1-container').hide();
+			$('#refChoice-1-container').hide(function() {
+				resetInputFields($(this).attr('id'));
+			});
 			$('#refChoice-2-container').slideDown();
 			$('#submitRef-btn').show();
 		}
