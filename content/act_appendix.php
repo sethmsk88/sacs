@@ -357,5 +357,37 @@
 			$stmt2->bind_param("si", $sectionBody, $sectionID);
 			$stmt2->execute();
 		}
+
+	// Remove file
+	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {
+
+		// Delete file association from table
+		$del_file_assoc = "
+			DELETE FROM ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ."
+			WHERE file_upload_id = ?
+				AND appendix_link_id = ?
+		";
+		$stmt = $conn->prepare($del_file_assoc);
+		$stmt->bind_param("ii", $_POST['fileID'], $_POST['linkID']);
+		$stmt->execute();
+
+		// Delete file from table
+		$del_file = "
+			DELETE FROM ". TABLE_FILE_UPLOAD ."
+			WHERE file_upload_id = ?
+		";
+		$stmt = $conn->prepare($del_file);
+		$stmt->bind_param("i", $_POST['fileID']);
+		$stmt->execute();
+
+		// Delete the linkURL from table
+		$update_linkURL = "
+			UPDATE ". TABLE_APPENDIX_LINK ."
+			SET linkURL = ?
+			WHERE appendix_link_id = ?
+		";
+		$stmt = $conn->prepare($update_linkURL);
+		$stmt->bind_param("si", "", $_POST['linkID']);
+		$stmt->execute();
 	}
 ?>
