@@ -86,6 +86,7 @@
 			$file_id = insertFile($fileName, $filePath, $fileExt);
 
 			$returnObj['file_id'] = $file_id;
+			$returnObj['linkURL'] = APP_PATH_URL . $uploads_dir . $fileName;
 		}
 
 		$returnObj['errors'] = $errors;
@@ -117,7 +118,7 @@
 			VALUES (?,?)
 		";
 		$stmt = $conn->prepare($ins_file_assoc);
-		$stmt->bind_param("ii", $link_id, $file_id);
+		$stmt->bind_param("ii", $linkID, $fileID);
 		$stmt->execute();
 	}
 
@@ -393,6 +394,21 @@
 		$narrative = editReference($narrative, $editLinkRefNum, $refURL);
 		$summary = editReference($summary, $editLinkRefNum, $refURL);
 
+		// if attaching a file
+		if ($_FILES['fileToUpload']['name'] !== '') {
+			$uploadResultObj = uploadFile($_FILES['fileToUpload']);
+			
+			// if there were errors during the upload
+			if (!empty($uploadResultObj['errors'])) {
+				// TODO: display error messages
+				echo '<code>'. var_dump($uploadResultObj['errors']) .'</code>';
+			} else {
+				associateFile($_POST['refLinkID'], $uploadResultObj['file_id']);
+				$refURL = $uploadResultObj['linkURL']; // assign new url for uploaded file
+				echo 'refURL: ' . $refURL;
+			}
+		}
+
 		// Update the link name and link URL for this reference
 		$update_ref = "
 			UPDATE " . TABLE_APPENDIX_LINK . "
@@ -406,18 +422,6 @@
 			$refURL,
 			$_POST['refLinkID']);
 		$stmt->execute();
-
-		// if attaching a file
-		if ($_FILES['fileToUpload']['name'] !== '') {
-			$uploadResultObj = uploadFile($_FILES['fileToUpload']);
-			
-			// if there were errors during the upload
-			if (!empty($uploadResultObj['errors'])) {
-				// TODO: display error messages
-			} else {
-				associateFile($_POST['refLinkID'], $uploadResultObj['file_id']);
-			}
-		}
 
 		// Update standard/requirement
 		$update_sr = "

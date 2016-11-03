@@ -228,6 +228,9 @@
 				$removeBtn.attr('data-fileid', '');
 				$removeBtn.attr('data-linkid', '');
 
+				// clear the old refURL from the modal form
+				$('#editRef-form #refURL').val('');
+
 				$('#box-2').fadeOut(function() {
 					$('#box-3').fadeIn();
 				});
