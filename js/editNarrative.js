@@ -157,8 +157,8 @@ $(document).ready(function () {
 				var formData = new FormData($('#insertRef-form')[0]);
 
 				$.ajax({
-					type: 'post',
 					url: './content/act_insertRef.php',
+					type: 'POST',
 					data: formData,
 					dataType: 'json',
 					processData: false,

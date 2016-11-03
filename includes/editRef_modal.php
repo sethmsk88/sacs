@@ -21,7 +21,8 @@
 				<form
 					name="editRef-form"
 					id="editRef-form"
-					role="form">
+					role="form"
+					enctype="multipart/form-data">
 
 					<div class="row">
 						<div class="col-lg-12 form-group">
@@ -182,21 +183,21 @@
 		var id_parts = $buttonID.split('-');
 		var link_id = id_parts[1];
 
+		var formData = new FormData($('#editRef-form')[0]);
+		formData.append('refLinkID', link_id);
+		formData.append('actionType', 2); // edit reference action type
+
 		//  update link information in table
 		$.ajax({
 			url: './content/act_appendix.php',
-			type: 'post',
-			data: {
-				'linkID': link_id,
-				'actionType': 2, // edit reference action type
-				'refName': $('#refName').val(),
-				'refURL': $('#refURL').val()
-			},
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
 			success: function(response) {
 				location.reload();
 			}
-		});
-		
+		});	
 	});
 
 	// Attach File button click handler
@@ -232,9 +233,6 @@
 				});
 			}
 		});
-
-		console.log($(this).attr('data-fileid'));
-		console.log($(this).attr('data-linkid'));
 	});
 
 </script>

@@ -33,6 +33,93 @@
 		return str_replace('['. $ref .']', '['. $decrementedRef .']', $str);
 	}
 
+	// Upload file to application uploads directory
+	// Returns array of errors and newly uploaded file id
+	function uploadFile($fileObj) {
+		$returnObj = array();
+		$uploads_dir = 'uploads/';
+
+		$errors = array();
+		$fileName = $fileObj['name'];
+		$fileSize = $fileObj['size'];
+		$fileTmpName = $fileObj['tmp_name'];
+		$fileType = $fileObj['type']; // (e.g. image/jpeg)
+		$fileName_exploded = explode('.', $fileName);
+		$fileExt = strtolower(end($fileName_exploded));
+
+		// Append timestamp to filename
+		$timeStamp = date("YmdHis"); // 1/2/2016 1:05:12pm = 20160102130512
+		$fileName = $timeStamp . '_' . $fileName;
+		$filePath = APP_PATH . $uploads_dir . $fileName;
+
+		// Check to see if extension is valid
+		$extensions = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub");
+		if (in_array($fileExt, $extensions) === false) {
+			$errMsg = "Invalid file type. Please choose a file with one of the following file types: ";
+			$numExtensions = count($extensions);
+			foreach ($extensions as $i => $extension) {
+				$errMsg .= $extension;
+
+				if ($i < $numExtensions - 1)
+					$errMsg .= ", ";
+			}
+			array_push($errors, $errMsg);
+		}
+
+		// Make sure file is not too large
+		$maxFileSize = 1024 * 1024 * 64; // 64MB
+		if ($fileSize > $maxFileSize) {
+			array_push($errors, "Max file size exceeded. File size must be less than 64MB");
+		}
+
+		// Make sure filename is not too long
+		$maxFileNameLength = 250;
+		if (strlen($fileName) > $maxFileNameLength) {
+			array_push($errors, "File name is too long (max ". $maxFileNameLength ." characters)");
+		}
+
+		// If there are no errors, complete the upload by moving the temp file into the uploads directory
+		if (empty($errors) === true) {
+			move_uploaded_file($fileTmpName, $filePath);
+
+			// insert the filename into the file upload table
+			$file_id = insertFile($fileName, $filePath, $fileExt);
+
+			$returnObj['file_id'] = $file_id;
+		}
+
+		$returnObj['errors'] = $errors;
+			
+		return $returnObj;
+	}
+
+	// Insert file info into table
+	function insertFile($fileName, $filePath, $fileExt) {
+		global $conn;
+
+		$ins_file = "
+			INSERT INTO " . TABLE_FILE_UPLOAD . " (fileName, filePath, fileExt, uploadDate)
+			VALUES (?,?,?, NOW())
+		";
+		$stmt = $conn->prepare($ins_file);
+		$stmt->bind_param("sss", $fileName, $filePath, $fileExt);
+		$stmt->execute();
+
+		return $stmt->insert_id;
+	}
+
+	// Insert record into table associating a reference with a certain file
+	function associateFile($linkID, $fileID) {
+		global $conn;
+
+		$ins_file_assoc = "
+			INSERT INTO " . TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD . " (appendix_link_id, file_upload_id)
+			VALUES (?,?)
+		";
+		$stmt = $conn->prepare($ins_file_assoc);
+		$stmt->bind_param("ii", $link_id, $file_id);
+		$stmt->execute();
+	}
 
 	// Change Order
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
@@ -269,7 +356,7 @@
 			WHERE appendix_link_id = ?
 		";
 		$stmt = $conn->prepare($sel_refNum);
-		$stmt->bind_param("i", $_POST['linkID']);
+		$stmt->bind_param("i", $_POST['refLinkID']);
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
@@ -306,6 +393,7 @@
 		$narrative = editReference($narrative, $editLinkRefNum, $refURL);
 		$summary = editReference($summary, $editLinkRefNum, $refURL);
 
+		// Update the link name and link URL for this reference
 		$update_ref = "
 			UPDATE " . TABLE_APPENDIX_LINK . "
 			SET linkName = ?,
@@ -316,8 +404,20 @@
 		$stmt->bind_param("ssi",
 			$_POST['refName'],
 			$refURL,
-			$_POST['linkID']);
+			$_POST['refLinkID']);
 		$stmt->execute();
+
+		// if attaching a file
+		if ($_FILES['fileToUpload']['name'] !== '') {
+			$uploadResultObj = uploadFile($_FILES['fileToUpload']);
+			
+			// if there were errors during the upload
+			if (!empty($uploadResultObj['errors'])) {
+				// TODO: display error messages
+			} else {
+				associateFile($_POST['refLinkID'], $uploadResultObj['file_id']);
+			}
+		}
 
 		// Update standard/requirement
 		$update_sr = "
