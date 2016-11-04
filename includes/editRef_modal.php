@@ -115,16 +115,18 @@
 </div>
 
 <script type="text/javascript">
-	var resetModalFields = function() {
-		$('#editRefModal #box-1').hide();
-		$('#editRefModal #box-2').hide();
-		$('#editRefModal #box-3').hide();
+	var thisModal_selector = '#editRefModal';
 
-		$('#editRefModal input').val("");
+	var resetModalFields = function() {
+		$(thisModal_selector + ' #box-1').hide();
+		$(thisModal_selector + ' #box-2').hide();
+		$(thisModal_selector + ' #box-3').hide();
+
+		$(thisModal_selector + ' input').val("");
 	}
 
 	// Dialog show event handler
-	$('#editRefModal').on('show.bs.modal', function (e) {
+	$(thisModal_selector).on('show.bs.modal', function (e) {
 
 		resetModalFields();
 
@@ -145,13 +147,13 @@
 			dataType: 'json',
 			success: function(response) {
 				// populate form fields with link info
-				$('#refName').val(response['linkName']);
-				$('#refURL').val(response['linkURL']);
+				$(thisModal_selector + ' #refName').val(response['linkName']);
+				$(thisModal_selector + ' #refURL').val(response['linkURL']);
 
 				if (response['isFileRef'] === false) {
-					$('#box-1').show();
+					$(thisModal_selector + ' #box-1').show();
 				} else {
-					$('#box-2').show();
+					$(thisModal_selector + ' #box-2').show();
 				}
 
 				// If this is a file reference, create a file link
@@ -165,11 +167,11 @@
 
 					var refFileLink = '<a href="' + response['linkURL'] + '" target="_blank">' + modifiedFileName + '</a>';
 
-					$('#refFile-link').html(refFileLink);				
+					$(thisModal_selector + ' #refFile-link').html(refFileLink);				
 
 					// populate remove button with file_id and link_id
-					$('#removeFile-btn').attr('data-fileid', response['fileID']);
-					$('#removeFile-btn').attr('data-linkid', response['linkID']);
+					$(thisModal_selector + ' #removeFile-btn').attr('data-fileid', response['fileID']);
+					$(thisModal_selector + ' #removeFile-btn').attr('data-linkid', response['linkID']);
 				}
 			}
 		});
@@ -185,7 +187,7 @@
 	});
 
 	// Form submit handler
-	$('#editRefModal').find('.modal-footer #editSubmit').on('click', function() {
+	$(thisModal_selector).find('.modal-footer #editSubmit').on('click', function() {
 		var id_parts = $buttonID.split('-');
 		var link_id = id_parts[1];
 
@@ -193,7 +195,6 @@
 		formData.append('refLinkID', link_id);
 		formData.append('actionType', 2); // edit reference action type
 
-		//  update link information in table
 		$.ajax({
 			url: './content/act_appendix.php',
 			type: 'POST',
@@ -215,7 +216,7 @@
 						errMsg += openErrTag + response['errors'][i] + closeErrTag;
 					}
 
-					$('#editRefModal #ajax_response').html(errMsg);
+					$(thisModal_selector + ' #ajax_response').html(errMsg);
 				} else {
 					location.reload();
 				}
@@ -224,16 +225,16 @@
 	});
 
 	// Attach File button click handler
-	$('#attachFile-btn').click(function(e) {
+	$(thisModal_selector + ' #attachFile-btn').click(function(e) {
 		e.preventDefault();
 
-		$('#box-1').fadeOut(function() {
-			$('#box-3').fadeIn();
+		$(thisModal_selector + ' #box-1').fadeOut(function() {
+			$(thisModal_selector + ' #box-3').fadeIn();
 		});
 	});
 
 	// Remove file button click handler
-	$('#removeFile-btn').click(function(e) {
+	$(thisModal_selector + ' #removeFile-btn').click(function(e) {
 		e.preventDefault();
 
 		$removeBtn = $(this);
@@ -252,13 +253,12 @@
 				$removeBtn.attr('data-linkid', '');
 
 				// clear the old refURL from the modal form
-				$('#editRef-form #refURL').val('');
+				$(thisModal_selector + ' #editRef-form #refURL').val('');
 
-				$('#box-2').fadeOut(function() {
-					$('#box-3').fadeIn();
+				$(thisModal_selector + ' #box-2').fadeOut(function() {
+					$(thisModal_selector + ' #box-3').fadeIn();
 				});
 			}
 		});
 	});
-
 </script>
