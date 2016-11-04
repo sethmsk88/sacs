@@ -54,9 +54,7 @@
 			INSERT INTO " . TABLE_FILE_UPLOAD . " (fileName, filePath, fileExt, uploadDate)
 			VALUES (?,?,?, NOW())
 		";
-		if (!$stmt = $conn->prepare($ins_file)) {
-			echo 'error ('. $conn->errno .') '. $conn->error;
-		}
+		$stmt = $conn->prepare($ins_file);
 		$stmt->bind_param("sss", $fileName, $filePath, $fileExt);
 		$stmt->execute();
 
@@ -113,9 +111,6 @@
 		// if a FormData object was posted to this page
 		if (isset($_FILES['fileToUpload'])) {
 			$uploads_dir = 'uploads/';
-
-			// Start timer
-			$timerStart = microtime(true);
 
 			$error = array();
 			$fileName = $_FILES['fileToUpload']['name'];
