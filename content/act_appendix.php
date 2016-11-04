@@ -494,8 +494,9 @@
 			SET linkURL = ?
 			WHERE appendix_link_id = ?
 		";
+		$emptyURL = "";
 		$stmt = $conn->prepare($update_linkURL);
-		$stmt->bind_param("si", "", $_POST['linkID']);
+		$stmt->bind_param("si", $emptyURL, $_POST['linkID']);
 		$stmt->execute();
 	}
 ?>
