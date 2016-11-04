@@ -350,6 +350,8 @@
 	// Edit Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
 
+		$json_arr = array(); // ajax response object
+
 		// get refNum of this ref
 		$sel_refNum = "
 			SELECT refNum, srid
@@ -401,11 +403,10 @@
 			// if there were errors during the upload
 			if (!empty($uploadResultObj['errors'])) {
 				// TODO: display error messages
-				echo '<code>'. var_dump($uploadResultObj['errors']) .'</code>';
+				$json_arr['errors'] = $uploadResultObj['errors'];
 			} else {
 				associateFile($_POST['refLinkID'], $uploadResultObj['file_id']);
 				$refURL = $uploadResultObj['linkURL']; // assign new url for uploaded file
-				echo 'refURL: ' . $refURL;
 			}
 		}
 
@@ -461,6 +462,9 @@
 			$stmt2->bind_param("si", $sectionBody, $sectionID);
 			$stmt2->execute();
 		}
+
+		// Respond with json error messages if any
+		echo json_encode($json_arr);
 
 	// Remove file
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {

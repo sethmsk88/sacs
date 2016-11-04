@@ -88,6 +88,12 @@
 
 					<input type="hidden" name="linkID" id="linkID" value="">
 				</form>
+
+				<div class="row">
+					<div id="ajax_response" class="col-lg-12" style="margin-top:8px;">
+						<!-- To Be Filled with AJAX response messages --> 
+					</div>
+				</div>
 			</div>
 
 			<div class="modal-footer">
@@ -192,10 +198,27 @@
 			url: './content/act_appendix.php',
 			type: 'POST',
 			data: formData,
+			dataType: 'json',
 			contentType: false,
 			processData: false,
 			success: function(response) {
-				location.reload();
+
+				// If there are errors
+				if (response.hasOwnProperty('errors') &&
+					response['errors'].length > 0) {
+
+					var openErrTag = '<div class="text-danger">';
+					var closeErrTag = '</div>';
+					var errMsg = openErrTag + "<b>An Error Has Occurred!</b>" + closeErrTag;
+
+					for (var i=0; i < response['errors'].length; i++) {
+						errMsg += openErrTag + response['errors'][i] + closeErrTag;
+					}
+
+					$('#editRefModal #ajax_response').html(errMsg);
+				} else {
+					location.reload();
+				}
 			}
 		});	
 	});
