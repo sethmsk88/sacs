@@ -101,7 +101,6 @@
 </div>
 
 <script type="text/javascript">
-	var thisModal_selector = '#newRefModal';
 
 	function displayErrors(error_arr) {
 		var openErrTag = '<div class="text-danger">';
@@ -116,19 +115,19 @@
 	}
 
 	// Dialog show event handler
-	$(thisModal_selector).on('show.bs.modal', function(e) {
+	$('#newRefModal').on('show.bs.modal', function(e) {
 		// TODO: reset modal input fields
 	});
 
 	// Dialog hide/cancel event handler
-	$(thisModal_selector).on('hide.bs.modal', function(e) {
-		$(thisModal_selector + ' input').val("");
-		$(thisModal_selector + ' #box-1').show();
-		$(thisModal_selector + ' #box-3').hide();
+	$('#newRefModal').on('hide.bs.modal', function(e) {
+		$('#newRefModal input').val("");
+		$('#newRefModal #box-1').show();
+		$('#newRefModal #box-3').hide();
 	});
 
 	// Submit form when ENTER key is pressed while focused on a textbox
-	$(thisModal_selector + ' input[type="text"]').keypress(function(e) {
+	$('#newRefModal input[type="text"]').keypress(function(e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
 			$('#newRefSubmit').click();
@@ -136,37 +135,37 @@
 	});
 
 	// Form submit handler
-	$(thisModal_selector).find('.modal-footer #newRefSubmit').on('click', function() {
+	$('#newRefModal').find('.modal-footer #newRefSubmit').on('click', function() {
 
 		// Check Required Fields
 		var errors = new Array();
-		if ($(thisModal_selector + ' #refName').val() === "") {
+		if ($('#newRefModal #refName').val() === "") {
 			errors.push('Reference Name is required');
 		}
 
 		// If file selector is visible, a file is required to be attached
-		if ($(thisModal_selector + ' #fileToUpload').is(':visible') === true) {
-			if ($(thisModal_selector + ' #fileToUpload').get(0).files.length === 0) {
+		if ($('#newRefModal #fileToUpload').is(':visible') === true) {
+			if ($('#newRefModal #fileToUpload').get(0).files.length === 0) {
 				errors.push('Please select a file to upload');
 			}
 		}
 
 		// If there are any errors, display them and stop the form submission
 		if (errors.length > 0) {
-			$(thisModal_selector + ' #ajax_response').html(displayErrors(errors));
+			$('#newRefModal #ajax_response').html(displayErrors(errors));
 			return; // halt form submission
 		}
 
 		// Set newRefType field
 		// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
-		if ($(thisModal_selector + ' #fileToUpload').is(':visible') === true) {
+		if ($('#newRefModal #fileToUpload').is(':visible') === true) {
 			var newRefType = 1; // file reference
 		} else {
 			var newRefType = 0; // URL reference
 		}
 
 		// Create FormData object and populate with all form fields
-		var formData = new FormData($(thisModal_selector + ' #newRef-form')[0]);
+		var formData = new FormData($('#newRefModal #newRef-form')[0]);
 		formData.append('newRefType', newRefType);
 
 		// The following key/value pair is created so this POST is compatible with the action file we are using
@@ -185,7 +184,7 @@
 				if (response.hasOwnProperty('errors') &&
 					response['errors'].length > 0) {
 
-					$(thisModal_selector + ' #ajax_response').html(displayErrors(response['errors']));
+					$('#newRefModal #ajax_response').html(displayErrors(response['errors']));
 				} else {
 					location.reload();
 				}
@@ -194,13 +193,13 @@
 	});
 
 	// Attach File button click handler
-	$(thisModal_selector + ' #attachFile-btn').click(function(e) {
+	$('#newRefModal #attachFile-btn').click(function(e) {
 		e.preventDefault();
 
-		$(thisModal_selector + ' #refURL').val(''); // clear refURL field
+		$('#newRefModal #refURL').val(''); // clear refURL field
 
-		$(thisModal_selector + ' #box-1').fadeOut(function() {
-			$(thisModal_selector + ' #box-3').fadeIn();
+		$('#newRefModal #box-1').fadeOut(function() {
+			$('#newRefModal #box-3').fadeIn();
 		});
 	});
 </script>
