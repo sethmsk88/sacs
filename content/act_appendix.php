@@ -239,14 +239,18 @@
 			FROM " . TABLE_APPENDIX_LINK . "
 			WHERE appendix_link_id = ?
 		";
-		$stmt = $conn->prepare($sel_refNum);
-		$stmt->bind_param("i", $_POST['linkID']);
-		$stmt->execute();
-		
-		$result = $stmt->get_result();
-		$result_row = $result->fetch_assoc();
-		$deleteRefNum = $result_row['refNum'];
-		$srid = $result_row['srid'];
+		if (!$stmt = $conn->prepare($sel_refNum)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("i", $_POST['linkID'])) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else {		
+			$result = $stmt->get_result();
+			$result_row = $result->fetch_assoc();
+			$deleteRefNum = $result_row['refNum'];
+			$srid = $result_row['srid'];
+		}
 
 		// Get title/descr, narrative, and summary
 		$sel_sr = "
@@ -254,12 +258,17 @@
 			FROM " . TABLE_STANDARD_REQUIREMENT . "
 			WHERE id = ?
 		";
-		$stmt = $conn->prepare($sel_sr);
-		$stmt->bind_param("i", $srid);
-		$stmt->execute();
-		$stmt->store_result();
-		$stmt->bind_result($descr, $narrative, $summary);
-		$stmt->fetch();
+		if (!$stmt = $conn->prepare($sel_sr)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("i", $srid)) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else {
+			$stmt->store_result();
+			$stmt->bind_result($descr, $narrative, $summary);
+			$stmt->fetch();
+		}
 
 		// Get sections for this standard/requirement
 		$sel_section = "
@@ -267,11 +276,16 @@
 			FROM " . TABLE_SECTION . "
 			WHERE srid = ?
 		";
-		$section_stmt = $conn->prepare($sel_section);
-		$section_stmt->bind_param("i", $srid);
-		$section_stmt->execute();
-		$section_stmt->store_result();
-		$section_stmt->bind_result($sectionID, $sectionBody);
+		if (!$section_stmt = $conn->prepare($sel_section)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$section_stmt->bind_param("i", $srid)) {
+			echo 'error: ' . $section_stmt->errno . ' - ' . $section_stmt->error;
+		} else if (!$section_stmt->execute()) {
+			echo 'error: ' . $section_stmt->errno . ' - ' . $section_stmt->error;
+		} else {
+			$section_stmt->store_result();
+			$section_stmt->bind_result($sectionID, $sectionBody);
+		}
 
 		// Remove deleted reference link from title/descr, narrative, and summary
 		$descr = deleteReference($descr, $deleteRefNum);
@@ -292,11 +306,16 @@
 				AND refNum > ?
 			ORDER BY refNum ASC
 		";
-		$stmt = $conn->prepare($sel_greaterRefNums);
-		$stmt->bind_param("ii", $srid, $deleteRefNum);
-		$stmt->execute();
-		$stmt->store_result();
-		$stmt->bind_result($greaterRefNum);
+		if (!$stmt = $conn->prepare($sel_greaterRefNums)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("ii", $srid, $deleteRefNum)) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else {
+			$stmt->store_result();
+			$stmt->bind_result($greaterRefNum);
+		}
 
 		// For each reference greater than the deleted reference, decrement the refNum within the text of the title/descr, narrative, and summary
 		while ($stmt->fetch()) {
@@ -317,18 +336,26 @@
 			WHERE srid = ?
 				AND refNum > ?
 		";
-		$stmt = $conn->prepare($update_refNum);
-		$stmt->bind_param("ii", $srid, $deleteRefNum);
-		$stmt->execute();
+		if (!$stmt = $conn->prepare($update_refNum)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("ii", $srid, $deleteRefNum)) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		}
 
 		// Delete this reference
 		$del_ref = "
 			DELETE FROM " . TABLE_APPENDIX_LINK . "
 			WHERE appendix_link_id = ?
 		";
-		$stmt = $conn->prepare($del_ref);
-		$stmt->bind_param("i", $_POST['linkID']);
-		$stmt->execute();
+		if (!$stmt = $conn->prepare($del_ref)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("i", $_POST['linkID'])) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		}
 	
 		// Update standard/requirement
 		$update_sr = "
@@ -338,9 +365,13 @@
 				summary = ?
 			WHERE id = ?
 		";
-		$stmt = $conn->prepare($update_sr);
-		$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid);
-		$stmt->execute();
+		if (!$stmt = $conn->prepare($update_sr)) {
+			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
+		} else if (!$stmt->bind_param("sssi", $descr, $narrative, $summary, $srid)) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		} else if (!$stmt->execute()) {
+			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		}
 
 		// Update sections
 		$update_section = "
