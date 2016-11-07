@@ -115,18 +115,17 @@
 </div>
 
 <script type="text/javascript">
-	var thisModal_selector = '#editRefModal';
-
+	
 	var resetModalFields = function() {
-		$(thisModal_selector + ' #box-1').hide();
-		$(thisModal_selector + ' #box-2').hide();
-		$(thisModal_selector + ' #box-3').hide();
+		$('#editRefModal #box-1').hide();
+		$('#editRefModal #box-2').hide();
+		$('#editRefModal #box-3').hide();
 
-		$(thisModal_selector + ' input').val("");
+		$('#editRefModal input').val("");
 	}
 
 	// Dialog show event handler
-	$(thisModal_selector).on('show.bs.modal', function (e) {
+	$('#editRefModal').on('show.bs.modal', function (e) {
 
 		resetModalFields();
 
@@ -147,18 +146,18 @@
 			dataType: 'json',
 			success: function(response) {
 				// populate form fields with link info
-				$(thisModal_selector + ' #refName').val(response['linkName']);
-				$(thisModal_selector + ' #refURL').val(response['linkURL']);
+				$('#editRefModal #refName').val(response['linkName']);
+				$('#editRefModal #refURL').val(response['linkURL']);
 
 				if (response['isFileRef'] === false) {
-					$(thisModal_selector + ' #box-1').show();
+					$('#editRefModal #box-1').show();
 				} else {
-					$(thisModal_selector + ' #box-2').show();
+					$('#editRefModal #box-2').show();
 				}
 
 				// If this is a file reference, create a file link
 				if (response.hasOwnProperty('fileName')) {
-					
+
 					// strip timestamp from filename
 					var modifiedFileName = response['fileName'];
 					var str_arr = modifiedFileName.split('_');
@@ -167,11 +166,11 @@
 
 					var refFileLink = '<a href="' + response['linkURL'] + '" target="_blank">' + modifiedFileName + '</a>';
 
-					$(thisModal_selector + ' #refFile-link').html(refFileLink);				
+					$('#editRefModal #refFile-link').html(refFileLink);				
 
 					// populate remove button with file_id and link_id
-					$(thisModal_selector + ' #removeFile-btn').attr('data-fileid', response['fileID']);
-					$(thisModal_selector + ' #removeFile-btn').attr('data-linkid', response['linkID']);
+					$('#editRefModal #removeFile-btn').attr('data-fileid', response['fileID']);
+					$('#editRefModal #removeFile-btn').attr('data-linkid', response['linkID']);
 				}
 			}
 		});
@@ -187,7 +186,7 @@
 	});
 
 	// Form submit handler
-	$(thisModal_selector).find('.modal-footer #editSubmit').on('click', function() {
+	$('#editRefModal').find('.modal-footer #editSubmit').on('click', function() {
 		var id_parts = $buttonID.split('-');
 		var link_id = id_parts[1];
 
@@ -216,7 +215,7 @@
 						errMsg += openErrTag + response['errors'][i] + closeErrTag;
 					}
 
-					$(thisModal_selector + ' #ajax_response').html(errMsg);
+					$('#editRefModal #ajax_response').html(errMsg);
 				} else {
 					location.reload();
 				}
@@ -225,16 +224,16 @@
 	});
 
 	// Attach File button click handler
-	$(thisModal_selector + ' #attachFile-btn').click(function(e) {
+	$('#editRefModal #attachFile-btn').click(function(e) {
 		e.preventDefault();
 
-		$(thisModal_selector + ' #box-1').fadeOut(function() {
-			$(thisModal_selector + ' #box-3').fadeIn();
+		$('#editRefModal #box-1').fadeOut(function() {
+			$('#editRefModal #box-3').fadeIn();
 		});
 	});
 
 	// Remove file button click handler
-	$(thisModal_selector + ' #removeFile-btn').click(function(e) {
+	$('#editRefModal #removeFile-btn').click(function(e) {
 		e.preventDefault();
 
 		$removeBtn = $(this);
@@ -253,10 +252,10 @@
 				$removeBtn.attr('data-linkid', '');
 
 				// clear the old refURL from the modal form
-				$(thisModal_selector + ' #editRef-form #refURL').val('');
+				$('#editRefModal #editRef-form #refURL').val('');
 
-				$(thisModal_selector + ' #box-2').fadeOut(function() {
-					$(thisModal_selector + ' #box-3').fadeIn();
+				$('#editRefModal #box-2').fadeOut(function() {
+					$('#editRefModal #box-3').fadeIn();
 				});
 			}
 		});
