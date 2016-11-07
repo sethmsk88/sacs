@@ -159,10 +159,10 @@
 
 		// Set newRefType field
 		// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
-		if ($(thisModal_selector + ' #refURL').val() !== "") {
-			var newRefType = 0; // URL reference
-		} else {
+		if ($(thisModal_selector + ' #fileToUpload').is(':visible') === true) {
 			var newRefType = 1; // file reference
+		} else {
+			var newRefType = 0; // URL reference
 		}
 
 		// Create FormData object and populate with all form fields
