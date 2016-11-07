@@ -122,6 +122,15 @@
 		$stmt->execute();
 	}
 
+	// Make sure the URL begins with the protocol given as a parameter
+	function enforceProtocol($url, $protocol) {
+		$parsedURL = parse_url($url);
+		if (empty($parsedURL['scheme']))
+		    return 'http://' . ltrim($url, '/'); // prepend protocol to URL
+		else
+			return $url;
+	}
+
 	// Change Order
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
 
@@ -361,10 +370,9 @@
 		$stmt = $conn->prepare($sel_refNum);
 		$stmt->bind_param("i", $_POST['refLinkID']);
 		$stmt->execute();
-		
 		$result = $stmt->get_result();
 		$result_row = $result->fetch_assoc();
-		$editLinkRefNum = $result_row['refNum'];
+		$editLinkRefNum = $result_row['refNum']; // ref num of the link being edited
 		$srid = $result_row['srid'];
 
 		// If refURL was left blank, set to appendix page
@@ -374,10 +382,7 @@
 		}
 
 		// Make sure link begins with http or https
-		$parsedURL = parse_url($refURL);
-		if (empty($parsedURL['scheme'])) {
-		    $refURL = 'http://' . ltrim($refURL, '/');
-		}
+		$refURL = enforceProtocol($refURL, 'http://');
 
 		// Get title/descr, narrative, and summary
 		$sel_sr = "
@@ -402,7 +407,6 @@
 			
 			// if there were errors during the upload
 			if (!empty($uploadResultObj['errors'])) {
-				// TODO: display error messages
 				$json_arr['errors'] = $uploadResultObj['errors'];
 			} else {
 				associateFile($_POST['refLinkID'], $uploadResultObj['file_id']);

@@ -4,6 +4,7 @@
 <?php
 	require_once './includes/delete_confirm.php'; // delete confirm modal
 	require_once './includes/editRef_modal.php'; // edit reference modal
+	require_once './includes/newRef_modal.php'; // new reference modal
 
 	// Get SR type and SR number
 	$sel_sr = "
@@ -101,7 +102,13 @@
 	?>
 		<tr>
 			<td colspan="3">
-				<button id="newRef-btn" class="btn btn-success" style="width:100%">
+				<button
+					id="newRef-btn"
+					title="Add New Reference"
+					class="btn btn-success"
+					data-toggle="modal"
+					data-target="#newRefModal"
+					style="width:100%">
 					<span class="glyphicon glyphicon-plus"></span> New
 				</button>
 			</td>
@@ -134,6 +141,7 @@
 
 <!-------------- MODALS BELOW ---------------->
 <!-- Insert Reference Modal -->
+<?php /*
 <div id="insertRef-modal" class="modalForm" style="width:500px;">
 	<div class="modalForm-header">
 		Insert a New Reference
@@ -182,3 +190,4 @@
 		</form>
 	</div>
 </div>
+*/ ?>
