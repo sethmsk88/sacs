@@ -103,13 +103,59 @@
 <script type="text/javascript">
 	var thisModal_selector = '#newRefModal';
 
+	function displayErrors(error_arr) {
+		var openErrTag = '<div class="text-danger">';
+		var closeErrTag = '</div>';
+		var errMsg = openErrTag + "<b>An Error Has Occurred!</b>" + closeErrTag;
+
+		for (var i=0; i < error_arr.length; i++) {
+			errMsg += openErrTag + error_arr[i] + closeErrTag;
+		}
+
+		return errMsg;
+	}
+
 	// Dialog show event handler
 	$(thisModal_selector).on('show.bs.modal', function(e) {
 		// TODO: reset modal input fields
 	});
 
+	// Dialog hide/cancel event handler
+	$(thisModal_selector).on('hide.bs.modal', function(e) {
+		$(thisModal_selector + ' input').val("");
+		$(thisModal_selector + ' #box-1').show();
+		$(thisModal_selector + ' #box-3').hide();
+	});
+
+	// Submit form when ENTER key is pressed while focused on a textbox
+	$(thisModal_selector + ' input[type="text"]').keypress(function(e) {
+		if (e.keyCode == 13) {
+			e.preventDefault();
+			$('#newRefSubmit').click();
+		}
+	});
+
 	// Form submit handler
 	$(thisModal_selector).find('.modal-footer #newRefSubmit').on('click', function() {
+
+		// Check Required Fields
+		var errors = new Array();
+		if ($(thisModal_selector + ' #refName').val() === "") {
+			errors.push('Reference Name is required');
+		}
+
+		// If file selector is visible, a file is required to be attached
+		if ($(thisModal_selector + ' #fileToUpload').is(':visible') === true) {
+			if ($(thisModal_selector + ' #fileToUpload').get(0).files.length === 0) {
+				errors.push('Please select a file to upload');
+			}
+		}
+
+		// If there are any errors, display them and stop the form submission
+		if (errors.length > 0) {
+			$(thisModal_selector + ' #ajax_response').html(displayErrors(errors));
+			return; // halt form submission
+		}
 
 		// Set newRefType field
 		// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
@@ -139,15 +185,7 @@
 				if (response.hasOwnProperty('errors') &&
 					response['errors'].length > 0) {
 
-					var openErrTag = '<div class="text-danger">';
-					var closeErrTag = '</div>';
-					var errMsg = openErrTag + "<b>An Error Has Occurred!</b>" + closeErrTag;
-
-					for (var i=0; i < response['errors'].length; i++) {
-						errMsg += openErrTag + response['errors'][i] + closeErrTag;
-					}
-
-					$(thisModal_selector + ' #ajax_response').html(errMsg);
+					$(thisModal_selector + ' #ajax_response').html(displayErrors(response['errors']));
 				} else {
 					location.reload();
 				}
