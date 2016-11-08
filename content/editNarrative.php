@@ -1,6 +1,7 @@
 <?php
 	// Include on ALL pages
 	require_once(APP_PATH . "includes/functions.php");
+	require_once './includes/insertRef_modal.php'; // insert reference modal
 
 	// Require Login
 	if (!isset($loggedIn)) {
@@ -26,9 +27,13 @@
 		FROM " . TABLE_STANDARD_REQUIREMENT . "
 		WHERE id = ?
 	";
-	$stmt = $conn->prepare($sel_sr);
-	$stmt->bind_param("i", $_GET['id']);
-	$stmt->execute();
+	if (!$stmt = $conn->prepare($sel_sr)) {
+		echo 'error - ' . $conn->error . '<br>';
+	} else if (!$stmt->bind_param("i", $_GET['id'])) {
+		echo 'error - ' . $stmt->error . '<br>';
+	} else if (!$stmt->execute()) {
+		echo 'error - ' . $stmt->error . '<br>';
+	}
 	$stmt->store_result();
 	$stmt->bind_result($SRID, $srNum, $descr, $narrative, $summary, $sr_type, $compliance);
 	$stmt->fetch();
@@ -46,18 +51,24 @@
 		WHERE srid = ?
 		ORDER BY refNum ASC
 	";
-	$stmt2 = $conn->prepare($sel_ref);
-	$stmt2->bind_param("i", $_GET['id']);
-	$stmt2->execute();
+	if (!$stmt2 = $conn->prepare($sel_ref)) {
+		echo 'error - ' . $conn->error . '<br>';
+	} else if (!$stmt2->bind_param("i", $_GET['id'])) {
+		echo 'error - ' . $stmt2->error . '<br>';
+	} else if (!$stmt2->execute()) {
+		echo 'error - ' . $stmt2->error . '<br>';
+	}
 	$stmt2->store_result();
 	$stmt2->bind_result($linkName, $linkURL, $refNum);
 ?>
+
 
 <div class="container">
 	<form
 		name="editNarrative-form"
 		id="editNarrative-form"
 		role="form">
+
 		<div class="form-group">
 			<?php
 				// Set Type selection
@@ -162,7 +173,13 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<button
+							id="insertRef-btn"
+							title="Insert Reference"
+							class="tinymce_btn"
+							data-toggle="modal"
+							data-target="#insertRefModal">Insert Reference
+						</button>
 						<!-- <button id="insertRef-btn2" class="tinymce_btn">Another Button</button> -->
 					</div>
 				</div>
@@ -222,6 +239,8 @@
 			</div>
 		</div>
 
+
+
 		<input type="hidden" name="SRID" id="SRID" value="<?= $SRID ?>">
 	</form>
 </div>
@@ -231,7 +250,7 @@
 	<!-- Filled with JavaScript -->
 </div>
 
-
+<?php /*
 <!-------------- MODALS BELOW ---------------->
 <!-- Insert Reference Modal -->
 <div id="insertRef-modal" class="modalForm" style="width:500px;">
@@ -353,3 +372,4 @@
 		</div>
 	</div>
 </div>
+*/ ?>

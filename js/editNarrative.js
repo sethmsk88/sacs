@@ -76,11 +76,18 @@ $(document).ready(function () {
 			$btn.text(btn_text + 'C.R.');
 		else if ($(this).val() == 's')
 			$btn.text(btn_text + 'C.S.');
-
 	});
 
-	// Insert Reference button click handler
+
+	// New tinymce button click handler
 	$('.tinymce_btn').click(function(e) {
+		e.preventDefault();
+	});
+
+/******************************
+	// Insert Reference button click handler
+	$('.TEST_tinymce_btn').click(function(e) {
+	// $('.tinymce_btn').click(function(e) {
 		e.preventDefault();
 	
 		// Reset insertRef-form inputs
@@ -97,7 +104,8 @@ $(document).ready(function () {
 	});
 
 	// Insert Reference Form Submission Handler
-	$('#insertRef-form').submit(function(e) {
+	$('#TEST_insertRef-form').submit(function(e) {
+	// $('#insertRef-form').submit(function(e) {
 		e.preventDefault();
 
 		$form = $(this);
@@ -132,9 +140,9 @@ $(document).ready(function () {
 					data: $form.serialize(),
 					dataType: 'json',
 					success: function(response) {
-						/*
-							NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
-						*/
+						///////////////
+						//	NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
+						///////////////
 						// Select the richTextArea iframe
 						$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
@@ -207,7 +215,8 @@ $(document).ready(function () {
 	});
 
 	// Reference choice change handler
-	$('input[name="refChoice"]').change(function() {
+	$('TEST_input[name="refChoice"]').change(function() {
+	// $('input[name="refChoice"]').change(function() {
 		var refChoice = $(this).val();
 
 		// Show the appropriate input fields
@@ -234,7 +243,8 @@ $(document).ready(function () {
 	});
 
 	// Reference Type change handler
-	$('input[name="newRefType"]').change(function() {
+	$('TEST_input[name="newRefType"]').change(function() {
+	// $('input[name="newRefType"]').change(function() {
 		var newRefType = $(this).val();
 
 		if (newRefType === "0") {
@@ -250,8 +260,7 @@ $(document).ready(function () {
 			$('#submitRef-btn').show();
 		}
 	});
-
-
+************************/
 });
 
 // Show the toast message
