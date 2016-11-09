@@ -233,10 +233,11 @@
 			var refNum = $existingRef.val();
 			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
 
-			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+			// $richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
 
-			// Append ref link to richtextarea
-			$richTextArea.tinymce_append(refLink);
+			// Insert ref link into the active richtextarea
+			tinymce_insertAtCaret(refLink);
+			// $richTextArea.tinymce_append(refLink);
 
 		} else if (refChoice === "1") {
 		// Add a new reference
@@ -281,13 +282,14 @@
 						//	NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
 						///////////////
 						// Select the richTextArea iframe
-						$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
+						// $richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
 						// Create ref link
 						var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
 
 						// Append ref link to richtextarea
-						$richTextArea.tinymce_append(refLink);
+						tinymce_insertAtCaret(refLink);
+						// $richTextArea.tinymce_append(refLink);
 					}
 				});
 
@@ -319,13 +321,14 @@
 						} else {
 							
 							// Select the richTextArea iframe
-							$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
+							// $richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
 							// Create ref link
 							var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
 
 							// Append ref link to richtextarea
-							$richTextArea.tinymce_append(refLink);
+							tinymce_insertAtCaret(refLink);
+							// $richTextArea.tinymce_append(refLink);
 
 							// Clear response div
 							$responseDiv.html("");
@@ -342,16 +345,19 @@
 		} else if (refChoice === "2") {
 		// Insert a link to the supplemental
 
+			console.log('here');
+
 			var supURL = "?page=subNarrative&id=" + $('#SRID').val();
 			var linkName = $('#insertRef-form #linkName').val();
 
 			// create link
 			var supLink = '<a href="' + supURL + '">' + linkName + '</a>';
 
-			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+			// $richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
 
 			// Append ref link to richtextarea
-			$richTextArea.tinymce_append(supLink);
+			tinymce_insertAtCaret(supLink);
+			// $richTextArea.tinymce_append(supLink);
 		}
 
 		// Hide the modal
