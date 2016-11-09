@@ -1,3 +1,18 @@
+<?php
+	// Get all references for this SR
+	$sel_ref = "
+		SELECT linkName, linkURL, refNum
+		FROM " . TABLE_APPENDIX_LINK . "
+		WHERE srid = ?
+		ORDER BY refNum ASC
+	";
+	$stmt = $conn->prepare($sel_ref);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($linkName, $linkURL, $refNum);
+?>
+
 <div
 	class="modal fade"
 	id="insertRefModal"
@@ -48,18 +63,13 @@
 								<label for="existingRef">Select a reference</label>
 								<select name="existingRef" id="existingRef" class="form-control">
 									<option value=""></option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<?php /*
 									<?php
-										while ($stmt2->fetch()) {
+										while ($stmt->fetch()) {
 									?>
 										<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
 									<?php
 										}
 									?>
-									*/ ?>
 								</select>
 							</div>
 						</div>
@@ -222,8 +232,8 @@
 						</div>
 					</div> -->
 
-					<!-- Get srid from URL -->
 					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
+					<input type="hidden" name="textarea_id" id="textarea_id" value="">
 				</form>
 
 				<div class="row">
@@ -293,6 +303,64 @@
 
 		$('#insertRefModal #refURL').val(''); // clear refURL field
 		swapFade('#box-3-1', '#box-3-2');
+	});
+
+	// Form submit handler
+	$('#insertRefModal').find('.modal-footer #insertRefSubmit').on('click', function() {
+
+		// Check Required Fields
+		var errors = new Array();
+		if ($('#insertRefModal #refName').val() === "") {
+			errors.push('Reference Name is required');
+		}
+
+		// If file selector is visible, a file is required to be attached
+		if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
+			if ($('#insertRefModal #fileToUpload').get(0).files.length === 0) {
+				errors.push('Please select a file to upload');
+			}
+		}
+
+		// If there are any errors, display them and stop the form submission
+		if (errors.length > 0) {
+			$('#insertRefModal #ajax_response').html(displayErrors(errors));
+			return; // halt form submission
+		}
+
+		// Set insertRefType field
+		// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
+		if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
+			var newRefType = 1; // file reference
+		} else {
+			var newRefType = 0; // URL reference
+		}
+
+		// Create FormData object and populate with all form fields
+		var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
+		formData.append('insertRefType', newRefType);
+
+		// The following key/value pair is created so this POST is compatible with the action file we are using
+		formData.append('refChoice', 1); // required var for the action file
+
+		$.ajax({
+			url: './content/act_insertRef.php',
+			type: 'POST',
+			data: formData,
+			dataType: 'json',
+			contentType: false,
+			processData: false,
+			success: function(response) {
+
+				// If there are errors
+				if (response.hasOwnProperty('errors') &&
+					response['errors'].length > 0) {
+
+					$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
+				} else {
+					location.reload();
+				}
+			}
+		});
 	});
 
 </script>
