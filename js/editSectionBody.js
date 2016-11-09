@@ -72,6 +72,19 @@ $(document).ready(function() {
 		// Adding a New Reference
 		} else if (refChoice === "1") {
 
+			////////////////////////////////////////////
+			//////////////    NOTE   ///////////////////
+			// Add hidden input element to hold the newRefType value
+			// This value is required for compatibility with act_insertRef.php
+			// This will eventually be replaced once the new modal is in place
+			$('<input>').attr({
+				type: 'hidden',
+				name: 'newRefType',
+				value: 0
+			}).appendTo($form);
+			////////////////////////////////////////////
+
+
 			$.ajax({
 				type: 'post',
 				url: './content/act_insertRef.php',
