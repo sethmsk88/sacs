@@ -8,60 +8,15 @@ jQuery.fn.center = function() {
 	return this;
 }
 
-/**
- *  Insert text at caret
- */
-/*
-function insertAtCaret(el_id, val) {
-	var el_dom = document.getElementById(el_id);
-
-	if (document.selection) {
-		el_dom.focus();
-		sel = document.selection.createRange();
-		sel.text = val;
-		return;
-	}
-	if (el_dom.selectionStart || el_dom.selectionStart == "0") {
-		var t_start = el_dom.selectionStart;
-		var t_end = el_dom.selectionEnd;
-		var val_start = el_dom.value.substring(0, t_start);
-		var val_end = el_dom.value.substring(t_end, el_dom.value.length);
-		el_dom.value = val_start + val + val_end;
-	} else {
-		el_dom.value += val;
-	}
-}
-
-// insert text into tinymce
-//$('#descr').prev().find('iframe').contents().find('body').html('<p><b>Bold</b> Not Bold</p>');
-
-jQuery.fn.insertAtCaret_tinymce = function(val) {
-	var el_dom = document.getElementById(this.attr('id'));
-	//el_dom.contentDocument.body.innerHTML = val;
-	el_dom = el_dom.contentDocument.body;
-	
-	if (document.selection) {
-		el_dom.focus();
-		sel = document.selection.createRange();
-		sel.text = val;
-		return;
-	}
-	if (el_dom.selectionStart || el_dom.selectionStart == "0") {
-		var t_start = el_dom.selectionStart;
-		var t_end = el_dom.selectionEnd;
-		var val_start = el_dom.value.substring(0, t_start);
-		var val_end = el_dom.value.substring(t_end, el_dom.value.length);
-		el_dom.value = val_start + val + val_end;
-	} else {
-		el_dom.value += val;
-	}
-	
-}
-*/
-
+// Append val to the calling HTML element
 jQuery.fn.tinymce_append = function(val) {
 	var el_dom = document.getElementById(this.attr('id'));
 	el_dom.contentDocument.body.innerHTML += val;
+}
+
+// Insert val at the caret position in the currently focused tinymce editor
+function tinymce_insertAtCaret(val) {
+	tinymce.activeEditor.execCommand('mceInsertContent', false, val);
 }
 
 function showModal(modalID) {
