@@ -174,7 +174,6 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<button
-							id="insertRef-btn"
 							title="Insert Reference"
 							class="tinymce_btn"
 							data-toggle="modal"
@@ -200,7 +199,12 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<button
+							title="Insert Reference"
+							class="tinymce_btn"
+							data-toggle="modal"
+							data-target="#insertRefModal">Insert Reference
+						</button>
 					</div>
 				</div>
 				<textarea
@@ -219,7 +223,12 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<button
+							title="Insert Reference"
+							class="tinymce_btn"
+							data-toggle="modal"
+							data-target="#insertRefModal">Insert Reference
+						</button>
 					</div>
 				</div>
 				<textarea
