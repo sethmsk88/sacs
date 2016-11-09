@@ -138,100 +138,6 @@
 						</div>
 					</div>
 
-
-<!--
-					<div class="row">
-							<div class="col-lg-12">
-								<label>Select Reference Type</label>
-								<div class="radio" style="margin-top:0;">
-									<label><input type="radio" name="newRefType" id="newRefType-0" value="0">Enter a URL</label>
-								</div>
-								<div class="radio">
-									<label><input type="radio" name="newRefType" id="newRefType-1" value="1">Attach a File</label>
-								</div>
-							</div>
-						</div>
-						<div class="row url-ref file-ref" style="display:none;">
-							<div class="col-lg-12 form-group">
-								<label for="refName">Reference Name</label>
-								<input
-									type="text"
-									name="refName"
-									id="refName"
-									class="form-control">
-							</div>
-						</div>
-						<div class="row url-ref" style="display:none;">
-							<div class="col-lg-12" class="form-group">
-								<label for="refURL">Reference URL</label>
-								<input
-									type="text"
-									name="refURL"
-									id="refURL"
-									class="form-control">
-							</div>
-						</div>
-						<div class="row file-ref" style="display:none;">
-							<div class="col-lg-12" class="form-group">
-								<label for="fileToUpload">Select a file to upload</label>
-								<div class="input-group">
-									<span class="input-group-btn">
-										<span class="btn btn-primary btn-file">
-											Browse <input type="file" name="fileToUpload" id="fileToUpload">
-										</span>
-									</span>
-									<input type="text" class="form-control" readonly="readonly">
-								</div>
-							</div>
-						</div>
-						-->
-
-
-					<!-- <div class="row">
-						<div class="col-lg-12 form-group">
-							<label for="refName">Reference Name</label>
-							<input
-								type="text"
-								name="refName"
-								id="refName"
-								class="form-control">
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-lg-12" class="form-group">
-							<label for="refURL">Reference URL</label>
-							<input
-								type="text"
-								name="refURL"
-								id="refURL"
-								class="form-control">
-						</div>
-					</div>
-					
-					<div class="row" style="margin-top:12px;">
-						<div class="col-lg-12" class="form-group">
-							<button id="attachFile-btn" class="btn btn-primary">Attach File</button>
-						</div>
-					</div>
-					
-					<div id="box-3" style="display:none;">
-						<div class="row">
-							<div class="col-lg-12" class="form-group">
-								<label for="fileToUpload">Select a file to upload</label>
-								<div class="input-group">
-									<span class="input-group-btn">
-										<span class="btn btn-primary btn-file">
-											Browse <input type="file" name="fileToUpload" id="fileToUpload">
-										</span>
-									</span>
-									<input type="text" class="form-control" readonly="readonly">
-								</div>
-					
-							</div>
-						</div>
-					</div> -->
-
 					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
 					<input type="hidden" name="textarea_id" id="textarea_id" value="">
 					<input type="hidden" name="_refChoice" id="_refChoice" value="">
@@ -395,10 +301,6 @@
 
 				// Create FormData object and populate with all form fields
 				var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
-
-				// The following key/value pair is created so this POST is compatible with the action file we are using
-				// NOTE: This is needed because there is a bug causing the refChoice to get wiped after it is initially set
-				//formData.append('refChoice', 1); // required var for the action file
 
 				$.ajax({
 					url: './content/act_insertRef.php',
