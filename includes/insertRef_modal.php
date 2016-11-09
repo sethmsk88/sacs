@@ -293,7 +293,7 @@
 	});
 
 	// Handler for when modal is closed/cancelled
-	$('#insertRefModal').on('show.bs.modal', function(e) {
+	$('#insertRefModal').on('hidden.bs.modal', function(e) {
 		resetModalFields();
 	});
 
@@ -308,59 +308,81 @@
 	// Form submit handler
 	$('#insertRefModal').find('.modal-footer #insertRefSubmit').on('click', function() {
 
-		// Check Required Fields
-		var errors = new Array();
-		if ($('#insertRefModal #refName').val() === "") {
-			errors.push('Reference Name is required');
-		}
+		var refChoice = $('#insertRef-form input[name="refChoice"]').val();
 
-		// If file selector is visible, a file is required to be attached
-		if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
-			if ($('#insertRefModal #fileToUpload').get(0).files.length === 0) {
-				errors.push('Please select a file to upload');
-			}
-		}
+		// Add an Existing Reference
+		if (refChoice === "0") {
 
-		// If there are any errors, display them and stop the form submission
-		if (errors.length > 0) {
-			$('#insertRefModal #ajax_response').html(displayErrors(errors));
-			return; // halt form submission
-		}
+			// pull info from inputs and use it to create a ref link
+			$existingRef = $('#insertRef-form #existingRef').children(':selected');
+			var refURL = $existingRef.attr('data-url');
+			var refNum = $existingRef.val();
+			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
 
-		// Set insertRefType field
-		// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
-		if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
-			var newRefType = 1; // file reference
+			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+
+			// Append ref link to richtextarea
+			$richTextArea.tinymce_append(refLink);
+
+			// Hide the modal
+			$('#insertRefModal').modal('hide');
+
 		} else {
-			var newRefType = 0; // URL reference
-		}
 
-		// Create FormData object and populate with all form fields
-		var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
-		formData.append('insertRefType', newRefType);
+			// Enforce Required Fields
+			var errors = new Array();
+			if ($('#insertRefModal #refName').val() === "") {
+				errors.push('Reference Name is required');
+			}
 
-		// The following key/value pair is created so this POST is compatible with the action file we are using
-		formData.append('refChoice', 1); // required var for the action file
-
-		$.ajax({
-			url: './content/act_insertRef.php',
-			type: 'POST',
-			data: formData,
-			dataType: 'json',
-			contentType: false,
-			processData: false,
-			success: function(response) {
-
-				// If there are errors
-				if (response.hasOwnProperty('errors') &&
-					response['errors'].length > 0) {
-
-					$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
-				} else {
-					location.reload();
+			// Require file to be attached if file input is visible
+			if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
+				if ($('#insertRefModal #fileToUpload').get(0).files.length === 0) {
+					errors.push('Please select a file to upload');
 				}
 			}
-		});
+
+			// Display Errors
+			if (errors.length > 0) {
+				$('#insertRefModal #ajax_response').html(displayErrors(errors));
+				return; // halt form submission
+			}
+
+			// Set insertRefType field
+			// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
+			if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
+				var newRefType = 1; // file reference
+			} else {
+				var newRefType = 0; // URL reference
+			}
+
+			// Create FormData object and populate with all form fields
+			var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
+			formData.append('insertRefType', newRefType);
+
+			// The following key/value pair is created so this POST is compatible with the action file we are using
+			formData.append('refChoice', 1); // required var for the action file
+
+			$.ajax({
+				url: './content/act_insertRef.php',
+				type: 'POST',
+				data: formData,
+				dataType: 'json',
+				contentType: false,
+				processData: false,
+				success: function(response) {
+
+					// If there are errors
+					if (response.hasOwnProperty('errors') &&
+						response['errors'].length > 0) {
+
+						$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
+					} else {
+						location.reload();
+					}
+				}
+			});
+		}
 	});
 
 </script>

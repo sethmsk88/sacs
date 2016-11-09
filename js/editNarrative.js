@@ -82,12 +82,17 @@ $(document).ready(function () {
 	// New tinymce button click handler
 	$('.tinymce_btn').click(function(e) {
 		e.preventDefault();
+
+		// get id of related textarea
+		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
+
+		// insert textarea_id into modal form
+		$('#insertRef-form #textarea_id').val(textarea_id);		
 	});
 
 /******************************
 	// Insert Reference button click handler
-	$('.TEST_tinymce_btn').click(function(e) {
-	// $('.tinymce_btn').click(function(e) {
+	$('.tinymce_btn').click(function(e) {
 		e.preventDefault();
 	
 		// Reset insertRef-form inputs
@@ -104,8 +109,7 @@ $(document).ready(function () {
 	});
 
 	// Insert Reference Form Submission Handler
-	$('#TEST_insertRef-form').submit(function(e) {
-	// $('#insertRef-form').submit(function(e) {
+	$('#insertRef-form').submit(function(e) {
 		e.preventDefault();
 
 		$form = $(this);
@@ -215,7 +219,7 @@ $(document).ready(function () {
 	});
 
 	// Reference choice change handler
-	$('TEST_input[name="refChoice"]').change(function() {
+	$('input[name="refChoice"]').change(function() {
 	// $('input[name="refChoice"]').change(function() {
 		var refChoice = $(this).val();
 
@@ -243,7 +247,7 @@ $(document).ready(function () {
 	});
 
 	// Reference Type change handler
-	$('TEST_input[name="newRefType"]').change(function() {
+	$('input[name="newRefType"]').change(function() {
 	// $('input[name="newRefType"]').change(function() {
 		var newRefType = $(this).val();
 
