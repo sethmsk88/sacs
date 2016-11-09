@@ -86,6 +86,9 @@ $(document).ready(function () {
 		// get id of related textarea
 		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
 
+		// Focus on tinymce editor so that the tinymce_insertAtCaret function will work
+		tinymce.get(textarea_id).focus();
+
 		// insert textarea_id into modal form
 		$('#insertRef-form #textarea_id').val(textarea_id);		
 	});
