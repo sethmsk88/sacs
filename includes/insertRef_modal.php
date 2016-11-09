@@ -235,6 +235,7 @@
 					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
 					<input type="hidden" name="textarea_id" id="textarea_id" value="">
 					<input type="hidden" name="_refChoice" id="_refChoice" value="">
+					<input type="hidden" name="newRefType" id="newRefType" value="">
 				</form>
 
 				<div class="row">
@@ -314,6 +315,7 @@
 	// Form submit handler
 	$('#insertRefModal').find('.modal-footer #insertRefSubmit').on('click', function() {
 
+		// Get refChoice from hidden input, because for some unknown reason, the radio button value is always set to 0
 		var refChoice = $('#insertRef-form input[name="_refChoice"]').val();
 
 		// Add an Existing Reference
@@ -329,9 +331,6 @@
 
 			// Append ref link to richtextarea
 			$richTextArea.tinymce_append(refLink);
-
-			// Hide the modal
-			$('#insertRefModal').modal('hide');
 
 		} else if (refChoice === "1") {
 		// Add a new reference
@@ -355,40 +354,88 @@
 				return; // halt form submission
 			}
 
-			// Set insertRefType field
+			// Set newRefType field
 			// This field is used in the action file to determine whether or not we are attaching a file as a reference or simply using a URL as a reference
 			if ($('#insertRefModal #fileToUpload').is(':visible') === true) {
 				var newRefType = 1; // file reference
 			} else {
 				var newRefType = 0; // URL reference
 			}
+			$('#insertRefModal #newRefType').val(newRefType); // set hidden input field
 
-			// Create FormData object and populate with all form fields
-			var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
-			formData.append('insertRefType', newRefType);
+			// Add URL Reference
+			if (newRefType === 0) {
+				$.ajax({
+					type: 'post',
+					url: './content/act_insertRef.php',
+					data: $('#insertRefModal #insertRef-form').serialize(),
+					dataType: 'json',
+					success: function(response) {
+						///////////////
+						//	NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
+						///////////////
+						// Select the richTextArea iframe
+						$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
-			// The following key/value pair is created so this POST is compatible with the action file we are using
-			formData.append('refChoice', 1); // required var for the action file
+						// Create ref link
+						var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
 
-			$.ajax({
-				url: './content/act_insertRef.php',
-				type: 'POST',
-				data: formData,
-				dataType: 'json',
-				contentType: false,
-				processData: false,
-				success: function(response) {
-
-					// If there are errors
-					if (response.hasOwnProperty('errors') &&
-						response['errors'].length > 0) {
-
-						$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
-					} else {
-						location.reload();
+						// Append ref link to richtextarea
+						$richTextArea.tinymce_append(refLink);
 					}
-				}
-			});
+				});
+
+			} else if (newRefType === 1) {
+			// Add a file reference
+				
+				$responseDiv = $('#ajax_response');
+
+				// Display Loading gif
+				$responseDiv.html('<img src="../shared/img/loading_rounded_blocks.gif" alt="Loading..." class="loading-img">');
+
+				// Create FormData object and populate with all form fields
+				var formData = new FormData($('#insertRefModal #insertRef-form')[0]);
+
+				// The following key/value pair is created so this POST is compatible with the action file we are using
+				// NOTE: This is needed because there is a bug causing the refChoice to get wiped after it is initially set
+				//formData.append('refChoice', 1); // required var for the action file
+
+				$.ajax({
+					url: './content/act_insertRef.php',
+					type: 'POST',
+					data: formData,
+					dataType: 'json',
+					contentType: false,
+					processData: false,
+					success: function(response) {
+
+						// If there are errors
+						if (response.hasOwnProperty('errors') &&
+							response['errors'].length > 0) {
+
+							$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
+						} else {
+							
+							// Select the richTextArea iframe
+							$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
+
+							// Create ref link
+							var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+
+							// Append ref link to richtextarea
+							$richTextArea.tinymce_append(refLink);
+
+							// Clear response div
+							$responseDiv.html("");
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						var errorMsg = 'Error Status: ' + textStatus + '<br />' +  '<code>' + errorThrown + '</code>';
+						
+						$responseDiv.html(errorMsg);
+					}
+				});
+			}
 
 		} else if (refChoice === "2") {
 		// Insert a link to the supplemental
@@ -403,10 +450,10 @@
 
 			// Append ref link to richtextarea
 			$richTextArea.tinymce_append(supLink);
-
-			// Hide the modal
-			$('#insertRefModal').modal('hide');
 		}
+
+		// Hide the modal
+		$('#insertRefModal').modal('hide');
 	});
 
 </script>

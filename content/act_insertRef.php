@@ -204,14 +204,17 @@
 
 			// if there were errors during the upload
 			if (!empty($uploadResultObj['errors'])) {
-				$json_arr['errors'] = $uploadResultObj['errors'];
+				$json_array['errors'] = $uploadResultObj['errors'];
 			} else {
+
 				// insert new refLink into reference table
 				$highestRefNum = getNewReferenceNumber($_POST['srid']);
 				$refURL = $uploadResultObj['linkURL'];
 				$link_id = insertReference($_POST['srid'], $_POST['refName'], $refURL, $highestRefNum);
-
 				associateFile($link_id, $uploadResultObj['file_id']);
+
+				$json_array['refURL'] = $refURL;
+				$json_array['refNum'] = $highestRefNum;
 			}
 		}
 	}
