@@ -38,6 +38,9 @@ $(document).ready(function() {
 		// get id of related textarea
 		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
 
+		// Focus on tinymce editor so that the tinymce_insertAtCaret function will work
+		tinymce.get(textarea_id).focus();
+
 		// insert textarea_id into modal form
 		$('#textarea_id').val(textarea_id);
 
@@ -63,10 +66,8 @@ $(document).ready(function() {
 			var refNum = $existingRef.val();
 			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
 
-			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
-
-			// Append ref link to richtextarea
-			$richTextArea.tinymce_append(refLink);
+			// Insert ref link into the active richtextarea
+			tinymce_insertAtCaret(refLink);
 
 		// Adding a New Reference
 		} else if (refChoice === "1") {
@@ -86,8 +87,8 @@ $(document).ready(function() {
 					// Create ref link
 					var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
 
-					// Append ref link to richtextarea
-					$richTextArea.tinymce_append(refLink);
+					// Insert ref link into the active richtextarea
+					tinymce_insertAtCaret(refLink);
 				}
 			});
 		}
