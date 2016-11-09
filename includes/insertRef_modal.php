@@ -234,6 +234,7 @@
 
 					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
 					<input type="hidden" name="textarea_id" id="textarea_id" value="">
+					<input type="hidden" name="_refChoice" id="_refChoice" value="">
 				</form>
 
 				<div class="row">
@@ -283,6 +284,9 @@
 	$('#insertRefModal input[name="refChoice"]').change(function() {
 		var refChoice = $(this).val();
 
+		// Set hidden input value
+		$('#insertRef-form #_refChoice').val(refChoice);
+
 		if (refChoice == 0) {
 			swapFade('#box-1', '#box-2');
 		} else if (refChoice == 1) {
@@ -294,6 +298,8 @@
 
 	// Handler for when modal is closed/cancelled
 	$('#insertRefModal').on('hidden.bs.modal', function(e) {
+		var refChoice = $('#insertRef-form input[name="refChoice"]').val(); // DEBUGGING
+
 		resetModalFields();
 	});
 
@@ -308,7 +314,7 @@
 	// Form submit handler
 	$('#insertRefModal').find('.modal-footer #insertRefSubmit').on('click', function() {
 
-		var refChoice = $('#insertRef-form input[name="refChoice"]').val();
+		var refChoice = $('#insertRef-form input[name="_refChoice"]').val();
 
 		// Add an Existing Reference
 		if (refChoice === "0") {
@@ -327,7 +333,8 @@
 			// Hide the modal
 			$('#insertRefModal').modal('hide');
 
-		} else {
+		} else if (refChoice === "1") {
+		// Add a new reference
 
 			// Enforce Required Fields
 			var errors = new Array();
@@ -382,6 +389,23 @@
 					}
 				}
 			});
+
+		} else if (refChoice === "2") {
+		// Insert a link to the supplemental
+
+			var supURL = "?page=subNarrative&id=" + $('#SRID').val();
+			var linkName = $('#insertRef-form #linkName').val();
+
+			// create link
+			var supLink = '<a href="' + supURL + '">' + linkName + '</a>';
+
+			$richTextArea = $('#' + $('#textarea_id').val()).closest('div.form-group').find('iframe');
+
+			// Append ref link to richtextarea
+			$richTextArea.tinymce_append(supLink);
+
+			// Hide the modal
+			$('#insertRefModal').modal('hide');
 		}
 	});
 
