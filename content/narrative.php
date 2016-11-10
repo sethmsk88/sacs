@@ -77,7 +77,7 @@
 
 	<div class="row" style="margin-top:8px;">
 		<div class="col-lg-3">
-			<button id="appendix-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Appendix A</button>
+			<button id="appendix-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Appendix</button>
 		</div>
 	</div>
 </div>

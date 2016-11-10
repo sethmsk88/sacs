@@ -36,7 +36,7 @@
 
 <div class="container">
 	<h5>DOCUMENTATION</h5>
-	<h5><?= $srNum ?> Appendix A</h5>
+	<h5><?= $srNum ?> Appendix</h5>
 
 	<?php
 		/*********** Begin Edit Mode ***********/
