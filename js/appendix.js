@@ -102,4 +102,15 @@ END DEPRECATED
 			}
 		});		
 	});
+
+	// Handler for Export Appendix to PDF button
+	$('#exportAppendix-btn').click(function() {
+		var srid = $(this).attr('data-srid');
+		window.open("./content/exportToPDF.php?id=" + srid, "_blank");
+	});
+
+	// Handler for Export Attachments to ZIP button
+	$('#exportAttachments-btn').click(function() {
+		// Not Yet Implemented
+	});
 });
