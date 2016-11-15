@@ -42,7 +42,7 @@
 		</div>
 		<div class="col-md-4" style="text-align:right;">
 			<button id="exportAppendix-btn" class="btn btn-sm btn-primary" data-srid="<?=$_GET['id']?>">Export Appendix to PDF</button>
-			<button id="exportAttachments-btn" class="btn btn-sm btn-primary" data-srid="">Export Attachments to ZIP</button>
+			<button id="exportAttachments-btn" class="btn btn-sm btn-primary" data-srid="<?=$_GET['id']?>">Export Attachments to ZIP</button>
 		</div>
 	</div>
 
