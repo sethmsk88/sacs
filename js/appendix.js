@@ -111,6 +111,7 @@ END DEPRECATED
 
 	// Handler for Export Attachments to ZIP button
 	$('#exportAttachments-btn').click(function() {
-		// Not Yet Implemented
+		var srid = $(this).attr('data-srid');
+		window.open("./content/exportAttachments.php?id=" + srid, "_blank");
 	});
 });
