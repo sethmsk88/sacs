@@ -28,7 +28,6 @@
 	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum);
-	$numRows = $stmt->num_rows;
 
 	if ($srType === 's')
 		$srPrefix = 'C.S. ';
