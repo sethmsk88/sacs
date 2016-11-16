@@ -271,4 +271,11 @@ function make_unique_filename($fileName, $uploadsDir)
 	return $fileName;
 }
 
+function delete_file_from_server($fileName, $pathToDir)
+{
+	$originalDir = getcwd(); // original working directory
+	chdir($pathToDir); // change working directory to uploads directory
+	unlink($fileName); // delete file from server
+	chdir($originalDir); // change working directory to original wd
+}
 ?>

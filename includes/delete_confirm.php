@@ -72,8 +72,5 @@
 				location.reload();
 			}
 		});
-		
-		// Submit form
-		// $(this).data('form').submit();
 	});
 </script>

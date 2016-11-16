@@ -518,6 +518,22 @@
 	// Remove file
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {
 
+		// Delete the file from the server
+		$uploadsDir = "../uploads/";
+		$sel_filePath = "
+			SELECT fileName
+			FROM ". TABLE_FILE_UPLOAD ."
+			WHERE file_upload_id = ?
+		";
+		$stmt = $conn->prepare($sel_filePath);
+		$stmt->bind_param("i", $_POST['fileID']);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($fileName);
+		$stmt->fetch();
+
+		delete_file_from_server($fileName, $uploadsDir);
+
 		// Delete file association from table
 		$del_file_assoc = "
 			DELETE FROM ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ."
