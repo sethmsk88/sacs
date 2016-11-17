@@ -40,6 +40,8 @@
 
 <html>
 	<head>
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
 		<style type="text/css">
 			table.appendix {border-collapse:collapse; width:100%;}
 			table.appendix tr td {border:1px solid black; padding:4px;}
