@@ -4,6 +4,7 @@
 	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/bootstrap/apps/sacs/");
     define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
+    $VALID_UPLOAD_EXTENSIONS = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub", "jpg", "jpeg", "png", "gif");
 
     if (APP_DEV_MODE == true) {
     	define("TABLE_SECTION", "sacs.dev_section");

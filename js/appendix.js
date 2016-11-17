@@ -71,21 +71,6 @@ $(document).ready(function() {
 		});
 	});	
 
-/*
-BEGIN DEPRECATED
-	// Add New Reference button click handler
-	$('#newRef-btn').click(function(e) {
-		e.preventDefault();
-	
-		// Reset insertRef-form inputs
-		resetInputFields('insertRef-form');
-
-		// Show insert reference modal, and pass id of textarea as param
-		showModal('insertRef-modal');
-	});
-END DEPRECATED
-*/
-
 	// Insert New Reference Form Submission Handler
 	$('#insertRef-form').submit(function(e) {
 		e.preventDefault();

@@ -1,5 +1,6 @@
 <?php
 	require_once("../includes/globals.php");
+	require_once("../includes/functions.php");
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
 	/*
@@ -50,6 +51,8 @@
 	// Upload file to application uploads directory
 	// Returns array of errors and newly uploaded file id
 	function uploadFile($fileObj) {
+		global $VALID_UPLOAD_EXTENSIONS;
+
 		$returnObj = array();
 		$uploads_dir = 'uploads/';
 
@@ -61,17 +64,13 @@
 		$fileName_exploded = explode('.', $fileName);
 		$fileExt = strtolower(end($fileName_exploded));
 		
-		// Append timestamp to filename
-		$timeStamp = date("YmdHis"); // 1/2/2016 1:05:12pm = 20160102130512
-		$fileName = $timeStamp . '_' . $fileName;
+		$fileName = make_unique_filename($fileName, $uploads_dir);
 		$filePath = APP_PATH . $uploads_dir . $fileName;
 
-		// Check to see if extension is valid
-		$extensions = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub");
-		if (in_array($fileExt, $extensions) === false) {
+		if (in_array($fileExt, $VALID_UPLOAD_EXTENSIONS) === false) {
 			$errMsg = "Invalid file type. Please choose a file with one of the following file types: ";
-			$numExtensions = count($extensions);
-			foreach ($extensions as $i => $extension) {
+			$numExtensions = count($VALID_UPLOAD_EXTENSIONS);
+			foreach ($VALID_UPLOAD_EXTENSIONS as $i => $extension) {
 				$errMsg .= $extension;
 
 				if ($i < $numExtensions - 1)
@@ -106,31 +105,6 @@
 		$returnObj['errors'] = $errors;
 
 		return $returnObj;
-
-		/*// If upload failed respond with error message(s)
-		if (empty($errors) === false) {
-			$json_array['errors'] = $errors;
-
-		// Else, 
-		} else {
-			// move temp uploaded file to uploads directory
-			move_uploaded_file($fileTmpName, $filePath);
-
-			$refURL = APP_PATH_URL . $uploads_dir . $fileName;
-
-			// insert new refLink into reference table
-			$highestRefNum = getNewReferenceNumber($_POST['srid']);
-			$link_id = insertReference($_POST['srid'], $_POST['refName'], $refURL, $highestRefNum);
-			
-			// insert the filename into the file upload table
-			$file_id = insertFile($fileName, $filePath, $fileExt);
-
-			// insert the link/file association into table
-			associateFile($link_id, $file_id);
-
-			$json_array['refNum'] = $highestRefNum;
-			$json_array['refURL'] = $refURL;
-		}*/
 	}
 
 	// Insert file info into table

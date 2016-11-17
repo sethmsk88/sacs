@@ -158,13 +158,7 @@
 				// If this is a file reference, create a file link
 				if (response.hasOwnProperty('fileName')) {
 
-					// strip timestamp from filename
-					var modifiedFileName = response['fileName'];
-					var str_arr = modifiedFileName.split('_');
-					str_arr.splice(0,1); // remove timestamp
-					modifiedFileName = str_arr.join('_');
-
-					var refFileLink = '<a href="' + response['linkURL'] + '" target="_blank">' + modifiedFileName + '</a>';
+					var refFileLink = '<a href="' + response['linkURL'] + '" target="_blank">' + response['fileName'] + '</a>';
 
 					$('#editRefModal #refFile-link').html(refFileLink);				
 
