@@ -1,4 +1,7 @@
 <?php
+	// Start output buffering
+	ob_start();
+
 	require_once("../includes/globals.php");
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/api/mpdf60/mpdf.php';
@@ -33,26 +36,44 @@
 		$srPrefix = 'C.S. ';
 	else
 		$srPrefix = 'C.R. ';
+?>
 
-	$css = '';
-	$css .= '<style type="text/css">';
-	$css .= 'table {border-collapse:collapse; width:100%;}';
-	$css .= 'table tr td {border:1px solid black; padding:4px;}';
-	$css .= '</style>';
+<html>
+	<head>
+		<style type="text/css">
+			table.appendix {border-collapse:collapse; width:100%;}
+			table.appendix tr td {border:1px solid black; padding:4px;}
+		</style>
+	</head>
+	<body>
+		<h5>DOCUMENTATION</h5>
 
-	$html = '';
-	$html .= $css;
-	$html .= '<h3>DOCUMENTATION</h3>'; 
-	$html .= '<h3>'. $srPrefix . $srNum .' Appendix</h3>';
-	$html .= '<table>';
+		<h5><?= $srNum ?> Appendix</h5>
+		<table class="appendix">
+		<?php
+			while ($stmt->fetch()) {
+		?>
+			<tr>
+				<td><?= $refNum ?>.</td>
 
-	while ($stmt->fetch()) {
-		$html .= '<tr>';
-		$html .= '<td>'. $refNum .'</td>';
-		$html .= '<td><a href="'. $linkURL .'" target="_blank">'. $linkName .'</a></td>';
-		$html .= '</tr>';
-	}
-	$html .= '</table>';
+				<!-- Create link for reference if $linkURL exists -->
+				<?php if ($linkURL != "") { ?>
+					<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
+				<?php } else { ?>
+					<td><?= $linkName ?></td>
+				<?php } ?>
+			</tr>
+		<?php
+			}
+		?>
+		</table>
+	</body>
+</html>
+
+<?php
+	$html = ob_get_clean();
+
+	// echo $html;
 
 	$mpdf = new mPDF();
 	$mpdf->WriteHTML($html);
