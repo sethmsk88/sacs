@@ -1,5 +1,6 @@
 <?php
-	require_once("../includes/globals.php");
+	require_once "../includes/globals.php";
+	require_once "../includes/functions.php";
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
 	// Remove timestampe from beginning of filename
@@ -48,12 +49,14 @@
 	else
 		$srPrefix = 'CR_';
 
+	$tmpDir = ini_get('upload_tmp_dir');
 	$zipFileName = $srPrefix . str_replace('.', '_', $srNum) . '_attachments.zip';
+	$zipFilePath = $tmpDir . '/' . $zipFileName;
 	$zip = new ZipArchive();
 	
 	// Create and open ZIP file
-	if ($zip->open($zipFileName, ZipArchive::OVERWRITE) !== true) {
-		exit("Cannot open (" . $zipFileName . ")\n");
+	if ($zip->open($zipFilePath, ZipArchive::OVERWRITE) !== true) {
+		exit("Cannot open (" . $zipFilePath . ")\n");
 	}
 
 	// Add all attachments to ZIP file
@@ -71,6 +74,6 @@
 
 	header('Content-Type: application/zip');
 	header('Content-disposition: attachment; filename=' . $zipFileName);
-	header('Content-Length: '. filesize($zipFileName));
-	readfile($zipFileName);
+	header('Content-Length: '. filesize($zipFilePath));
+	readfile($zipFilePath);
 ?>
