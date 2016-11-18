@@ -232,8 +232,11 @@ function increment_fileNumber($fileName)
 	// Pop the file extension off the end
 	$extension = array_pop($fileName_exploded);
 
+	// Join array into string using '.' as a separator
+	$fileName = implode('.', $fileName_exploded);
+
 	// Split the string by '_'
-	$fileName_exploded = explode('_', $fileName_exploded[0]);
+	$fileName_exploded = explode('_', $fileName);
 
 	// Remove the number that was previously appended to the filename
 	$prevNumber = array_pop($fileName_exploded);
@@ -241,7 +244,7 @@ function increment_fileNumber($fileName)
 	// Add a new number to the filename
 	array_push($fileName_exploded, ++$prevNumber);
 
-	// Insert '_' where they were previously removed
+	// Join array into string using '_' as a separator
 	$fileName = implode('_', $fileName_exploded) . '.' . $extension;
 
 	return $fileName;
@@ -253,15 +256,9 @@ function make_unique_filename($fileName, $uploadsDir)
 	if (file_exists(APP_PATH . $uploadsDir . $fileName)) {
 		$fileName_exploded = explode('.', $fileName);
 		$extension = array_pop($fileName_exploded);
-
-		// Remove any additional extensions that could cause naming problems
-		// This should result in $fileName_exploded being an array with one element
-		while (count($fileName_exploded) > 1) {
-			array_pop($fileName_exploded);
-		}
-
-		// Append number to filename
-		$fileName = $fileName_exploded[0] . '_1.' . $extension;
+		array_push($fileName_exploded, '_1'); // Append number to filename
+		array_push($fileName_exploded, $extension);
+		$fileName = implode('.', $fileName_exploded);
 
 		// Make sure filename is unique
 		while (file_exists(APP_PATH . $uploadsDir . $fileName)) {

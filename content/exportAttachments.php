@@ -1,14 +1,7 @@
 <?php
-	require_once("../includes/globals.php");
+	require_once "../includes/globals.php";
+	require_once "../includes/functions.php";
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
-
-	// Remove timestampe from beginning of filename
-	// Return modified filename
-	function removeTimestamp($fileName) {
-		$fileName_exploded = explode('_', $fileName);
-		array_shift($fileName_exploded); // Remove first item from array
-		return implode('_', $fileName_exploded);
-	}
 
 	// Uploads Directory Relative Path
 	$uploadDirRelPath = "../uploads/";
@@ -48,18 +41,19 @@
 	else
 		$srPrefix = 'CR_';
 
+	$tmpDir = ini_get('upload_tmp_dir');
 	$zipFileName = $srPrefix . str_replace('.', '_', $srNum) . '_attachments.zip';
+	$zipFilePath = $tmpDir . '/' . $zipFileName;
 	$zip = new ZipArchive();
 	
 	// Create and open ZIP file
-	if ($zip->open($zipFileName, ZipArchive::OVERWRITE) !== true) {
-		exit("Cannot open (" . $zipFileName . ")\n");
+	if ($zip->open($zipFilePath, ZipArchive::OVERWRITE) !== true) {
+		exit("Cannot open (" . $zipFilePath . ")\n");
 	}
 
 	// Add all attachments to ZIP file
 	while ($stmt->fetch()) {
 		$filePath = $uploadDirRelPath . $fileName;
-		$fileName = removeTimestamp($fileName);
 
 		if (file_exists($filePath) && is_readable($filePath)) {
 			$zip->addFile($filePath, $fileName);
@@ -71,6 +65,6 @@
 
 	header('Content-Type: application/zip');
 	header('Content-disposition: attachment; filename=' . $zipFileName);
-	header('Content-Length: '. filesize($zipFileName));
-	readfile($zipFileName);
+	header('Content-Length: '. filesize($zipFilePath));
+	readfile($zipFilePath);
 ?>

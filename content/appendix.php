@@ -5,6 +5,7 @@
 	require_once './includes/delete_confirm.php'; // delete confirm modal
 	require_once './includes/editRef_modal.php'; // edit reference modal
 	require_once './includes/newRef_modal.php'; // new reference modal
+	require_once './includes/alert_dialog.php'; // Basic alert dialog
 
 	// Get SR type and SR number
 	$sel_sr = "
