@@ -89,14 +89,48 @@ $(document).ready(function() {
 	});
 
 	// Handler for Export Appendix to PDF button
-	$('#exportAppendix-btn').click(function() {
+	$('#exportAppendix-btn').click(function(e) {
+		e.preventDefault();
+
 		var srid = $(this).attr('data-srid');
 		window.open("./content/exportToPDF.php?id=" + srid, "_blank");
 	});
 
 	// Handler for Export Attachments to ZIP button
-	$('#exportAttachments-btn').click(function() {
+	$('#exportAttachments-btn').click(function(e) {
+		e.preventDefault();
+
 		var srid = $(this).attr('data-srid');
-		window.open("./content/exportAttachments.php?id=" + srid, "_blank");
+
+		// Using AJAX, see if there are any attached files
+		$.ajax({
+			type: 'POST',
+			url: './content/act_existAttachments.php',
+			data: {
+				'srid': srid
+			},
+			success: function(response) {
+				if (parseInt(response) > 0) {
+					// Create ZIP file
+					window.open("./content/exportAttachments.php?id=" + srid, "_blank");
+				}
+				else {
+					showAlert('There are no attachments to export.', '<span class="text-info">Message</span>');
+				}
+			}
+		});
 	});
+
+	// Dialog show event handler
+	function showAlert(msg, title) {
+
+		// Set default title if undefined
+		title = (typeof title === 'undefined') ? '' : title;
+
+		$dialog = $('#alertDialog');
+
+		$dialog.find('.modal-body').html(msg);
+		$dialog.find('.modal-title').html(title);
+		$dialog.modal();
+	}
 });
