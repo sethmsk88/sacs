@@ -222,4 +222,60 @@ function require_login($loggedIn) {
 		exit;
 	}
 }
+
+// Increment the number on the end of the filename
+function increment_fileNumber($fileName)
+{		
+	// Split string by '.'
+	$fileName_exploded = explode('.', $fileName);
+
+	// Pop the file extension off the end
+	$extension = array_pop($fileName_exploded);
+
+	// Split the string by '_'
+	$fileName_exploded = explode('_', $fileName_exploded[0]);
+
+	// Remove the number that was previously appended to the filename
+	$prevNumber = array_pop($fileName_exploded);
+
+	// Add a new number to the filename
+	array_push($fileName_exploded, ++$prevNumber);
+
+	// Insert '_' where they were previously removed
+	$fileName = implode('_', $fileName_exploded) . '.' . $extension;
+
+	return $fileName;
+}
+
+// Return a filename that does not already exist in the uploads directory
+function make_unique_filename($fileName, $uploadsDir)
+{
+	if (file_exists(APP_PATH . $uploadsDir . $fileName)) {
+		$fileName_exploded = explode('.', $fileName);
+		$extension = array_pop($fileName_exploded);
+
+		// Remove any additional extensions that could cause naming problems
+		// This should result in $fileName_exploded being an array with one element
+		while (count($fileName_exploded) > 1) {
+			array_pop($fileName_exploded);
+		}
+
+		// Append number to filename
+		$fileName = $fileName_exploded[0] . '_1.' . $extension;
+
+		// Make sure filename is unique
+		while (file_exists(APP_PATH . $uploadsDir . $fileName)) {
+			$fileName = increment_fileNumber($fileName);
+		}
+	}
+	return $fileName;
+}
+
+function delete_file_from_server($fileName, $pathToDir)
+{
+	$originalDir = getcwd(); // original working directory
+	chdir($pathToDir); // change working directory to uploads directory
+	unlink($fileName); // delete file from server
+	chdir($originalDir); // change working directory to original wd
+}
 ?>

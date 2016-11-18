@@ -1,8 +1,10 @@
 <?php
 	require_once("../includes/globals.php");
+	require_once("../includes/functions.php");
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
-	function swapReferences($str, $ref1, $ref2) {
+	function swapReferences($str, $ref1, $ref2)
+	{
 		$str = str_replace('['. $ref1 .']', '[A]', $str);
 		$str = str_replace('['. $ref2 .']', '[B]', $str);
 		$str = str_replace('[A]', '['. $ref2 .']', $str);
@@ -12,7 +14,8 @@
 	}
 
 	// Delete reference link from text
-	function deleteReference($str, $ref) {
+	function deleteReference($str, $ref)
+	{
 		/*
 			Match reference link with href attribute and other optional unknown attributes. Matching link name with the following format [#] where # = the reference number. Spaces on either side of the link name are also captured in case the User accidentally adds spaces to the link.
 		*/
@@ -21,21 +24,33 @@
 	}
 
 	// Replace reference links in text with new links
-	function editReference($str, $ref, $url) {
+	function editReference($str, $ref, $url)
+	{
 		$newLink = '<a href="'. $url .'" target="_blank">['. $ref .']</a>';
 		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\s*\[". $ref ."\]\s*</a>~siU";
 		return preg_replace($refLink_pattern, $newLink, $str);
 	}
 
-	function decrementReference($str, $ref) {
+	function decrementReference($str, $ref)
+	{
 		$decrementedRef = intval($ref) - 1;
 
 		return str_replace('['. $ref .']', '['. $decrementedRef .']', $str);
 	}
 
+	// Check to see whether or not filename is only composed
+	// of English characters, numbers, and (_-.) symbols.
+	function checkUploadedFileName($fileName)
+	{
+		return (bool) ((preg_match("`^[-0-9A-Z_\.]+$`i", $fileName)) ? true : false);
+	}
+
 	// Upload file to application uploads directory
 	// Returns array of errors and newly uploaded file id
-	function uploadFile($fileObj) {
+	function uploadFile($fileObj)
+	{
+		global $VALID_UPLOAD_EXTENSIONS;
+
 		$returnObj = array();
 		$uploads_dir = 'uploads/';
 
@@ -47,17 +62,13 @@
 		$fileName_exploded = explode('.', $fileName);
 		$fileExt = strtolower(end($fileName_exploded));
 
-		// Append timestamp to filename
-		$timeStamp = date("YmdHis"); // 1/2/2016 1:05:12pm = 20160102130512
-		$fileName = $timeStamp . '_' . $fileName;
+		$fileName = make_unique_filename($fileName, $uploads_dir);
 		$filePath = APP_PATH . $uploads_dir . $fileName;
 
-		// Check to see if extension is valid
-		$extensions = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub");
-		if (in_array($fileExt, $extensions) === false) {
+		if (in_array($fileExt, $VALID_UPLOAD_EXTENSIONS) === false) {
 			$errMsg = "Invalid file type. Please choose a file with one of the following file types: ";
-			$numExtensions = count($extensions);
-			foreach ($extensions as $i => $extension) {
+			$numExtensions = count($VALID_UPLOAD_EXTENSIONS);
+			foreach ($VALID_UPLOAD_EXTENSIONS as $i => $extension) {
 				$errMsg .= $extension;
 
 				if ($i < $numExtensions - 1)
@@ -74,7 +85,7 @@
 
 		// Make sure filename is not too long
 		$maxFileNameLength = 250;
-		if (strlen($fileName) > $maxFileNameLength) {
+		if (mb_strlen($fileName, "UTF-8") > $maxFileNameLength) {
 			array_push($errors, "File name is too long (max ". $maxFileNameLength ." characters)");
 		}
 
@@ -95,7 +106,8 @@
 	}
 
 	// Insert file info into table
-	function insertFile($fileName, $filePath, $fileExt) {
+	function insertFile($fileName, $filePath, $fileExt)
+	{
 		global $conn;
 
 		$ins_file = "
@@ -110,7 +122,8 @@
 	}
 
 	// Insert record into table associating a reference with a certain file
-	function associateFile($linkID, $fileID) {
+	function associateFile($linkID, $fileID)
+	{
 		global $conn;
 
 		$ins_file_assoc = "
@@ -123,13 +136,16 @@
 	}
 
 	// Make sure the URL begins with the protocol given as a parameter
-	function enforceProtocol($url, $protocol) {
+	function enforceProtocol($url, $protocol)
+	{
 		$parsedURL = parse_url($url);
 		if (empty($parsedURL['scheme']))
 		    return 'http://' . ltrim($url, '/'); // prepend protocol to URL
 		else
 			return $url;
 	}
+
+	$uploadsDir = "../uploads/";
 
 	// Change Order
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
@@ -233,11 +249,15 @@
 
 	// Delete Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 1) {
-		// get refNum of this ref
+		// get info related to this ref
 		$sel_refNum = "
-			SELECT refNum, srid
-			FROM " . TABLE_APPENDIX_LINK . "
-			WHERE appendix_link_id = ?
+			SELECT l.srid, l.appendix_link_id, l.refNum, lhf.file_upload_id, f.fileName
+			FROM ". TABLE_APPENDIX_LINK ." AS l
+			LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
+			ON l.appendix_link_id = lhf.appendix_link_id
+			LEFT JOIN ". TABLE_FILE_UPLOAD ." AS f
+			ON lhf.file_upload_id = f.file_upload_id
+			WHERE l.appendix_link_id = ?
 		";
 		if (!$stmt = $conn->prepare($sel_refNum)) {
 			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
@@ -246,10 +266,9 @@
 		} else if (!$stmt->execute()) {
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
 		} else {		
-			$result = $stmt->get_result();
-			$result_row = $result->fetch_assoc();
-			$deleteRefNum = $result_row['refNum'];
-			$srid = $result_row['srid'];
+			$stmt->store_result();
+			$stmt->bind_result($srid, $linkID, $deleteRefNum, $fileID, $fileName);
+			$stmt->fetch();
 		}
 
 		// Get title/descr, narrative, and summary
@@ -355,6 +374,31 @@
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
 		} else if (!$stmt->execute()) {
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		}
+
+		// Delete file and file info if link has a file associated with it
+		if (!is_null($fileID)) {
+			// Delete the link-file association record
+			$del_link_file_assoc = "
+				DELETE FROM ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ."
+				WHERE appendix_link_id = ?
+					AND file_upload_id = ?
+			";
+			$stmt = $conn->prepare($del_link_file_assoc);
+			$stmt->bind_param('ii', $linkID, $fileID);
+			$stmt->execute();
+
+			// Delete the file record
+			$del_file = "
+				DELETE FROM ". TABLE_FILE_UPLOAD ."
+				WHERE file_upload_id = ?
+			";
+			$stmt = $conn->prepare($del_file);
+			$stmt->bind_param('i', $fileID);
+			$stmt->execute();
+
+			// Delete the file from the server
+			delete_file_from_server($fileName, $uploadsDir);
 		}
 	
 		// Update standard/requirement
@@ -503,6 +547,21 @@
 
 	// Remove file
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {
+
+		// Delete the file from the server
+		$sel_filePath = "
+			SELECT fileName
+			FROM ". TABLE_FILE_UPLOAD ."
+			WHERE file_upload_id = ?
+		";
+		$stmt = $conn->prepare($sel_filePath);
+		$stmt->bind_param("i", $_POST['fileID']);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($fileName);
+		$stmt->fetch();
+
+		delete_file_from_server($fileName, $uploadsDir);
 
 		// Delete file association from table
 		$del_file_assoc = "

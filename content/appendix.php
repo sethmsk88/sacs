@@ -35,8 +35,19 @@
 ?>
 
 <div class="container">
-	<h5>DOCUMENTATION</h5>
-	<h5><?= $srNum ?> Appendix A</h5>
+	
+	<div class="row">
+		<div class="col-md-8">
+			<h5>DOCUMENTATION</h5>
+		</div>
+		<div class="col-md-4" style="text-align:right;">
+			<button id="exportAppendix-btn" class="btn btn-sm btn-primary" data-srid="<?=$_GET['id']?>">Export Appendix to PDF</button>
+			<button id="exportAttachments-btn" class="btn btn-sm btn-primary" data-srid="<?=$_GET['id']?>">Export Attachments to ZIP</button>
+		</div>
+	</div>
+
+	
+	<h5><?= $srNum ?> Appendix</h5>
 
 	<?php
 		/*********** Begin Edit Mode ***********/

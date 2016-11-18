@@ -14,4 +14,9 @@ $(document).ready(function() {
 
 		location.href = "?page=appendix&id=" + srid;
 	});
+
+	$('#printEntireDoc-btn').click(function() {
+		var srid = $(this).attr('data-srid');
+		window.open("./content/exportEntireDoc.php?id=" + srid, "_blank");
+	});
 });

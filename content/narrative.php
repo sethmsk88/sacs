@@ -42,9 +42,14 @@
 
 
 <div class="container">
-
-	<h4><?= $header ?></h4>
-	<br>
+	<div class="row">
+		<div class="col-xs-8">
+			<h4><?= $header ?></h4>
+		</div>
+		<div class="col-xs-4" style="text-align:right;">
+			<button id="printEntireDoc-btn" class="btn btn-sm btn-primary" data-srid="<?=$_GET['id']?>">Print Entire Document</button>
+		</div>
+	</div>
 
 	<!-- Title/Description -->
 	<?= $descr ?>
@@ -62,22 +67,12 @@
 	<h4>Narrative</h4>
 	<?= $narrative ?>
 
-	<!-- <div class="subheader">Personnel Systems</div>
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id varius tellus, sit amet cursus libero. Aliquam ante purus, facilisis id laoreet ut, imperdiet eget nunc. governed by the <a href="./docs/regulation_10-015.pdf" target="_blank">FAMU Board of Trustees (BOT) Regulation 10.015</a> <a href="./docs/regulation_10-015.pdf" target="_blank" class="ref">[1]</a>. Depending on the position level convallis augue vel neque rhoncus varius. Integer enim eros, porta et nulla non, elementum consequat velit. Nulla dignissim, ante eget tempor iaculis, sapien urna gravida nulla, sed congue metus elit ac dui. Etiam at diam lacinia, ornare leo sed, aliquam nunc. Sed nec ipsum in erat tristique feugiat vel ac velit. Ut ex elit, consequat eu porttitor eu, faucibus eu nibh. Donec quis ligula at lacus dignissim viverra a non dui. In porttitor nisi a nibh facilisis pharetra. Quisque ipsum dolor, posuere at eleifend vel, ultricies nec sapien. Nunc nunc dui, consectetur in tortor a, finibus faucibus velit. 
-	</p>
-	-->
-	
-	<!-- Sub-Narrative -->
-	<!-- <button id="subNarrative-<?= $SRID ?>" class="btn btn-primary btn-sm">Sub-Narrative</button> -->
-	
-
 	<h4>Summary Statement</h4>
 	<?= $summary ?>
 
 	<div class="row" style="margin-top:8px;">
 		<div class="col-lg-3">
-			<button id="appendix-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Appendix A</button>
+			<button id="appendix-<?= $SRID ?>" class="btn btn-primary btn-sm" style="width:100%;">Appendix</button>
 		</div>
 	</div>
 </div>
