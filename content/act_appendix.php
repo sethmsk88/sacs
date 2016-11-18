@@ -145,6 +145,8 @@
 			return $url;
 	}
 
+	$uploadsDir = "../uploads/";
+
 	// Change Order
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
 
@@ -247,11 +249,15 @@
 
 	// Delete Reference
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 1) {
-		// get refNum of this ref
+		// get info related to this ref
 		$sel_refNum = "
-			SELECT refNum, srid
-			FROM " . TABLE_APPENDIX_LINK . "
-			WHERE appendix_link_id = ?
+			SELECT l.srid, l.appendix_link_id, l.refNum, lhf.file_upload_id, f.fileName
+			FROM ". TABLE_APPENDIX_LINK ." AS l
+			LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
+			ON l.appendix_link_id = lhf.appendix_link_id
+			LEFT JOIN ". TABLE_FILE_UPLOAD ." AS f
+			ON lhf.file_upload_id = f.file_upload_id
+			WHERE l.appendix_link_id = ?
 		";
 		if (!$stmt = $conn->prepare($sel_refNum)) {
 			echo 'error: ' . $conn->errno . ' - ' . $conn->error;
@@ -260,10 +266,9 @@
 		} else if (!$stmt->execute()) {
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
 		} else {		
-			$result = $stmt->get_result();
-			$result_row = $result->fetch_assoc();
-			$deleteRefNum = $result_row['refNum'];
-			$srid = $result_row['srid'];
+			$stmt->store_result();
+			$stmt->bind_result($srid, $linkID, $deleteRefNum, $fileID, $fileName);
+			$stmt->fetch();
 		}
 
 		// Get title/descr, narrative, and summary
@@ -369,6 +374,31 @@
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
 		} else if (!$stmt->execute()) {
 			echo 'error: ' . $stmt->errno . ' - ' . $stmt->error;
+		}
+
+		// Delete file and file info if link has a file associated with it
+		if (!is_null($fileID)) {
+			// Delete the link-file association record
+			$del_link_file_assoc = "
+				DELETE FROM ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ."
+				WHERE appendix_link_id = ?
+					AND file_upload_id = ?
+			";
+			$stmt = $conn->prepare($del_link_file_assoc);
+			$stmt->bind_param('ii', $linkID, $fileID);
+			$stmt->execute();
+
+			// Delete the file record
+			$del_file = "
+				DELETE FROM ". TABLE_FILE_UPLOAD ."
+				WHERE file_upload_id = ?
+			";
+			$stmt = $conn->prepare($del_file);
+			$stmt->bind_param('i', $fileID);
+			$stmt->execute();
+
+			// Delete the file from the server
+			delete_file_from_server($fileName, $uploadsDir);
 		}
 	
 		// Update standard/requirement
@@ -519,7 +549,6 @@
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {
 
 		// Delete the file from the server
-		$uploadsDir = "../uploads/";
 		$sel_filePath = "
 			SELECT fileName
 			FROM ". TABLE_FILE_UPLOAD ."
