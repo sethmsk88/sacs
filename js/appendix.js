@@ -112,7 +112,7 @@ $(document).ready(function() {
 			success: function(response) {
 				if (parseInt(response) > 0) {
 					// Create ZIP file
-					window.open("./content/exportAttachments.php?id=" + srid, "_blank");
+					location.href = "./content/exportAttachments.php?id=" + srid;
 				}
 				else {
 					showAlert('There are no attachments to export.', '<span class="text-info">Message</span>');
