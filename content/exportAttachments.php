@@ -3,14 +3,6 @@
 	require_once "../includes/functions.php";
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 
-	// Remove timestampe from beginning of filename
-	// Return modified filename
-	function removeTimestamp($fileName) {
-		$fileName_exploded = explode('_', $fileName);
-		array_shift($fileName_exploded); // Remove first item from array
-		return implode('_', $fileName_exploded);
-	}
-
 	// Uploads Directory Relative Path
 	$uploadDirRelPath = "../uploads/";
 
@@ -62,7 +54,6 @@
 	// Add all attachments to ZIP file
 	while ($stmt->fetch()) {
 		$filePath = $uploadDirRelPath . $fileName;
-		$fileName = removeTimestamp($fileName);
 
 		if (file_exists($filePath) && is_readable($filePath)) {
 			$zip->addFile($filePath, $fileName);
