@@ -94,7 +94,7 @@
 			move_uploaded_file($fileTmpName, $filePath);
 
 			// insert the filename into the file upload table
-			$file_id = insertFile($fileName, $filePath, $fileExt);
+			$file_id = insertFile($fileName, $fileExt);
 
 			$returnObj['file_id'] = $file_id;
 			$returnObj['linkURL'] = APP_PATH_URL . $uploads_dir . $fileName;
@@ -106,16 +106,16 @@
 	}
 
 	// Insert file info into table
-	function insertFile($fileName, $filePath, $fileExt)
+	function insertFile($fileName, $fileExt)
 	{
 		global $conn;
 
 		$ins_file = "
-			INSERT INTO " . TABLE_FILE_UPLOAD . " (fileName, filePath, fileExt, uploadDate)
-			VALUES (?,?,?, NOW())
+			INSERT INTO " . TABLE_FILE_UPLOAD . " (fileName, fileExt, uploadDate)
+			VALUES (?,?, NOW())
 		";
 		$stmt = $conn->prepare($ins_file);
-		$stmt->bind_param("sss", $fileName, $filePath, $fileExt);
+		$stmt->bind_param("ss", $fileName, $fileExt);
 		$stmt->execute();
 
 		return $stmt->insert_id;
