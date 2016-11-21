@@ -47,7 +47,7 @@
 	$zip = new ZipArchive();
 	
 	// Create and open ZIP file
-	if ($zip->open($zipFilePath, ZipArchive::OVERWRITE) !== true) {
+	if ($zip->open($zipFilePath, ZIPARCHIVE::CREATE | ZipArchive::OVERWRITE) !== true) {
 		exit("Cannot open (" . $zipFilePath . ")\n");
 	}
 
@@ -64,7 +64,7 @@
 	$zip->close();
 
 	header('Content-Type: application/zip');
-	header('Content-disposition: attachment; filename=' . $zipFileName);
+	header('Content-Disposition: attachment; filename="'. basename($zipFileName) .'"');
 	header('Content-Length: '. filesize($zipFilePath));
 	readfile($zipFilePath);
 ?>
