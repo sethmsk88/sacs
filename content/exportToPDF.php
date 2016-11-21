@@ -77,8 +77,11 @@
 
 	// echo $html;
 
+	$fileName = $srPrefix . $srNum . '_Appendix.pdf';
+
 	$mpdf = new mPDF();
+	$mpdf->SetTitle($fileName);
 	$mpdf->WriteHTML($html);
-	$mpdf->Output();
+	$mpdf->Output($fileName, 'I');
 	exit;
 ?>
