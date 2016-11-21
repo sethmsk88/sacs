@@ -47,7 +47,7 @@
 	$zip = new ZipArchive();
 	
 	// Create and open ZIP file
-	if ($zip->open($zipFilePath, ZipArchive::OVERWRITE) !== true) {
+	if ($zip->open($zipFilePath, ZIPARCHIVE::CREATE | ZipArchive::OVERWRITE) !== true) {
 		exit("Cannot open (" . $zipFilePath . ")\n");
 	}
 
