@@ -64,7 +64,7 @@
 	$zip->close();
 
 	header('Content-Type: application/zip');
-	header('Content-disposition: attachment; filename=' . $zipFileName);
+	header('Content-Disposition: attachment; filename="'. basename($zipFileName) .'"');
 	header('Content-Length: '. filesize($zipFilePath));
 	readfile($zipFilePath);
 ?>
