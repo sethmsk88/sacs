@@ -172,12 +172,15 @@
 	// echo $supplemental_html;
 	// echo $appendix_html;
 
+	$fileName = $srPrefix . $srNum . '.pdf';
+
 	$mpdf = new mPDF();
+	$mpdf->SetTitle($fileName);
 	$mpdf->WriteHTML($narrative_html);
 	$mpdf->AddPage();
 	$mpdf->WriteHTML($supplemental_html);
 	$mpdf->AddPage();
 	$mpdf->WriteHTML($appendix_html);
-	$mpdf->Output();
+	$mpdf->Output($fileName, 'I');
 	exit;
 ?>
