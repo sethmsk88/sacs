@@ -24,7 +24,11 @@
 ?>
 
 <div class="container">
-	<h4><?= $srHeader ?></h4>
+	<div class="row h4">
+		<div class="col-lg-12">
+			<?= $srHeader ?>
+		</div>
+	</div>
 
 	<div class="row">
 		<div class="col-lg-12">
