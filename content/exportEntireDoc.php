@@ -17,6 +17,15 @@
 			return "";
 	}
 
+	function getComplianceMark($val, $choice)
+	{
+		$mark = '<span style="font-weight:bold; color: red; font-size:1.15em;font-family:\'Courier New\';">X</span>';
+		if ($val === $choice)
+			return $mark;
+		else
+			return "";
+	}
+
 	// Get SR info
 	$sel_sr = "
 		SELECT number, descr, narrative, summary, sr_type, compliance
@@ -93,11 +102,14 @@
 	<h4><?= $srPrefix ?> <?= $srNum ?></h4>
 	<?= $descr ?><br>
 
-	<table style="width:30%;">
+	<table style="width:75%;">
 		<tr>
-			<td><span class="<?= getComplianceClass(-1, $compliance) ?>"></span>&nbsp;Non-Compliance</td>
+			<!-- <td><span class="<?= getComplianceClass(-1, $compliance) ?>"></span>&nbsp;Non-Compliance</td>
 			<td><span class="<?= getComplianceClass(0, $compliance) ?>"></span>&nbsp;Partial Compliance</td>
-			<td><span class="<?= getComplianceClass(1, $compliance) ?>"></span>&nbsp;Compliance</td>
+			<td><span class="<?= getComplianceClass(1, $compliance) ?>"></span>&nbsp;Compliance</td> -->
+			<td><?= getComplianceMark(-1, $compliance) ?>&nbsp;Non-Compliance</td>
+			<td><?= getComplianceMark(0, $compliance) ?>&nbsp;Partial Compliance</td>
+			<td><?= getComplianceMark(1, $compliance) ?>&nbsp;Compliant</td>
 		</tr>
 	</table>
 	<br>
@@ -166,7 +178,7 @@
 	// echo $narrative_html;
 	// echo $supplemental_html;
 	// echo $appendix_html;
-
+ 
 	$fileName = $srPrefix . $srNum . '.pdf';
 
 	$mpdf = new mPDF();
