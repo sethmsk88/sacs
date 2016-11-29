@@ -116,8 +116,6 @@
 		ob_clean();
 	?>
 
-	<h4><?= $srPrefix ?> <?= $srNum ?></h4>
-
 	<h4>Table of Contents</h4>
 
 	<ol class="begin">
