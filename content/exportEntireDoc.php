@@ -1,9 +1,7 @@
 <?php
 	// Start Output Buffering
 	ob_start();
-?>
 
-<?php
 	require_once "../includes/globals.php";
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/api/mpdf60/mpdf.php';
@@ -118,9 +116,6 @@
 		ob_clean();
 	?>
 
-	The narratives for <?= $srPrefix ?> <?= $srNum ?> are organized as follows:<br>
-	<br>
-
 	<h4>Table of Contents</h4>
 
 	<ol class="begin">
@@ -181,6 +176,6 @@
 	$mpdf->WriteHTML($supplemental_html);
 	$mpdf->AddPage();
 	$mpdf->WriteHTML($appendix_html);
-	$mpdf->Output($fileName, 'I');
+	$mpdf->Output($fileName, 'D');
 	exit;
 ?>

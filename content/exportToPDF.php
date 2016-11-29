@@ -82,6 +82,6 @@
 	$mpdf = new mPDF();
 	$mpdf->SetTitle($fileName);
 	$mpdf->WriteHTML($html);
-	$mpdf->Output($fileName, 'I');
+	$mpdf->Output($fileName, 'D');
 	exit;
 ?>
