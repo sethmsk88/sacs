@@ -60,7 +60,8 @@ $(document).ready(function (){
 		height: 350,
 		plugins: richtext_plugins,
 		paste_data_images: true,
-		elementpath: false
+		elementpath: false,
+		convert_urls: false
 	});
 
 	tinymce.init({
@@ -68,7 +69,8 @@ $(document).ready(function (){
 		height: 200,
 		plugins: richtext_plugins,
 		paste_data_images: true,
-		elementpath: false
+		elementpath: false,
+		convert_urls: false
 	});
 
 	tinymce.init({
@@ -76,7 +78,8 @@ $(document).ready(function (){
 		height: 80,
 		plugins: richtext_plugins,
 		paste_data_images: true,
-		elementpath: false
+		elementpath: false,
+		convert_urls: false
 	});
 
 	// Prepare overlay for modals
