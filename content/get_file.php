@@ -32,7 +32,6 @@
 	$fileSize = fstat($file)['size'];
 
 	// Force download
-	header("Content-Type: application/pdf");
 	header("Content-Length: " . $fileSize);
 	header("Content-Disposition: attachment; filename=\"$fileName\"");
 
