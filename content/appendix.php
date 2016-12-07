@@ -23,10 +23,10 @@
 	// Get appendix items
 	$sel_appendixLinks = "
 		SELECT l.appendix_link_id, l.linkName, l.linkURL, l.refNum, f.file_upload_id
-		FROM sacs.dev_appendix_link l
-		LEFT JOIN sacs.dev_appendix_link_has_file_upload lhf
+		FROM ". TABLE_APPENDIX_LINK ." AS l
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
 			ON lhf.appendix_link_id = l.appendix_link_id
-		LEFT JOIN sacs.dev_file_upload f
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." AS f
 			ON lhf.file_upload_id = f.file_upload_id
 		WHERE l.srid = ?
 		ORDER BY l.refNum
