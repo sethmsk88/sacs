@@ -183,11 +183,11 @@
 
 				// insert new refLink into reference table
 				$highestRefNum = getNewReferenceNumber($_POST['srid']);
-				$refURL = $uploadResultObj['linkURL'];
+				$refURL = ""; // blank for attached files
 				$link_id = insertReference($_POST['srid'], $_POST['refName'], $refURL, $highestRefNum);
 				associateFile($link_id, $uploadResultObj['file_id']);
 
-				$json_array['refURL'] = $refURL;
+				$json_array['fileid'] = $uploadResultObj['file_id'];
 				$json_array['refNum'] = $highestRefNum;
 			}
 		}
