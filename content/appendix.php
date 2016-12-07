@@ -22,16 +22,20 @@
 
 	// Get appendix items
 	$sel_appendixLinks = "
-		SELECT appendix_link_id, linkName, linkURL, refNum
-		FROM " . TABLE_APPENDIX_LINK . "
-		WHERE srid = ?
-		ORDER BY refNum
+		SELECT l.appendix_link_id, l.linkName, l.linkURL, l.refNum, f.file_upload_id
+		FROM sacs.dev_appendix_link l
+		LEFT JOIN sacs.dev_appendix_link_has_file_upload lhf
+			ON lhf.appendix_link_id = l.appendix_link_id
+		LEFT JOIN sacs.dev_file_upload f
+			ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid = ?
+		ORDER BY l.refNum
 	";
 	$stmt = $conn->prepare($sel_appendixLinks);
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum);
+	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum, $fileID);
 	$numRows = $stmt->num_rows;
 ?>
 
@@ -138,6 +142,11 @@
 
 			<!-- Create link for reference if $linkURL exists -->
 			<?php if ($linkURL != "") { ?>
+				<!-- Link to a website -->
+				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
+			<?php } elseif (!empty($fileID)) {
+				$linkURL = APP_GET_FILE_PAGE . '?fileid=' . $fileID;
+			?>
 				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
 			<?php } else { ?>
 				<td><?= $linkName ?></td>
