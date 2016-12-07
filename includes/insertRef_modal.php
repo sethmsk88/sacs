@@ -308,11 +308,13 @@
 						if (response.hasOwnProperty('errors') &&
 							response['errors'].length > 0) {
 
+							// Show error messages
 							$('#insertRefModal #ajax_response').html(displayErrors(response['errors']));
 						} else {
 
 							// Create ref link
-							var refLink = '<a href="' + response['refURL'] + '" target="_blank">[' + response['refNum'] + ']</a>';
+							var refURL = '<?= APP_GET_FILE_PAGE ?>' + '?fileid=' + response['fileid'];
+							var refLink = '<a href="' + refURL + '" target="_blank">[' + response['refNum'] + ']</a>';
 
 							// Insert ref link into the active richtextarea
 							tinymce_insertAtCaret(refLink);
