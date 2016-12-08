@@ -1,3 +1,7 @@
+<?php
+	require_once("./includes/globals.php");
+?>
+
 <div
 	class="modal fade"
 	id="editRefModal"
@@ -127,6 +131,8 @@
 	// Dialog show event handler
 	$('#editRefModal').on('show.bs.modal', function (e) {
 
+		console.log('showing');
+
 		resetModalFields();
 
 		$clickedButton = $(e.relatedTarget);
@@ -149,22 +155,21 @@
 				$('#editRefModal #refName').val(response['linkName']);
 				$('#editRefModal #refURL').val(response['linkURL']);
 
-				if (response['isFileRef'] === false) {
-					$('#editRefModal #box-1').show();
-				} else {
-					$('#editRefModal #box-2').show();
-				}
-
 				// If this is a file reference, create a file link
-				if (response.hasOwnProperty('fileName')) {
+				if (response.hasOwnProperty('fileID')) {
+					$('#editRefModal #box-2').show();
 
-					var refFileLink = '<a href="' + response['linkURL'] + '" target="_blank">' + response['fileName'] + '</a>';
+					var refURL = "<?= APP_GET_FILE_PAGE ?>" + "?fileid=" + response['fileID'];
+
+					var refFileLink = '<a href="'+ refURL +'" target="_blank">' + response['fileName'] + '</a>';
 
 					$('#editRefModal #refFile-link').html(refFileLink);				
 
 					// populate remove button with file_id and link_id
 					$('#editRefModal #removeFile-btn').attr('data-fileid', response['fileID']);
 					$('#editRefModal #removeFile-btn').attr('data-linkid', response['linkID']);
+				} else {
+					$('#editRefModal #box-1').show();
 				}
 			}
 		});
