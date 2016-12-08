@@ -7,6 +7,19 @@
 	require_once './includes/newRef_modal.php'; // new reference modal
 	require_once './includes/alert_dialog.php'; // Basic alert dialog
 
+	function createAppendixRefLink($linkURL, $linkName, $fileID)
+	{
+		$refLink = "";
+		if ($linkURL != "") {
+			$refLink = '<a href="'.$linkURL.'" target="_blank">'.$linkName.'</a>';
+		} elseif (!empty($fileID)) {
+			$refLink = '<a href="'.APP_GET_FILE_PAGE.'?fileid='.$fileID.'" target="_blank">'.$linkName.'</a>';
+		} else {
+			$refLink = $linkName;
+		}
+		return $refLink;
+	}
+
 	// Get SR type and SR number
 	$sel_sr = "
 		SELECT number, sr_type
@@ -76,11 +89,7 @@
 			<td><?= $refNum ?>.</td>
 
 			<!-- Create link for reference if $linkURL exists -->
-			<?php if ($linkURL != "") { ?>
-				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
-			<?php } else { ?>
-				<td><?= $linkName ?></td>
-			<?php }	?>
+			<td><?= createAppendixRefLink($linkURL, $linkName, $fileID) ?></td>
 			<td>
 				<button
 					id="editRef-<?= $linkID ?>"
@@ -139,18 +148,7 @@
 	?>
 		<tr>
 			<td><?= $refNum ?>.</td>
-
-			<!-- Create link for reference if $linkURL exists -->
-			<?php if ($linkURL != "") { ?>
-				<!-- Link to a website -->
-				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
-			<?php } elseif (!empty($fileID)) {
-				$linkURL = APP_GET_FILE_PAGE . '?fileid=' . $fileID;
-			?>
-				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
-			<?php } else { ?>
-				<td><?= $linkName ?></td>
-			<?php } ?>
+			<td><?= createAppendixRefLink($linkURL, $linkName, $fileID) ?></td>
 		</tr>
 	<?php
 			} // End while loop
