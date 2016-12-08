@@ -175,6 +175,7 @@
 <?php
 	$appendix_html = ob_get_clean();
 
+	// TESTING output statements
 	// echo $narrative_html;
 	// echo $supplemental_html;
 	// echo $appendix_html;

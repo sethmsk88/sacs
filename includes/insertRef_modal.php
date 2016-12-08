@@ -1,4 +1,6 @@
 <?php
+	require_once("./includes/globals.php");
+
 	// Get all references for this SR
 	$sel_ref = "
 		SELECT linkName, linkURL, refNum
@@ -334,7 +336,7 @@
 		} else if (refChoice === "2") {
 		// Insert a link to the supplemental
 
-			var supURL = "?page=subNarrative&id=" + $('#SRID').val();
+			var supURL = "<?= APP_PATH_URL ?>" + "?page=subNarrative&id=" + $('#SRID').val();
 			var linkName = $('#insertRef-form #linkName').val();
 
 			// create link
