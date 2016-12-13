@@ -44,7 +44,7 @@ tinymce.init({
 	paste_data_images: true,
 	elementpath: false,
 	convert_urls: false,
-	toolbar: 'undo redo | stylesheet | bold italic | link image | imageupload',
+	toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link imageupload',
 	// toolbar : "imageupload",
 	setup: function(editor) {
 		var inp = $('<input id="tinymce-uploader" type="file" name="pic" accept="image/*" style="display:none">');
@@ -72,9 +72,8 @@ tinymce.init({
 			});			
 		});
 
-		editor.addButton( 'imageupload', {
-			text:"IMAGE",
-			icon: false,
+		editor.addButton('imageupload', {
+			icon: 'mce-ico mce-i-image',
 			title: "Insert image",
 			onclick: function(e) {
 				inp.trigger('click');
