@@ -28,24 +28,27 @@
 <script>
 var richtext_plugins = 'advlist anchor autolink charmap code contextmenu hr image imagetools link lists paste preview searchreplace spellchecker table textcolor wordcount';
 
-/*tinymce.init({
-	selector: 'textarea',
-	height: 200,
-	plugins: richtext_plugins,
-	paste_data_images: true,
-	elementpath: false,
-	convert_urls: false
-});*/
+var menu_config = {
+	file: {title: 'File', items: 'newdocument'},
+	edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+	insert: {title: 'Insert', items: 'link imageupload | template hr'},
+	view: {title: 'View', items: 'visualaid | preview'},
+	format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+	table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+	tools: {title: 'Tools', items: 'spellchecker, code'}
+};
+
+var toolbar_config = 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link imageupload';
 
 tinymce.init({
 	selector: 'textarea',
 	height: 200,
 	plugins: richtext_plugins,
+	menu: menu_config,
 	paste_data_images: true,
 	elementpath: false,
 	convert_urls: false,
-	toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link imageupload',
-	// toolbar : "imageupload",
+	toolbar: toolbar_config,
 	setup: function(editor) {
 		var inp = $('<input id="tinymce-uploader" type="file" name="pic" accept="image/*" style="display:none">');
 		$(editor.getElement()).parent().append(inp);
@@ -79,47 +82,17 @@ tinymce.init({
 				inp.trigger('click');
 			}
 		});
-	}
-});
 
-/*tinymce.init({
-	selector: 'textarea',
-	height: 200,
-	plugins: richtext_plugins,
-	paste_data_images: true,
-	elementpath: false,
-	convert_urls: false,
-	toolbar: 'undo redo | stylesheet | bold italic | link image | imageupload',
-	// toolbar : "imageupload",
-	setup: function(editor) {
-		var inp = $('<input id="tinymce-uploader" type="file" name="pic" accept="image/*" style="display:none">');
-		$(editor.getElement()).parent().append(inp);
-
-		inp.on("change",function(){
-			var input = inp.get(0);
-			var file = input.files[0];
-			var fr = new FileReader();
-			fr.onload = function() {
-				var img = new Image();
-				img.src = fr.result;
-				editor.insertContent('<img src="'+img.src+'"/>');
-				inp.val('');
-			}
-			fr.readAsDataURL(file);
-		});
-
-		editor.addButton( 'imageupload', {
-			text:"IMAGE",
-			icon: false,
-			title: "Insert image",
-			onclick: function(e) {
+		editor.addMenuItem('imageupload', {
+			text: 'Insert Image',
+			icon: 'mce-ico mce-i-image',
+			context: 'insert',
+			onclick: function(E) {
 				inp.trigger('click');
 			}
 		});
 	}
-});*/
-
-
+});
 
 // Form Submit Handler for image upload form 
 $('[name="img-form"]').submit(function(e) {
