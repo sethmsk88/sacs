@@ -1,6 +1,9 @@
 <?php
 	require_once("../includes/globals.php");
-	$imageDir = APP_PATH . 'img/';
+	require_once("../includes/functions.php");
+
+	$imageDir = 'img/';
+	$imageDirFullPath = APP_PATH . $imageDir;
 
 	// make sure we start at the beginning of the FILES array
 	reset($_FILES);
@@ -20,8 +23,11 @@
 	        exit("Invalid file extension.");
 	    }
 
+	    // Make sure filename is unique
+	    $fileName = make_unique_filename($temp['name'], $imageDir);
+
 	    // Move temp file to image directory
-	    $fileToWrite = $imageDir . $temp['name'];
+	    $fileToWrite = $imageDirFullPath . $fileName;
     	move_uploaded_file($temp['tmp_name'], $fileToWrite);
 
     	// Respond to the successful upload with JSON.
