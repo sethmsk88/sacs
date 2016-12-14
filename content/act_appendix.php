@@ -65,10 +65,12 @@
 		$fileName = make_unique_filename($fileName, $uploads_dir);
 		$filePath = APP_PATH . $uploads_dir . $fileName;
 
-		if (in_array($fileExt, $VALID_UPLOAD_EXTENSIONS) === false) {
+		$valid_extensions = array_keys($VALID_UPLOAD_EXTENSIONS);
+
+		if (in_array($fileExt, $valid_extensions) === false) {
 			$errMsg = "Invalid file type. Please choose a file with one of the following file types: ";
-			$numExtensions = count($VALID_UPLOAD_EXTENSIONS);
-			foreach ($VALID_UPLOAD_EXTENSIONS as $i => $extension) {
+			$numExtensions = count($valid_extensions);
+			foreach ($valid_extensions as $i => $extension) {
 				$errMsg .= $extension;
 
 				if ($i < $numExtensions - 1)
