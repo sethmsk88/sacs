@@ -5,6 +5,7 @@
     define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
     define("APP_GET_FILE_PAGE", "http://". $_SERVER['HTTP_HOST'] ."/bootstrap/apps/sacs/content/get_file.php");
+    define("SERVER_IP_ADDRESS", "168.223.1.35");
     $VALID_UPLOAD_EXTENSIONS = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub", "jpg", "jpeg", "png", "gif");
 
     if (APP_DEV_MODE == true) {
