@@ -21,16 +21,20 @@
 
 	// Get appendix items
 	$sel_appendixLinks = "
-		SELECT appendix_link_id, linkName, linkURL, refNum
-		FROM " . TABLE_APPENDIX_LINK . "
-		WHERE srid = ?
-		ORDER BY refNum
+		SELECT l.appendix_link_id, l.linkName, l.linkURL, l.refNum, f.file_upload_id, f.fileName
+		FROM ". TABLE_APPENDIX_LINK ." AS l
+		JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
+			ON lhf.appendix_link_id = l.appendix_link_id
+		JOIN ". TABLE_FILE_UPLOAD ." AS f
+			ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid = ?
+		ORDER BY l.refNum
 	";
 	$stmt = $conn->prepare($sel_appendixLinks);
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum);
+	$stmt->bind_result($linkID, $linkName, $linkURL, $refNum, $fileID, $fileName);
 
 	if ($srType === 's')
 		$srPrefix = 'C.S. ';
@@ -58,8 +62,15 @@
 			<tr>
 				<td><?= $refNum ?>.</td>
 
-				<!-- Create link for reference if $linkURL exists -->
-				<?php if ($linkURL != "") { ?>
+				<?php
+					// If this is a file reference
+					if (!is_null($fileID)) {
+						$fileRefLink = APP_GET_FILE_PAGE . '?fileid=' . $fileID;
+				?>
+					<td><a href="<?= $fileRefLink ?>" target="_blank"><?= $fileName ?></a></td>
+				<?php
+					} else if ($linkURL != "") {
+				?>
 					<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
 				<?php } else { ?>
 					<td><?= $linkName ?></td>
