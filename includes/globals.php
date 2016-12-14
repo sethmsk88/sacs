@@ -5,6 +5,13 @@
     define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
     define("APP_GET_FILE_PAGE", "http://". $_SERVER['HTTP_HOST'] ."/bootstrap/apps/sacs/content/get_file.php");
+    define("SERVER_IP_ADDRESS", "168.223.1.35");
+
+    /*
+        A path using the server's IP address instead of domain name is required in order for images to be exported with PDFs
+    */
+    define("APP_PATH_IP_ADDRESS", "http://" . SERVER_IP_ADDRESS . "/bootstrap/apps/sacs/");
+
     $VALID_UPLOAD_EXTENSIONS = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub", "jpg", "jpeg", "png", "gif");
 
     if (APP_DEV_MODE == true) {
