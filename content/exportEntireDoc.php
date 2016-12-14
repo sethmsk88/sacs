@@ -183,6 +183,7 @@
 	$fileName = $srPrefix . $srNum . '.pdf';
 
 	$mpdf = new mPDF();
+	$mpdf->showImageErrors = true;
 	$mpdf->SetTitle($fileName);
 	$mpdf->WriteHTML($narrative_html);
 	$mpdf->AddPage();
