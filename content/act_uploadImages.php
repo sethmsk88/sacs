@@ -31,7 +31,8 @@
     	move_uploaded_file($temp['tmp_name'], $fileToWrite);
 
     	// Respond to the successful upload with JSON.
-	    $fileURL = 'http://' . SERVER_IP_ADDRESS . '/img/' . $temp['name'];
+    	$fileURL = APP_PATH_IP_ADDRESS . 'img/' . $temp['name'];
+
 	    echo json_encode(array('fileURL' => $fileURL));
 	}
 ?>
