@@ -67,23 +67,26 @@
 
 	// Get appendix items
 	$sel_appendixLinks = "
-		SELECT appendix_link_id, linkName, linkURL, refNum
-		FROM " . TABLE_APPENDIX_LINK . "
-		WHERE srid = ?
-		ORDER BY refNum
+		SELECT l.appendix_link_id, l.linkName, l.linkURL, l.refNum, f.file_upload_id, f.fileName
+		FROM ". TABLE_APPENDIX_LINK ." AS l
+		JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
+			ON lhf.appendix_link_id = l.appendix_link_id
+		JOIN ". TABLE_FILE_UPLOAD ." AS f
+			ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid = ?
+		ORDER BY l.refNum
 	";
 	$stmt_appendixLinks = $conn->prepare($sel_appendixLinks);
 	$stmt_appendixLinks->bind_param("i", $_GET['id']);
 	$stmt_appendixLinks->execute();
 	$stmt_appendixLinks->store_result();
-	$stmt_appendixLinks->bind_result($linkID, $linkName, $linkURL, $refNum);
+	$stmt_appendixLinks->bind_result($linkID, $linkName, $linkURL, $refNum, $fileID, $fileName);
 
 	if ($srType === 's')
 		$srPrefix = 'C.S. ';
 	else
 		$srPrefix = 'C.R. ';
 ?>
-
 
 <html>
 <head>
@@ -95,6 +98,7 @@
 	<style type="text/css">
 		table.appendix {border-collapse:collapse; width:100%;}
 		table.appendix tr td {border:1px solid black; padding:4px;}
+		.section-header {border-bottom: 1px solid #aaa; padding-bottom:4px; margin-bottom:8px;}
 	</style>
 </head>
 </script></script></head>
@@ -114,10 +118,15 @@
 	</table>
 	<br>
 
-	<h4>Narrative</h4>
+	<div class="section-header h4">
+		Narrative
+	</div>
 	<?= $narrative ?>
+	
 
-	<h4>Summary Statement</h4>
+	<div class="section-header h4">
+		<h4>Summary Statement</h4>
+	</div>
 	<?= $summary ?>
 
 	<?php
@@ -158,8 +167,15 @@
 		<tr>
 			<td><?= $refNum ?>.</td>
 
-			<!-- Create link for reference if $linkURL exists -->
-			<?php if ($linkURL != "") { ?>
+			<?php
+				// If this is a file reference
+				if (!is_null($fileID)) {
+					$fileRefLink = APP_GET_FILE_PAGE . '?fileid=' . $fileID;
+			?>
+				<td><a href="<?= $fileRefLink ?>" target="_blank"><?= $fileName ?></a></td>
+			<?php
+				} else if ($linkURL != "") {
+			?>
 				<td><a href="<?= $linkURL ?>" target="_blank"><?= $linkName ?></a></td>
 			<?php } else { ?>
 				<td><?= $linkName ?></td>
@@ -179,7 +195,8 @@
 	// echo $narrative_html;
 	// echo $supplemental_html;
 	// echo $appendix_html;
- 
+ 	// exit;
+
 	$fileName = $srPrefix . $srNum . '.pdf';
 
 	$mpdf = new mPDF();

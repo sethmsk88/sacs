@@ -12,7 +12,21 @@
     */
     define("APP_PATH_IP_ADDRESS", "http://" . SERVER_IP_ADDRESS . "/bootstrap/apps/sacs/");
 
-    $VALID_UPLOAD_EXTENSIONS = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub", "jpg", "jpeg", "png", "gif");
+    $VALID_UPLOAD_EXTENSIONS = array(
+        "pdf" => "application/pdf",
+        "doc" => "application/msword",
+        "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "xls" => "application/vnd.ms-excel",
+        "xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "csv" => "application/octet-stream",
+        "ppt" => "application/vnd.ms-powerpoint",
+        "pptx" => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "pub" => "application/x-mspublisher",
+        "jpg" => "image/jpeg",
+        "jpeg" => "image/jpeg",
+        "png" => "image/png",
+        "gif" => "image/gif"
+    );
 
     if (APP_DEV_MODE == true) {
     	define("TABLE_SECTION", "sacs.dev_section");

@@ -7,8 +7,13 @@
 		exit('Error: Missing file id');
 	}
 
+	/****
+		GET the MIME types too
+	****/
+
+
 	$sel_file = "
-		SELECT filename
+		SELECT filename, fileExt
 		FROM ". TABLE_FILE_UPLOAD ."
 		WHERE file_upload_id = ?
 	";
@@ -16,7 +21,7 @@
 	$stmt->bind_param("i", $_GET['fileid']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($fileName);
+	$stmt->bind_result($fileName, $fileExt);
 	$stmt->fetch();
 
 	// If file does NOT exist in DB, exit with error
@@ -30,6 +35,13 @@
 	// Open file
 	$file = @fopen($filePath,"rb");
 	$fileSize = fstat($file)['size'];
+
+	try {
+		$mimeType = $VALID_UPLOAD_EXTENSIONS[$fileExt];
+		header("Content-Type: " . $mimeType);
+	} catch (Exception $e) {
+		// Do nothing, and use default MIME type
+	}
 
 	// Force download
 	header("Content-Length: " . $fileSize);
