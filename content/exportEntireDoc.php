@@ -98,6 +98,7 @@
 	<style type="text/css">
 		table.appendix {border-collapse:collapse; width:100%;}
 		table.appendix tr td {border:1px solid black; padding:4px;}
+		.section-header {border-bottom: 1px solid #aaa; padding-bottom:4px; margin-bottom:8px;}
 	</style>
 </head>
 </script></script></head>
@@ -117,10 +118,15 @@
 	</table>
 	<br>
 
-	<h4>Narrative</h4>
+	<div class="section-header h4">
+		Narrative
+	</div>
 	<?= $narrative ?>
+	
 
-	<h4>Summary Statement</h4>
+	<div class="section-header h4">
+		<h4>Summary Statement</h4>
+	</div>
 	<?= $summary ?>
 
 	<?php
@@ -189,7 +195,8 @@
 	// echo $narrative_html;
 	// echo $supplemental_html;
 	// echo $appendix_html;
- 
+ 	// exit;
+
 	$fileName = $srPrefix . $srNum . '.pdf';
 
 	$mpdf = new mPDF();
