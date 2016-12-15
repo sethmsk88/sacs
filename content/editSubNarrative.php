@@ -39,7 +39,7 @@
 ?>
 
 <div class="container">
-	The Roster narratives for <?= $srHeader ?> are organized as follows:
+	<h4><?= $srHeader ?></h4>
 	
 	<div class="row">
 		<div class="col-lg-12">
