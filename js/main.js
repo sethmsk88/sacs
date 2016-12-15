@@ -77,6 +77,8 @@ $(document).ready(function (){
 			elementpath: false,
 			convert_urls: false,
 			toolbar: toolbar_config,
+			paste_retain_style_properties: "all",
+			paste_strip_class_attributes: "none",
 			setup: function(editor) {
 				var inp = $('<input id="tinymce-uploader" type="file" name="pic" accept="image/*" style="display:none">');
 				$(editor.getElement()).parent().append(inp);
