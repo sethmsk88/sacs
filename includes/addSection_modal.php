@@ -39,10 +39,10 @@
 					</div>
 
 					<!-- Get srid from URL -->
-					<input type="hidden" name="srid" id="srid" value="<?= $_GET['id'] ?>">
+					<input type="hidden" name="srid" id="srid">
 
 					<!-- Action being performed on action page -->
-					<input type="hidden" name="action" value="0">
+					<input type="hidden" name="action" id="action">
 				</form>
 
 				<div class="row">
@@ -70,7 +70,7 @@
 	</div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript">	
 
 	function displayErrors(error_arr) {
 		var openErrTag = '<div class="text-danger">';
@@ -86,12 +86,19 @@
 
 	// Dialog show event handler
 	$('#<?=$modalName?>-modal').on('show.bs.modal', function(e) {
-		// Not yet implemented
+		
+		// Fill hidden input fields with values in HTML "data" attributes
+		var modalAction = $(e.relatedTarget).attr('data-action');
+		$('#<?=$modalName?>-modal #action').val(modalAction);
+		$('#<?=$modalName?>-modal #srid').val("<?=$_GET['id']?>");
 	});
 
 	// Dialog hide/cancel event handler
 	$('#<?=$modalName?>-modal').on('hide.bs.modal', function(e) {
-		// TODO: reset modal input fields
+		
+		// Reset modal input fields
+		$('#<?=$modalName?>-modal input[type="text"]').val('');
+		$('#<?=$modalName?>-modal input[type="hidden"]').val('');
 	});
 
 	// Submit form when ENTER key is pressed while focused on a textbox

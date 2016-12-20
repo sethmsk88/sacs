@@ -1,6 +1,7 @@
 <?php
-	// Include on ALL pages
 	require_once(APP_PATH . "includes/functions.php");
+	require_once("./includes/addSection_modal.php");
+
 
 	// Require Login
 	if (!isset($loggedIn)) {
@@ -134,7 +135,12 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<button class="btn btn-success">+ New Section</button>
+			<button
+				title="Add New Section"
+				class="btn btn-success"
+				data-toggle="modal"
+				data-target="#addSection-modal"
+				data-action="0">+ New Section</button>
 		</div>
 	</div>
 
