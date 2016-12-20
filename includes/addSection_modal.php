@@ -43,6 +43,9 @@
 
 					<!-- Action being performed on action page -->
 					<input type="hidden" name="action" id="action">
+
+					<!-- section id of parent section -->
+					<input type="hidden" name="action" id="sectionid">
 				</form>
 
 				<div class="row">
@@ -91,6 +94,8 @@
 		var modalAction = $(e.relatedTarget).attr('data-action');
 		$('#<?=$modalName?>-modal #action').val(modalAction);
 		$('#<?=$modalName?>-modal #srid').val("<?=$_GET['id']?>");
+		var sectionid = $(e.relatedTarget).attr('data-sectionid');
+		$('#<?=$modalName?>-modal #sectionid').val(sectionid);
 	});
 
 	// Dialog hide/cancel event handler

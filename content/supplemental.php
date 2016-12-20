@@ -123,7 +123,13 @@
 			<?= $counter ?>. <?= $section->getName() ?>
 		</div>
 		<div class="col-md-4">
-			<button class="btn btn-success">+</button>
+			<button
+				title="Add New Nested Section"
+				class="btn btn-success"
+				data-toggle="modal"
+				data-target="#sectionAction"
+				data-action="1"
+				data-sectionid="<?=$section->getSectionID()?>">+</button>
 			<button class="btn btn-warning">/</button>
 			<buttton class="btn btn-danger">X</buttton>
 		</div>

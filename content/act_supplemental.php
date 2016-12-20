@@ -7,6 +7,7 @@
 	$srid = isset($_POST['srid']) ? $_POST['srid'] : "";
 	$sectionid = isset($_POST['sid']) ? $_POST['sid'] : "";
 	$sectionName = isset($_POST['sectionName']) ? $_POST['sectionName'] : "";
+	$parentid = isset($_POST['pid']) ? $_POST['pid'] : "";
 
 	switch ($action) {
 		case 0:	// Add new section
@@ -20,7 +21,16 @@
 			$stmt->execute();
 
 			break;
-		case 1: // Add new subsection
+		case 1: // Add new nested section
+
+			$ins_nestedSection = "
+				INSERT INTO ". TABLE_SECTION ." (srid, name, pid)
+				VALUES (?,?,?)
+			";
+			$stmt = $conn->prepare($ins_nestedSection);
+			$stmt->bind_param("is", $srid, $sectionName, $parentid);
+			$stmt->execute();
+
 			break;
 		case 2: // Edit section
 			break;
