@@ -21,13 +21,40 @@
 		private $parent_id;
 		private $name;
 		private $content;
+		private $orderNum;
+		private $hasChild;
 
-		public function __construct($sr_id, $section_id, $name, $content, $parent_id) {
+		public function __construct($section_id) {
+			// get section info from database and set private values
+			$sel_section = "
+				SELECT srid, name, body, parent_id, hasChild, orderNum
+				FROM ". TABLE_SECTION ."
+				WHERE id = ?
+			";
+			$stmt = $conn->prepare();
+			$stmt->bind_param('i', $section_id);
+			$stmt->execute();
+			$stmt->store_result();
+			$stmt->bind_result($sr_id, $name, $content, $parent_id, $hasChild, $orderNum);
+			$stmt->fetch();
+
 			$this->sr_id = $sr_id;
 			$this->section_id = $section_id;
 			$this->parent_id = $parent_id;
 			$this->name = $name;
 			$this->content = $content;
+			$this->hasChild = $hasChild;
+			$this->orderNum = $orderNum;
+		}
+
+		public function __construct($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum) {
+			$this->sr_id = $sr_id;
+			$this->section_id = $section_id;
+			$this->parent_id = $parent_id;
+			$this->name = $name;
+			$this->content = $content;
+			$this->hasChild = $hasChild;
+			$this->orderNum = $orderNum;
 		}
 
 		public function setName($name) {
@@ -36,6 +63,14 @@
 
 		public function setContent($content) {
 			$this->content = $content;
+		}
+
+		public function setOrderNum($orderNum) {
+			$this->orderNum = $orderNum;
+		}
+
+		public function setHasChild($hasChild) {
+			$this->hasChild = $hasChild;
 		}
 
 		public function getSRID() {
@@ -58,21 +93,30 @@
 			return $this->parent_id;
 		}
 
-		public function getEditSectionBtn() {
-			// not yet implemented
+		public function getHasChild() {
+			return $this->hasChild;
 		}
 
-		// Output Section Name for Table of Contents 
-		public function getTOCItem() {
-			// not yet implemented
+		public function getOrderNum() {
+			$this->orderNum;
 		}
+	}
 
-		public function getContentHeader() {
-			// not yet implemented
-		}
+	function printTOCSection($section_id) {
+		/*
+			get all root sections from database, then iterate over them?
 
-		public function getContentBody() {
-			// not yet implemented
+			get section from database and create section object using $section_id
+
+			print <li> . sectionName
+			if section has a child
+				printTOCSection
+
+		*/
+
+		echo '<li>' . $section->getName();
+		if ($section->getParentID() > -1) {
+
 		}
 	}
 
@@ -164,3 +208,31 @@
 
 	
 </div>
+
+<?php
+/*
+	database section Table
+		add columns
+			orderNum int
+			hasChild boolean default false
+		alter columns
+			parent_id int default -1
+		
+	when adding a section
+		if it's a root section
+			parent_id = [default value]
+			hasChild = [default value]
+		if it's a child section
+			parent_id = [id of parent]
+			child_id = [default value]
+			update parent section record
+				hasChild = true
+
+	when deleting a section
+		if hasChild == true
+			display message telling User that all nested sections must be deleted before this section can be deleted
+
+	
+
+*/
+?>
