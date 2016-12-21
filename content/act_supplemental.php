@@ -9,6 +9,10 @@
 	$sectionName = isset($_POST['sectionName']) ? $_POST['sectionName'] : "";
 	$parentid = isset($_POST['pid']) ? $_POST['pid'] : "";
 
+	// Create AJAX response array
+	$response = array();
+	$response["errors"] = array();
+
 	switch ($action) {
 		case 0:	// Add new section
 
@@ -37,8 +41,9 @@
 		case 3: // Delete section
 			break;
 		default:
-			echo 'ERROR: No valid action has been specified.';
+			array_push($response["errors"], "No valid action has been specified");
 			break;
 	}
 
+	echo json_encode($response);
 ?>
