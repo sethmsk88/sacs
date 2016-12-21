@@ -171,12 +171,8 @@
 
 						$('#<?= $modalName ?>-modal #ajax_response').html(displayErrors(response['errors']));
 					} else {
-						console.log('here');
 						location.reload();
 					}
-
-					console.log('there');
-						location.reload();
 				}
 			});
 		}

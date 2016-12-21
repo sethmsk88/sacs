@@ -76,6 +76,13 @@
 		}
 	}
 
+	function printTOCSection($section) {
+		echo '<li>' . $section->getName();
+		if ($section->getParentID() > -1) {
+
+		}
+	}
+
 	// Get all sections for this srid
 	$sel_sections = "
 		SELECT id, srid, name, body, parent_id
@@ -113,32 +120,36 @@
 	</div>
 
 	<h4>Table of Contents</h4>
-	<?php
-		// Print Table of Contents
-		$counter = 1;
-		foreach ($sections as $section) {
-	?>
-	<div class="row">
-		<div class="col-md-8">
-			<?= $counter ?>. <?= $section->getName() ?>
-		</div>
-		<div class="col-md-4">
-			<button
-				title="Add New Nested Section"
-				class="btn btn-success"
-				data-toggle="modal"
-				data-target="#sectionAction-modal"
-				data-action="1"
-				data-sectionid="<?= $section->getSectionID() ?>"
-				data-sectionname="<?= $section->getName() ?>">+</button>
-			<button class="btn btn-warning">/</button>
-			<buttton class="btn btn-danger">X</buttton>
-		</div>
-	</div>
-	<?php
-			$counter++;
-		} // End - Print Table of Contents
-	?>
+	<ul class="list-unstyled">
+		<?php
+			// Print Table of Contents
+			$counter = 1;
+			foreach ($sections as $section) {
+		?>
+		<li>
+			<div class="row">
+				<div class="col-md-8">
+					<?= $counter ?>. <?= $section->getName() ?>
+				</div>
+				<div class="col-md-4">
+					<button
+						title="Add New Nested Section"
+						class="btn btn-success"
+						data-toggle="modal"
+						data-target="#sectionAction-modal"
+						data-action="1"
+						data-sectionid="<?= $section->getSectionID() ?>"
+						data-sectionname="<?= $section->getName() ?>">+</button>
+					<button class="btn btn-warning">/</button>
+					<buttton class="btn btn-danger">X</buttton>
+				</div>
+			</div>
+			<?php
+					$counter++;
+				} // End - Print Table of Contents
+			?>
+		</li>
+	</ul>
 
 	<div class="row">
 		<div class="col-md-12">

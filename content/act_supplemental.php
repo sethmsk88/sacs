@@ -5,9 +5,8 @@
 	// Assign default values if variables don't exist
 	$action = isset($_POST['action']) ? $_POST['action'] : "";
 	$srid = isset($_POST['srid']) ? $_POST['srid'] : "";
-	$sectionid = isset($_POST['sid']) ? $_POST['sid'] : "";
+	$sectionid = isset($_POST['sectionid']) ? $_POST['sectionid'] : "";
 	$sectionName = isset($_POST['sectionName']) ? $_POST['sectionName'] : "";
-	$parentid = isset($_POST['pid']) ? $_POST['pid'] : "";
 
 	// Create AJAX response array
 	$response = array();
@@ -27,12 +26,14 @@
 			break;
 		case 1: // Add new nested section
 
+			$parentid = $sectionid; // This assignment is for clarity only
+
 			$ins_nestedSection = "
-				INSERT INTO ". TABLE_SECTION ." (srid, name, pid)
+				INSERT INTO ". TABLE_SECTION ." (srid, name, parent_id)
 				VALUES (?,?,?)
 			";
 			$stmt = $conn->prepare($ins_nestedSection);
-			$stmt->bind_param("is", $srid, $sectionName, $parentid);
+			$stmt->bind_param("isi", $srid, $sectionName, $parentid);
 			$stmt->execute();
 
 			break;
