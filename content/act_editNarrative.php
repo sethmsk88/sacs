@@ -1,6 +1,6 @@
 <?php
 	require_once("../includes/globals.php");
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/db_connect.php';
 
 	// Make sure SRID was posted
 	if (!isset($_POST['SRID'])) {

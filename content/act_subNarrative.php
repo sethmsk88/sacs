@@ -1,9 +1,9 @@
 <?php
 	require_once("../includes/globals.php");
 
-	define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
+	define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/apps/sacs/");
 
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/db_connect.php';
 
 	// Determine what type of action should be performed
 	if (isset($_POST['srid'])) {

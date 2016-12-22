@@ -1,8 +1,8 @@
 <?php
 	define("APP_DEV_MODE", true); // This should be set to true while developing
 	define("APP_NAME", "SACS Accreditation");
-	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/bootstrap/apps/sacs/");
-    define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/bootstrap/apps/sacs/");
+	define("APP_PATH",  $_SERVER['DOCUMENT_ROOT'] . "/apps/sacs/");
+    define("APP_PATH_URL", "http://" . $_SERVER['HTTP_HOST'] . "/apps/sacs/");
     define("APP_HOMEPAGE", "view1");
     $VALID_UPLOAD_EXTENSIONS = array("pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "pub", "jpg", "jpeg", "png", "gif");
 

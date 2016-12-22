@@ -8,11 +8,11 @@
         define("APP_CURRENTPAGE", "");
 
 
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/dbInfo.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/dbInfo.php';
     require_once "./includes/functions.php";
 
     // Open connection to Database
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/db_connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +24,8 @@
     <title><?= APP_NAME ?></title>
 
     <!-- Linked stylesheets -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="../css/navbar-custom1.css" rel="stylesheet">
     <link href="../css/master.css" rel="stylesheet">
@@ -34,13 +35,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/apps/shared/api/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/apps/shared/api/tinymce/js/tinymce/tinymce.min.js"></script>
 
     <!-- Included Scripts -->
     <script src="./js/main.js"></script>
     <script src="./js/login.js"></script>
-    <script src="/bootstrap/js/sha512.js"></script>
+    <script src="/js/sha512.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,7 +52,7 @@
     </head>
     <body>
         <?php
-            include_once($_SERVER['DOCUMENT_ROOT'] . "\bootstrap\apps\shared\analyticstracking.php");
+            include_once($_SERVER['DOCUMENT_ROOT'] . "\apps\shared\analyticstracking.php");
 
             // Include FAMU logo header
             include "../templates/header_3.php";

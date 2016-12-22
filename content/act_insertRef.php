@@ -1,7 +1,7 @@
 <?php
 	require_once("../includes/globals.php");
 	require_once("../includes/functions.php");
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/db_connect.php';
 
 	/*
 		Get the hightest reference number associated with the standard/requirement identified by the srid parameter, increment the reference number by 1, then return the new highest reference number.

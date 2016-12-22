@@ -1,5 +1,5 @@
 <?php
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/apps/shared/db_connect.php';
 
 	// Make sure required variable has been posted to this page
 	if (!isset($_POST['SRType'])) {
