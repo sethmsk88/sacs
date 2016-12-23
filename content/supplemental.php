@@ -1,6 +1,7 @@
 <?php
 	require_once(APP_PATH . "includes/functions.php");
 	require_once("./includes/sectionAction_modal.php");
+	require_once("./classes/NestedList.php");
 
 
 	// Require Login
@@ -24,7 +25,7 @@
 		private $orderNum;
 		private $hasChild;
 
-		public function __construct($section_id) {
+		/*public function __construct($section_id) {
 			// get section info from database and set private values
 			$sel_section = "
 				SELECT srid, name, body, parent_id, hasChild, orderNum
@@ -45,7 +46,7 @@
 			$this->content = $content;
 			$this->hasChild = $hasChild;
 			$this->orderNum = $orderNum;
-		}
+		}*/
 
 		public function __construct($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum) {
 			$this->sr_id = $sr_id;
@@ -102,33 +103,114 @@
 		}
 	}
 
-	function printTOCSection($section_id) {
-		/*
-			get all root sections from database, then iterate over them?
+	// get all sections from db
+	$sel_sections = "
+		SELECT id, srid, name, body, parent_id, hasChild, orderNum
+		FROM ". TABLE_SECTION ."
+		WHERE srid = ?
+	";
+	$stmt = $conn->prepare($sel_sections);
+	$stmt->bind_param("i", $_GET['id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($section_id, $sr_id, $name, $content, $parent_id, $hasChild, $orderNum);
+	$stmt->fetch();
 
-			get section from database and create section object using $section_id
+	// Add the first node to the NestedList
+	$section = new Section($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum);
+	$nestedList = new NestedList($section);
 
-			print <li> . sectionName
-			if section has a child
-				printTOCSection
+	while ($stmt->fetch()) {
 
-		*/
+		$section = new Section($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum);
 
-		echo '<li>' . $section->getName();
-		if ($section->getParentID() > -1) {
+		$newNestedList = newNestedList($section);
+		$nestedList = new NestedList($section);
 
-		}
+
 	}
 
-	function printTOCSection($section) {
-		echo '<li>' . $section->getName();
-		if ($section->getParentID() > -1) {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// Print table of contents
+	/*function printTOC($sr_id) {
+		global $conn;
+
+		// Get all root sections from database, then iterate over them
+		$sel_root_sections = "
+			SELECT id, srid, name, body, parent_id, hasChild, orderNum
+			FROM ". TABLE_SECTION ."
+			WHERE parent_id = -1 AND srid = ?
+		";
+		$stmt = $conn->prepare($sel_root_sections);
+		$stmt->bind_param("i", $_GET['id']);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($section_id, $sr_id, $name, $content, $parent_id, $hasChild, $orderNum);
+
+		// Create Section objects and store them in arrays
+		$rootSections = array();
+		$childSections = array();
+		while ($stmt->fetch()) {
+			$section = new Section($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum);
+
+			if ($parent_id == -1) {
+				array_push($rootSections, $section);
+			} else {
+				array_push($childSections, $section);
+			}
 		}
-	}
+
+		echo '<ul>';
+		foreach ($rootSections as $section) {
+			echo '<li>' . $section->getName();
+
+			// if root section has children
+			printTOCSection($section, $childSections);
+			
+		}
+
+	}*/
+
+	/*function printTOCSection($section, &$childSections) {
+		// print child section
+		echo '<ul>';
+		echo '<li>' . $section->getName();
+
+		// Iterate through other sections to see if any have this section as a parent
+		foreach ($childSections as $child) {
+			if ($section->getSectionID() == $child->getParentID()) {
+				printTOCSection($child);
+			}
+		}
+
+		echo '</li></ul>';
+	}*/
 
 	// Get all sections for this srid
-	$sel_sections = "
+	/*$sel_sections = "
 		SELECT id, srid, name, body, parent_id
 		FROM ". TABLE_SECTION ."
 		WHERE srid = ?
@@ -144,7 +226,7 @@
 	while ($stmt->fetch()) {
 		$section = new Section($sr_id, $section_id, $name, $content, $parent_id);
 		array_push($sections, $section);
-	}
+	}*/
 ?>
 
 <div class="container">
@@ -164,6 +246,8 @@
 	</div>
 
 	<h4>Table of Contents</h4>
+	<?= printTOC($_GET['id']); ?>
+<?php /*
 	<ul class="list-unstyled">
 		<?php
 			// Print Table of Contents
@@ -194,6 +278,7 @@
 			?>
 		</li>
 	</ul>
+*/ ?>
 
 	<div class="row">
 		<div class="col-md-12">
