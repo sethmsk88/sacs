@@ -41,14 +41,13 @@
 		}
 	}
 
-
-	// create index.html (include view1.php)
-	$index_filestream = fopen($tmp_dir_path . "/index.html", "w");
+	// Get file contents for header and footer
 	$index_header_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_header.php");
 	$index_footer_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_footer.php");
 
+	// create index.html (include view1.php)
+	$index_filestream = fopen($tmp_dir_path . "/index.html", "w");
 	$view1_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_view1.php");
-
 	fwrite($index_filestream, $index_header_fileContents);
 	fwrite($index_filestream, $view1_fileContents);
 	fwrite($index_filestream, $index_footer_fileContents);
@@ -56,6 +55,11 @@
 
 
 	// create narrative.html
-
+	$narrative_filestream = fopen($tmp_dir_path . "/narrative.html", "w");
+	$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php");
+	fwrite($narrative_filestream, $index_header_fileContents);
+	fwrite($narrative_filestream, $narrative_fileContents);
+	fwrite($narrative_filestream, $index_footer_fileContents);
+	fclose($narrative_filestream);
 	
 ?>
