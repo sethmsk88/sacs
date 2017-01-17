@@ -39,11 +39,11 @@
 	$section_array = convertDBTableToArray(TABLE_SECTION);
 	$standard_requirement_array = convertDBTableToArray(TABLE_STANDARD_REQUIREMENT);
 
-	$sacs_array[] = $appendix_link_array;
-	$sacs_array[] = $appendix_link_has_file_upload_array;
-	$sacs_array[] = $file_upload_array;
-	$sacs_array[] = $section_array;
-	$sacs_array[] = $standard_requirement_array;
+	$sacs_array["appendix_link"] = $appendix_link_array;
+	$sacs_array["appendix_link_has_file_upload"] = $appendix_link_has_file_upload_array;
+	$sacs_array["file_upload"] = $file_upload_array;
+	$sacs_array["section"] = $section_array;
+	$sacs_array["standard_requirement"] = $standard_requirement_array;
 
 	// Write JSON to file
 	$fp = fopen($tmp_dir_path . "sacs_db.json", "w");
