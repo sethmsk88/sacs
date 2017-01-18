@@ -125,10 +125,19 @@ $(document).ready(function() {
 			$('#refChoice-1-container').slideDown();
 		}
 
-		// if submit button is hidde, show it
+		// if submit button is hidden, show it
 		if (!$('#submitRef-btn').is(':visible')) {
 			$('#submitRef-btn').show();
 		}
+	});
+
+	// On insert reference modal, bind select boxes together
+	$('#existingRefNum').change(function() {
+		$('#existingRef').val($(this).val());
+	});
+
+	$('#existingRef').change(function() {
+		$('#existingRefNum').val($(this).val());
 	});
 });
 

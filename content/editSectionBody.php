@@ -100,16 +100,33 @@
 
 			<!-- Existing Reference -->
 			<div id="refChoice-0-container" style="display:none;">
-				<select name="existingRef" id="existingRef" class="form-control">
-					<option value=""></option>
-					<?php
-						while ($stmt2->fetch()) {
-					?>
-						<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
-					<?php
-						}
-					?>
-				</select>
+				<div class="row">
+					<div class="col-lg-3">
+						<select name="existingRefNum" id="existingRefNum" class="form-control">
+							<option value="">#</option>
+							<?php
+								while ($stmt2->fetch()) {
+							?>
+								<option value="<?= $refNum ?>"><?= $refNum ?></option>
+							<?php
+								}
+								$stmt2->data_seek(0); // rewind stmt2 iterator
+							?>
+						</select>
+					</div>
+					<div class="col-lg-9">
+						<select name="existingRef" id="existingRef" class="form-control">
+							<option value="">Reference</option>
+							<?php
+								while ($stmt2->fetch()) {
+							?>
+								<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
+							<?php
+								}
+							?>
+						</select>
+					</div>
+				</div>
 			</div>
 
 			<!-- New Reference -->
