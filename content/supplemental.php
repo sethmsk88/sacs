@@ -1,7 +1,7 @@
 <?php
 	require_once(APP_PATH . "includes/functions.php");
 	require_once("./includes/sectionAction_modal.php");
-	require_once("./classes/NestedList.php");
+	// require_once("./classes/NestedList.php");
 
 
 	// Require Login
@@ -108,15 +108,84 @@
 		SELECT id, srid, name, body, parent_id, hasChild, orderNum
 		FROM ". TABLE_SECTION ."
 		WHERE srid = ?
+		ORDER BY parent_id
 	";
 	$stmt = $conn->prepare($sel_sections);
 	$stmt->bind_param("i", $_GET['id']);
 	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result($section_id, $sr_id, $name, $content, $parent_id, $hasChild, $orderNum);
-	$stmt->fetch();
+
+	
+	/*function appendToNestedListArray(&$arr, $section) {
+		if ($section->getHasChild() == 1) {
+			$arr[] = $section;
+			$nested_arr = array();
+			$arr[] = $nested_arr;
+						
+			appendToNestedListArray($nested_arr, )
+		} else {
+			$arr[] = $section;
+		}
+	}*/
+
+	function printNestedListArray(&$arr) {
+		echo '<ul>';
+		foreach ($arr as $key => $val) {
+			if (is_array($val)) {
+				printNestedListArray($val);
+			} else {
+				echo '<li>';
+				echo $key . ' => ' . $val->getName() . '<br>';
+				echo '</li>';
+			}
+		}
+		echo '</ul>';
+	}
+
+	function insertSection(&$arr, $section) {
+		if ($section->getHasChild() == 1) {
+			$nested_arr = array($section->getSectionID() => $section);
+			$arr[$section->getSectionID()] = $nested_arr;
+		} else {
+			$arr[$section->getSectionID()] = $section;
+		}
+		echo '<code>'. var_dump($arr) .'</code>';
+	}
+
+	function insertNestedSection(&$arr, $section) {
+		foreach ($arr as $key => $val) {
+			if ($key == $section->getParentID()) {
+				if (is_array($val)) {
+					insertNestedSection($val, $section);
+				} else {
+					insertSection($arr, $section);
+				}
+				return $arr;
+			} else if (is_array($val)) {
+				insertNestedSection($val, $section);
+			}
+		}
+	}
+
+	$nestedList_arr = array();
+	while ($stmt->fetch()) {
+		$section = new Section($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum);
+
+		echo '<b>inserting: '.$section_id.' => '.$name.'</b><br>'; 
+
+		// If root node
+		if ($section->getParentID() == -1) {
+			insertSection($nestedList_arr, $section);
+		} else {
+			insertNestedSection($nestedList_arr, $section);
+		}
+	}
+
+	printNestedListArray($nestedList_arr);
 
 	// Add the first node to the NestedList
+	/*
 	$section = new Section($sr_id, $section_id, $name, $content, $parent_id, $hasChild, $orderNum);
 	$nestedList = new NestedList($section);
 
@@ -129,6 +198,7 @@
 
 
 	}
+	*/
 
 
 
@@ -246,8 +316,9 @@
 	</div>
 
 	<h4>Table of Contents</h4>
-	<?= printTOC($_GET['id']); ?>
+	
 <?php /*
+	printTOC($_GET['id']);
 	<ul class="list-unstyled">
 		<?php
 			// Print Table of Contents
