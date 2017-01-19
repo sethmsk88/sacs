@@ -2,17 +2,17 @@ $(document).ready(function() {
 
 	/*********************************************/
 	/* Methods to handle Insert Reference button */
-	hideOverlay = function() {
+	/*hideOverlay = function() {
 		$('#overlay').fadeOut();
-	}
+	}*/
 
-	hideModalForms = function() {
+	/*hideModalForms = function() {
 		$('.modalForm:visible').each(function() {
 			$(this).slideUp(hideOverlay);
 		});
-	}
+	}*/
 
-	resetInputFields = function(formID) {
+	/*resetInputFields = function(formID) {
 		if (formID == "insertRef-form") {
 			$('#' + formID + ' input[name="refChoice"]').removeAttr('checked');
 			$('#' + formID + ' input[type="text"]').val('');
@@ -26,9 +26,23 @@ $(document).ready(function() {
 			$('#' + formID + ' #refChoice-1-container').hide();
 			$('#' + formID + ' #refChoice-2-container').hide();
 		}
-	}
+	}*/
 
-	// Insert Reference button click handler
+	// Prevent form submission
+	$('.tinymce_btn').click(function(e) {
+		e.preventDefault();
+
+		// get id of related textarea
+		var textarea_id = $(this).closest('div.form-group').find('textarea').attr('id');
+
+		// Focus on tinymce editor so that the tinymce_insertAtCaret function will work
+		tinymce.get(textarea_id).focus();
+
+		// insert textarea_id into modal form
+		$('#insertRef-form #textarea_id').val(textarea_id);		
+	});
+
+	/*// Insert Reference button click handler
 	$('.tinymce_btn').click(function(e) {
 		e.preventDefault();
 	
@@ -46,10 +60,10 @@ $(document).ready(function() {
 
 		// Show insert reference modal, and pass id of textarea as param
 		showModal('insertRef-modal');
-	});
+	});*/
 
 	// Insert Reference Form Submission Handler
-	$('#insertRef-form').submit(function(e) {
+	/*$('#insertRef-form').submit(function(e) {
 		e.preventDefault();
 
 		$form = $(this);
@@ -93,7 +107,7 @@ $(document).ready(function() {
 				success: function(response) {
 					/*
 						NOTE: for the selector below to work, the richtextarea must be within the same form-group div as the "Insert Reference" button
-					*/
+					
 					// Select the richTextArea iframe
 					$richTextArea = $('#' + response['textarea_id']).closest('div.form-group').find('iframe');
 
@@ -110,10 +124,10 @@ $(document).ready(function() {
 		resetInputFields('insertRef-form');
 
 		hideModalForms();
-	});
+	});*/
 
 	// Reference choice change handler
-	$('input[name="refChoice"]').change(function() {
+	/*$('input[name="refChoice"]').change(function() {
 		var refChoice = $(this).val();
 
 		// Show the appropriate input fields
@@ -138,7 +152,7 @@ $(document).ready(function() {
 
 	$('#existingRef').change(function() {
 		$('#existingRefNum').val($(this).val());
-	});
+	});*/
 });
 
 // Show the toast message

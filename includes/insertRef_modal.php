@@ -2,17 +2,39 @@
 	require_once("./includes/globals.php");
 
 	// Get all references for this SR
-	$sel_ref = "
+	$sel_ref_by_srid = "
 		SELECT linkName, linkURL, refNum
 		FROM " . TABLE_APPENDIX_LINK . "
 		WHERE srid = ?
 		ORDER BY refNum ASC
 	";
-	$stmt = $conn->prepare($sel_ref);
-	$stmt->bind_param("i", $_GET['id']);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($linkName, $linkURL, $refNum);
+
+	$sel_ref_by_sid = "
+		SELECT srid, linkName, linkURL, refNum
+		FROM ". TABLE_APPENDIX_LINK ."
+		WHERE srid IN (
+			SELECT srid
+			FROM ". TABLE_SECTION ."
+			WHERE id = ?
+		)
+	";
+
+	// Determine which query to use based on the type of given ID
+	if (isset($_GET['id'])) {
+		$srid = $_GET['id'];
+
+		$stmt = $conn->prepare($sel_ref_by_srid);
+		$stmt->bind_param("i", $srid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($linkName, $linkURL, $refNum);
+	} elseif (isset($_GET['sid'])) {
+		$stmt = $conn->prepare($sel_ref_by_sid);
+		$stmt->bind_param("i", $_GET['sid']);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($srid, $linkName, $linkURL, $refNum);
+	}
 ?>
 
 <div
@@ -140,7 +162,7 @@
 						</div>
 					</div>
 
-					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
+					<input type="hidden" name="srid" value="<?= $srid ?>">
 					<input type="hidden" name="textarea_id" id="textarea_id" value="">
 					<input type="hidden" name="_refChoice" id="_refChoice" value="">
 					<input type="hidden" name="newRefType" id="newRefType" value="">

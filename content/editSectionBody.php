@@ -1,6 +1,7 @@
 <?php
 	// Include on ALL pages
 	require_once(APP_PATH . "includes/functions.php");
+	require_once './includes/insertRef_modal.php'; // insert reference modal
 
 	// Require Login
 	if (!isset($loggedIn)) {
@@ -53,7 +54,12 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<button id="insertRef-btn" class="tinymce_btn">Insert Reference</button>
+						<button
+							title="Insert Reference"
+							class="tinymce_btn"
+							data-toggle="modal"
+							data-target="#insertRefModal">Insert Reference
+						</button>
 					</div>
 				</div>
 				<textarea
@@ -77,6 +83,7 @@
 
 <!-------------- MODALS BELOW ---------------->
 <!-- Insert Reference Modal -->
+<?php /*
 <div id="insertRef-modal" class="modalForm" style="width:500px;">
 	<div class="modalForm-header">
 		Insert Reference
@@ -170,3 +177,4 @@
 		</form>
 	</div>
 </div>
+*/?>
