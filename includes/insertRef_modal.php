@@ -2,17 +2,47 @@
 	require_once("./includes/globals.php");
 
 	// Get all references for this SR
-	$sel_ref = "
-		SELECT linkName, linkURL, refNum
-		FROM " . TABLE_APPENDIX_LINK . "
-		WHERE srid = ?
-		ORDER BY refNum ASC
+	$sel_ref_by_srid = "
+		SELECT l.linkName, l.linkURL, l.refNum, f.file_upload_id
+		FROM ". TABLE_APPENDIX_LINK ." l
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." lhf
+		ON l.appendix_link_id = lhf.appendix_link_id
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." f
+		ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid = ?
+		ORDER BY l.refNum ASC
 	";
-	$stmt = $conn->prepare($sel_ref);
-	$stmt->bind_param("i", $_GET['id']);
-	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result($linkName, $linkURL, $refNum);
+
+	$sel_ref_by_sid = "
+		SELECT l.srid, l.linkName, l.linkURL, l.refNum, f.file_upload_id
+		FROM ". TABLE_APPENDIX_LINK ." l
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." lhf
+		ON l.appendix_link_id = lhf.appendix_link_id
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." f
+		ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid IN (SELECT s.srid
+			FROM ". TABLE_SECTION ." s
+			WHERE s.id = ?
+		)
+		ORDER BY l.refNum ASC
+	";
+
+	// Determine which query to use based on the type of given ID
+	if (isset($_GET['id'])) {
+		$srid = $_GET['id'];
+
+		$stmt = $conn->prepare($sel_ref_by_srid);
+		$stmt->bind_param("i", $srid);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($linkName, $linkURL, $refNum, $fileID);
+	} elseif (isset($_GET['sid'])) {
+		$stmt = $conn->prepare($sel_ref_by_sid);
+		$stmt->bind_param("i", $_GET['sid']);
+		$stmt->execute();
+		$stmt->store_result();
+		$stmt->bind_result($srid, $linkName, $linkURL, $refNum, $fileID);
+	}
 ?>
 
 <div
@@ -63,12 +93,29 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<label for="existingRef">Select a reference</label>
-								<select name="existingRef" id="existingRef" class="form-control">
-									<option value=""></option>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3">
+								<select name="existingRefNum" id="existingRefNum" class="form-control">
+									<option value="">#</option>
 									<?php
 										while ($stmt->fetch()) {
 									?>
-										<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
+										<option value="<?= $refNum ?>"><?= $refNum ?></option>
+									<?php
+										}
+										$stmt->data_seek(0); // rewind result set iterator
+									?>
+								</select>
+							</div>
+							<div class="col-lg-9">
+								<select name="existingRef" id="existingRef" class="form-control">
+									<option value="">Select a Reference</option>
+									<?php
+										while ($stmt->fetch()) {
+									?>
+										<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>" data-fileid="<?= $fileID ?>"><?= $linkName ?></option>
 									<?php
 										}
 									?>
@@ -140,7 +187,7 @@
 						</div>
 					</div>
 
-					<input type="hidden" name="srid" value="<?= $_GET['id'] ?>">
+					<input type="hidden" name="srid" value="<?= $srid ?>">
 					<input type="hidden" name="textarea_id" id="textarea_id" value="">
 					<input type="hidden" name="_refChoice" id="_refChoice" value="">
 					<input type="hidden" name="newRefType" id="newRefType" value="">
@@ -232,8 +279,16 @@
 			// pull info from inputs and use it to create a ref link
 			$existingRef = $('#insertRef-form #existingRef').children(':selected');
 			var refURL = $existingRef.attr('data-url');
+			var refFileID = $existingRef.attr('data-fileid');
 			var refNum = $existingRef.val();
-			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+
+			// If a reference has a link URL, use it
+			if (refURL !== "") {
+				var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+			} else {
+				var refURL = '<?= APP_GET_FILE_PAGE ?>' + '?fileid=' + refFileID;
+				var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+			}
 
 			// Insert ref link into the active richtextarea
 			tinymce_insertAtCaret(refLink);
@@ -348,6 +403,14 @@
 
 		// Hide the modal
 		$('#insertRefModal').modal('hide');
+	});
+
+	// Bind reference select boxes together
+	$('#existingRef').change(function() {
+		$('#existingRefNum').val($(this).val());
+	});
+	$('#existingRefNum').change(function() {
+		$('#existingRef').val($(this).val());
 	});
 
 </script>
