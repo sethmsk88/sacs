@@ -3,20 +3,28 @@
 
 	// Get all references for this SR
 	$sel_ref_by_srid = "
-		SELECT linkName, linkURL, refNum
-		FROM " . TABLE_APPENDIX_LINK . "
-		WHERE srid = ?
-		ORDER BY refNum ASC
+		SELECT l.linkName, l.linkURL, l.refNum, f.file_upload_id
+		FROM ". TABLE_APPENDIX_LINK ." l
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." lhf
+		ON l.appendix_link_id = lhf.appendix_link_id
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." f
+		ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid = ?
+		ORDER BY l.refNum ASC
 	";
 
 	$sel_ref_by_sid = "
-		SELECT srid, linkName, linkURL, refNum
-		FROM ". TABLE_APPENDIX_LINK ."
-		WHERE srid IN (
-			SELECT srid
-			FROM ". TABLE_SECTION ."
-			WHERE id = ?
+		SELECT l.srid, l.linkName, l.linkURL, l.refNum, f.file_upload_id
+		FROM ". TABLE_APPENDIX_LINK ." l
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." lhf
+		ON l.appendix_link_id = lhf.appendix_link_id
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." f
+		ON lhf.file_upload_id = f.file_upload_id
+		WHERE l.srid IN (SELECT s.srid
+			FROM ". TABLE_SECTION ." s
+			WHERE s.id = ?
 		)
+		ORDER BY l.refNum ASC
 	";
 
 	// Determine which query to use based on the type of given ID
@@ -27,13 +35,13 @@
 		$stmt->bind_param("i", $srid);
 		$stmt->execute();
 		$stmt->store_result();
-		$stmt->bind_result($linkName, $linkURL, $refNum);
+		$stmt->bind_result($linkName, $linkURL, $refNum, $fileID);
 	} elseif (isset($_GET['sid'])) {
 		$stmt = $conn->prepare($sel_ref_by_sid);
 		$stmt->bind_param("i", $_GET['sid']);
 		$stmt->execute();
 		$stmt->store_result();
-		$stmt->bind_result($srid, $linkName, $linkURL, $refNum);
+		$stmt->bind_result($srid, $linkName, $linkURL, $refNum, $fileID);
 	}
 ?>
 
@@ -107,7 +115,7 @@
 									<?php
 										while ($stmt->fetch()) {
 									?>
-										<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>"><?= $linkName ?></option>
+										<option value="<?= $refNum ?>" data-url="<?= $linkURL ?>" data-fileid="<?= $fileID ?>"><?= $linkName ?></option>
 									<?php
 										}
 									?>
@@ -271,8 +279,16 @@
 			// pull info from inputs and use it to create a ref link
 			$existingRef = $('#insertRef-form #existingRef').children(':selected');
 			var refURL = $existingRef.attr('data-url');
+			var refFileID = $existingRef.attr('data-fileid');
 			var refNum = $existingRef.val();
-			var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+
+			// If a reference has a link URL, use it
+			if (refURL !== "") {
+				var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+			} else {
+				var refURL = '<?= APP_GET_FILE_PAGE ?>' + '?fileid=' + refFileID;
+				var refLink = '<a href="' + refURL + '" target="_blank">[' + refNum + ']</a>';
+			}
 
 			// Insert ref link into the active richtextarea
 			tinymce_insertAtCaret(refLink);
