@@ -85,8 +85,25 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<label for="existingRef">Select a reference</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3">
+								<select name="existingRefNum" id="existingRefNum" class="form-control">
+									<option value="">#</option>
+									<?php
+										while ($stmt->fetch()) {
+									?>
+										<option value="<?= $refNum ?>"><?= $refNum ?></option>
+									<?php
+										}
+										$stmt->data_seek(0); // rewind result set iterator
+									?>
+								</select>
+							</div>
+							<div class="col-lg-9">
 								<select name="existingRef" id="existingRef" class="form-control">
-									<option value=""></option>
+									<option value="">Select a Reference</option>
 									<?php
 										while ($stmt->fetch()) {
 									?>
@@ -370,6 +387,14 @@
 
 		// Hide the modal
 		$('#insertRefModal').modal('hide');
+	});
+
+	// Bind reference select boxes together
+	$('#existingRef').change(function() {
+		$('#existingRefNum').val($(this).val());
+	});
+	$('#existingRefNum').change(function() {
+		$('#existingRef').val($(this).val());
 	});
 
 </script>
