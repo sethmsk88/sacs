@@ -25,6 +25,8 @@
 	}	
 ?>
 
+<?php include("./portable_index_header.php"); ?>
+
 <div class="container">
 	
 	<!-- First button -->
@@ -85,3 +87,5 @@
 		</div>
 	</div>
 </div>
+
+<?php include("./portable_index_footer.php"); ?>
