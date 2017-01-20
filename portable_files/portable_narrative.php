@@ -6,6 +6,10 @@
 <script src="./js/narrative.js"></script>
 
 <?php
+	function make_links_portable($text) {
+		
+	}
+
 	// Get SR info from DB
 	$sel_sr = "
 		SELECT number, descr, narrative, summary, sr_type, compliance
@@ -42,7 +46,9 @@
 	</div>
 
 	<!-- Title/Description -->
-	<div id="descr"></div>
+	<div id="descr">
+		<?= make_links_portable($descr) ?>
+	</div>
 
 	<!-- Compliance Status -->
 	<table style="width:35%;">
@@ -54,11 +60,13 @@
 	</table>
 	<br>
 
+	<!-- Narrative -->
 	<h4>Narrative</h4>
-	<?= $narrative ?>
+	<?= make_links_portable($narrative) ?>
 
+	<!-- Summary -->
 	<h4>Summary Statement</h4>
-	<?= $summary ?>
+	<?= make_links_portable($summary) ?>
 
 	<div class="row" style="margin-top:8px;">
 		<div class="col-lg-3">
