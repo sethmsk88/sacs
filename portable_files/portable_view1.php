@@ -1,4 +1,12 @@
 <?php
+	/*****************************************
+	CONTINUE HERE
+	When we generate this page, all links to the SRs should
+	have the following format: ./narrative_[srid].html
+	******************************************/
+
+
+
 	require_once("../includes/globals.php");
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/dbInfo.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php');
@@ -24,8 +32,6 @@
 			$cs_arr[$SRID] = $srNum;
 	}	
 ?>
-
-<?php include("./portable_index_header.php"); ?>
 
 <div class="container">
 	
@@ -87,5 +93,3 @@
 		</div>
 	</div>
 </div>
-
-<?php include("./portable_index_footer.php"); ?>
