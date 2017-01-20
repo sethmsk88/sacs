@@ -23,9 +23,9 @@
 	$sel_appendixLinks = "
 		SELECT l.appendix_link_id, l.linkName, l.linkURL, l.refNum, f.file_upload_id, f.fileName
 		FROM ". TABLE_APPENDIX_LINK ." AS l
-		JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
+		LEFT JOIN ". TABLE_APPENDIX_LINK_HAS_FILE_UPLOAD ." AS lhf
 			ON lhf.appendix_link_id = l.appendix_link_id
-		JOIN ". TABLE_FILE_UPLOAD ." AS f
+		LEFT JOIN ". TABLE_FILE_UPLOAD ." AS f
 			ON lhf.file_upload_id = f.file_upload_id
 		WHERE l.srid = ?
 		ORDER BY l.refNum
