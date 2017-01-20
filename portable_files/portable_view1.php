@@ -1,12 +1,4 @@
 <?php
-	/*****************************************
-	CONTINUE HERE
-	When we generate this page, all links to the SRs should
-	have the following format: ./narrative_[srid].html
-	******************************************/
-
-
-
 	require_once("../includes/globals.php");
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/dbInfo.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php');
@@ -53,7 +45,7 @@
 							<?php
 								foreach ($cr_arr as $cr_SRID => $cr_srNum) {
 									echo '<div>';
-									echo '<a href="?page=narrative&id=' . $cr_SRID . '">C.R. ' . $cr_srNum . '</a>';
+									echo '<a href="./narrative_' . $cr_SRID . '.html">C.R. ' . $cr_srNum . '</a>';
 									echo '</div>';
 								}
 							?>
@@ -82,7 +74,7 @@
 							<?php
 								foreach ($cs_arr as $cs_SRID => $cs_srNum) {
 									echo '<div>';
-									echo '<a href="?page=narrative&id=' . $cs_SRID . '">C.S. ' . $cs_srNum . '</a>';
+									echo '<a href="./narrative_' . $cs_SRID . '.html">C.S. ' . $cs_srNum . '</a>';
 									echo '</div>';
 								}
 							?>
