@@ -7,7 +7,9 @@
 
 <?php
 	function make_links_portable($text) {
-		
+		// TODO: process text and change links
+
+		return $text;
 	}
 
 	// Get SR info from DB
