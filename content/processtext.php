@@ -1,4 +1,5 @@
 <?php
+	
 	function make_links_portable($text) {
 		
 		$matchWord = "over";
