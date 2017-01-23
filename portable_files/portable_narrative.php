@@ -3,8 +3,6 @@
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
 ?>
 
-<script src="./js/narrative.js"></script>
-
 <?php
 	// Replace all occurrences of $oldStr with $newStr within $text
 	function replace_text($text, $oldStr, $newStr) {
@@ -148,3 +146,9 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$("#appendix-btn").click(function() {
+		location.href = './appendix.html?id=<?= $_GET["id"] ?>';
+	});
+</script>
