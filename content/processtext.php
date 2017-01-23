@@ -7,6 +7,8 @@
 
 			// Get first occurrence of \" in text starting from position of match
 			$endOfLinkPos = stripos(substr($text, $pos), '"');
+
+			// get the rest of the link based on the pattern given in $oldStr
 			$match = substr($text, $pos, $endOfLinkPos);
 
 			// if id= exists in string, get all characters from that point on in the string
