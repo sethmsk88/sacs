@@ -94,6 +94,17 @@
 		fclose($subNarrative_fp);
 	}
 
+	// create appendix.html
+	foreach ($srid_array as $srid) {
+		$filename = "appendix_" . $srid . ".html";
+		$appendix_fp = fopen($tmp_dir_path . $filename, "w");
+		$appendix_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_appendix.php?id=" . $srid);
+		fwrite($appendix_fp, $index_header_fileContents);
+		fwrite($appendix_fp, $appendix_fileContents);
+		fwrite($appendix_fp, $index_footer_fileContents);
+		fclose($appendix_fp);
+	}
+
 
 	/*$narrative_fp = fopen($tmp_dir_path . "/narrative.html", "w");
 	$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php?id=1");

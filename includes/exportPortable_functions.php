@@ -30,9 +30,6 @@
 				$tmpNewStr = $newStr;
 			}
 
-			// echo 'oldStr: '.$oldStr.'<br>';
-			// echo 'newStr: '.$tmpNewStr.'<br>';
-
 			// replace text in $text with $newStr starting at position $pos 
 			$text = substr_replace($text, $tmpNewStr, $pos, strlen($oldStr) + strlen($idMatch));
 		}
