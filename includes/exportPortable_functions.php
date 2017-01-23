@@ -22,10 +22,14 @@
 				if (array_key_exists($idMatch, $file_array))
 					$tmpNewStr = $newStr . $file_array[$idMatch];
 
-			// Else, if if exists in link
+			// Else, if id exists in link
 			} else if ( ($idPos = stripos($match, $idPattern)) !== FALSE) {
 				$idMatch = substr($match, $idPos + strlen($idPattern));
-				$tmpNewStr = $newStr . $idMatch;
+
+				// Insert ID into $newStr
+				$link_exploded = explode('.', $newStr);
+				$link_exploded[0] .= '_' . $idMatch;
+				$tmpNewStr = implode('.', $link_exploded);
 			} else {
 				$tmpNewStr = $newStr;
 			}
@@ -41,15 +45,15 @@
 
 		// key = old link, value = new link
 		$linksToModify = array(
-			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=appendix&amp;id=' => './appendix.html?id=',
-			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=subNarrative&amp;id=' => './subNarrative.html?id=',
-			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=narrative&amp;id=' => './narrative.html?id=',
-			'http://hrodt.famu.edu/bootstrap/apps/sacs/content/get_file.php?fileid=' => './uploads/',
-			'http://localhost:8080/bootstrap/apps/sacs/?page=appendix&amp;id=' => './appendix.html?id=',
-			'http://localhost:8080/bootstrap/apps/sacs/?page=subNarrative&amp;id=' => './subNarrative.html?id=',
-			'http://localhost:8080/bootstrap/apps/sacs/?page=narrative&amp;id=' => './narrative.html?id=',
+			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=appendix&amp;id=' => 'appendix.html',
+			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=subNarrative&amp;id=' => 'subNarrative.html',
+			'http://hrodt.famu.edu/bootstrap/apps/sacs/?page=narrative&amp;id=' => 'narrative.html',
+			'http://hrodt.famu.edu/bootstrap/apps/sacs/content/get_file.php?fileid=' => 'uploads/',
+			'http://localhost:8080/bootstrap/apps/sacs/?page=appendix&amp;id=' => 'appendix.html',
+			'http://localhost:8080/bootstrap/apps/sacs/?page=subNarrative&amp;id=' => 'subNarrative.html',
+			'http://localhost:8080/bootstrap/apps/sacs/?page=narrative&amp;id=' => 'narrative.html',
 			'http://localhost:8080/bootstrap/apps/sacs/content/get_file.php?fileid=' => './uploads/',
-			'?page=subNarrative&amp;id=' => './subNarrative.html?id='
+			'?page=subNarrative&amp;id=' => 'subNarrative.html'
 		);
 
 		foreach ($linksToModify as $oldLink => $newLink) {

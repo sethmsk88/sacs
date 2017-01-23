@@ -87,6 +87,6 @@
 
 <script type="text/javascript">
 	$("#appendix-btn").click(function() {
-		location.href = './appendix.html?id=<?= $_GET["id"] ?>';
+		location.href = './appendix_<?= $_GET["id"] ?>.html';
 	});
 </script>
