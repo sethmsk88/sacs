@@ -66,8 +66,14 @@
 	$stmt->store_result();
 	$stmt->bind_result($srid);
 
-	// create narrative.html
+	// store all SRIDs in array
+	$srid_array = array();
 	while ($stmt->fetch()) {
+		$srid_array[] = $srid;
+	}
+
+	// create narrative.html
+	foreach ($srid_array as $srid) {
 		$filename = "narrative_" . $srid . ".html";
 		$narrative_fp = fopen($tmp_dir_path . $filename, "w");
 		$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php?id=" . $srid);
@@ -75,6 +81,17 @@
 		fwrite($narrative_fp, $narrative_fileContents);
 		fwrite($narrative_fp, $index_footer_fileContents);
 		fclose($narrative_fp);
+	}
+
+	// create subNarrative.html
+	foreach ($srid_array as $srid) {
+		$filename = "subNarrative_" . $srid . ".html";
+		$subNarrative_fp = fopen($tmp_dir_path . $filename, "w");
+		$subNarrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_subNarrative.php?id=" . $srid);
+		fwrite($subNarrative_fp, $index_header_fileContents);
+		fwrite($subNarrative_fp, $subNarrative_fileContents);
+		fwrite($subNarrative_fp, $index_footer_fileContents);
+		fclose($subNarrative_fp);
 	}
 
 
