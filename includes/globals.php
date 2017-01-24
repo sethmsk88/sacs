@@ -6,6 +6,7 @@
     define("APP_HOMEPAGE", "view1");
     define("APP_GET_FILE_PAGE", "http://". $_SERVER['HTTP_HOST'] ."/bootstrap/apps/sacs/content/get_file.php");
     define("SERVER_IP_ADDRESS", "168.223.1.35");
+    define("APP_PATH_IP_URL", "http://" . SERVER_IP_ADDRESS . "/bootstrap/apps/sacs/");
 
     /*
         A path using the server's IP address instead of domain name is required in order for images to be exported with PDFs

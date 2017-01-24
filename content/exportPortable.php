@@ -46,13 +46,15 @@
 		}
 	}
 
+	echo APP_PATH_IP_URL . "portable_files/portable_index_header.php";
+
 	// Get file contents for header and footer
-	$index_header_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_header.php");
-	$index_footer_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_footer.php");
+	$index_header_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_index_header.php");
+	$index_footer_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_index_footer.php");
 
 	// Create view1.html
 	$view1_fp = fopen($tmp_dir_path . "app/view1.html", "w");
-	$view1_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_view1.php");
+	$view1_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_view1.php");
 	fwrite($view1_fp, $index_header_fileContents);
 	fwrite($view1_fp, $view1_fileContents);
 	fwrite($view1_fp, $index_footer_fileContents);
@@ -78,7 +80,7 @@
 	foreach ($srid_array as $srid) {
 		$filename = "narrative_" . $srid . ".html";
 		$narrative_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
-		$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php?id=" . $srid);
+		$narrative_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_narrative.php?id=" . $srid);
 		fwrite($narrative_fp, $index_header_fileContents);
 		fwrite($narrative_fp, $narrative_fileContents);
 		fwrite($narrative_fp, $index_footer_fileContents);
@@ -89,7 +91,7 @@
 	foreach ($srid_array as $srid) {
 		$filename = "subNarrative_" . $srid . ".html";
 		$subNarrative_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
-		$subNarrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_subNarrative.php?id=" . $srid);
+		$subNarrative_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_subNarrative.php?id=" . $srid);
 		fwrite($subNarrative_fp, $index_header_fileContents);
 		fwrite($subNarrative_fp, $subNarrative_fileContents);
 		fwrite($subNarrative_fp, $index_footer_fileContents);
@@ -100,7 +102,7 @@
 	foreach ($srid_array as $srid) {
 		$filename = "appendix_" . $srid . ".html";
 		$appendix_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
-		$appendix_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_appendix.php?id=" . $srid);
+		$appendix_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_appendix.php?id=" . $srid);
 		fwrite($appendix_fp, $index_header_fileContents);
 		fwrite($appendix_fp, $appendix_fileContents);
 		fwrite($appendix_fp, $index_footer_fileContents);
