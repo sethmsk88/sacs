@@ -10,9 +10,14 @@
 	$tmp_dir_name = $dateTimeStr . "_sacs_portable"; // make dir name unique to prevent naming conflicts
 	$tmp_dir_path = sys_get_temp_dir() . "/" . $tmp_dir_name . "/";
 	mkdir($tmp_dir_path);
+	mkdir($tmp_dir_path . "app/"); // create app directory for all of the app files
+
+	// copy batch file to tmp directory
+	$batchFilename = "CLICK TO RUN.bat";
+	copy($batchFilename, $tmp_dir_path . $batchFilename);
 
 	// copy resource files to tmp directory
-	$resources_dir_path = $tmp_dir_path . "resources/";
+	$resources_dir_path = $tmp_dir_path . "app/resources/";
 	mkdir($resources_dir_path);
 	$resources_array = scandir("./resources");
 	foreach ($resources_array as $file) {
@@ -22,7 +27,7 @@
 	}
 
 	// copy image files to tmp directory
-	$img_dir_path = $tmp_dir_path . "img/";
+	$img_dir_path = $tmp_dir_path . "app/img/";
 	mkdir($img_dir_path);
 	$img_array = scandir("../img");
 	foreach ($img_array as $file) {
@@ -32,7 +37,7 @@
 	}
 
 	// copy uploaded files to tmp directory
-	$uploads_dir_path = $tmp_dir_path . "uploads/";
+	$uploads_dir_path = $tmp_dir_path . "app/uploads/";
 	mkdir($uploads_dir_path);
 	$uploads_array = scandir("../uploads");
 	foreach ($uploads_array as $file) {
@@ -46,7 +51,7 @@
 	$index_footer_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_footer.php");
 
 	// Create view1.html
-	$view1_fp = fopen($tmp_dir_path . "view1.html", "w");
+	$view1_fp = fopen($tmp_dir_path . "app/view1.html", "w");
 	$view1_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_view1.php");
 	fwrite($view1_fp, $index_header_fileContents);
 	fwrite($view1_fp, $view1_fileContents);
@@ -72,7 +77,7 @@
 	// create narrative.html
 	foreach ($srid_array as $srid) {
 		$filename = "narrative_" . $srid . ".html";
-		$narrative_fp = fopen($tmp_dir_path . $filename, "w");
+		$narrative_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
 		$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php?id=" . $srid);
 		fwrite($narrative_fp, $index_header_fileContents);
 		fwrite($narrative_fp, $narrative_fileContents);
@@ -83,7 +88,7 @@
 	// create subNarrative.html
 	foreach ($srid_array as $srid) {
 		$filename = "subNarrative_" . $srid . ".html";
-		$subNarrative_fp = fopen($tmp_dir_path . $filename, "w");
+		$subNarrative_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
 		$subNarrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_subNarrative.php?id=" . $srid);
 		fwrite($subNarrative_fp, $index_header_fileContents);
 		fwrite($subNarrative_fp, $subNarrative_fileContents);
@@ -94,7 +99,7 @@
 	// create appendix.html
 	foreach ($srid_array as $srid) {
 		$filename = "appendix_" . $srid . ".html";
-		$appendix_fp = fopen($tmp_dir_path . $filename, "w");
+		$appendix_fp = fopen($tmp_dir_path . "app/" . $filename, "w");
 		$appendix_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_appendix.php?id=" . $srid);
 		fwrite($appendix_fp, $index_header_fileContents);
 		fwrite($appendix_fp, $appendix_fileContents);
