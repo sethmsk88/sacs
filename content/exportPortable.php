@@ -46,6 +46,8 @@
 		}
 	}
 
+	echo APP_PATH_URL . "portable_files/portable_index_header.php";
+
 	// Get file contents for header and footer
 	$index_header_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_header.php");
 	$index_footer_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_footer.php");
