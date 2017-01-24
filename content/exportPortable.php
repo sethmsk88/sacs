@@ -107,12 +107,61 @@
 		fclose($appendix_fp);
 	}
 
+	/***********************/
+	/*   CREATE ZIP FILE   */
+	/***********************/
+	$tmp_dir_name_exploded = explode("_", $tmp_dir_name);
+	array_shift($tmp_dir_name_exploded); // remove timestamp (1st element) from array
+	$zipFilename = implode("_", $tmp_dir_name_exploded) . ".zip";
+	$zipFilePath = sys_get_temp_dir() . "/" . $zipFilename;
+	$zip = new ZipArchive();
 
-	/*$narrative_fp = fopen($tmp_dir_path . "/narrative.html", "w");
-	$narrative_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_narrative.php?id=1");
-	fwrite($narrative_fp, $index_header_fileContents);
-	fwrite($narrative_fp, $narrative_fileContents);
-	fwrite($narrative_fp, $index_footer_fileContents);
-	fclose($narrative_fp);*/
-	
+	// Create and open ZIP file
+	if ($zip->open($zipFilePath, ZIPARCHIVE::CREATE | ZipArchive::OVERWRITE) !== true) {
+		exit("Cannot open (" . $zipFilePath . ")\n");
+	}
+
+	// Create empty directories in ZIP archive
+	$zip->addEmptyDir('app/');
+	$zip->addEmptyDir('app/img/');
+	$zip->addEmptyDir('app/resources/');
+	$zip->addEmptyDir('app/uploads/');
+
+	// copy all files from tmp directory to zip archive
+	$tmp_dir_array = scandir($tmp_dir_path);
+	$app_array = scandir($tmp_dir_path . 'app/');
+	$img_array = scandir($tmp_dir_path . 'app/img');
+	$resources_array = scandir($tmp_dir_path . 'app/resources');
+	$uploads_array = scandir($tmp_dir_path . 'app/uploads');
+
+	// Format of all_dirs_array:
+	// [[DIR_PATH_0, DIR_ARRAY_0], [DIR_PATH_1, DIR_ARRAY_1], ...]
+	$all_dirs_array = array();
+	$all_dirs_array[] = array('', $tmp_dir_array);
+	$all_dirs_array[] = array('app/', $app_array);
+	$all_dirs_array[] = array('app/img/', $img_array);
+	$all_dirs_array[] = array('app/resources/', $resources_array);
+	$all_dirs_array[] = array('app/uploads/', $uploads_array);
+
+	foreach ($all_dirs_array as $dir_array) {
+		$dir_path = $dir_array[0];
+
+		foreach ($dir_array[1] as $file) {
+			$file_path = $dir_path . $file;
+
+			if (is_file($tmp_dir_path . $file_path)) {
+				if (file_exists($tmp_dir_path . $file_path) && is_readable($tmp_dir_path . $file_path)) {
+					$zip->addFile($tmp_dir_path . $file_path, $file_path);
+				} else {
+					exit('Error: File not added ("'. $file_path .'")');
+				}
+			}
+		}
+	}
+	$zip->close();
+
+	header('Content-Type: application/zip');
+	header('Content-Disposition: attachment; filename="'. basename($zipFilename) .'"');
+	header('Content-Length: '. filesize($zipFilePath));
+	readfile($zipFilePath);
 ?>
