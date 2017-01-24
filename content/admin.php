@@ -39,6 +39,12 @@
 
 <div class="container">
 
+	<div class="row">
+		<div class="col-lg-12" style="text-align:right;">
+			<button id="exportApp-btn" class="btn btn-sm btn-primary">Export Portable Application</button>
+		</div>
+	</div>
+
 	<table id="admin-table" class="table">
 		<tr>
 			<th></th>
