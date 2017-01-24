@@ -83,4 +83,8 @@ $(document).ready(function () {
 
 		location.href = "?page=addSR";
 	});
+
+	$('#exportApp-btn').click(function() {
+		window.open("./content/exportPortable.php", "_blank");
+	});
 });
