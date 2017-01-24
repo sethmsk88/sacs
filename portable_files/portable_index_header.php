@@ -77,7 +77,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="?page=<?= APP_HOMEPAGE ?>"><?= APP_NAME ?></a>
+                    <a class="navbar-brand" href="./view1.html"><?= APP_NAME ?></a>
                 </div>
             </div>
         </nav>

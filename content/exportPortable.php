@@ -45,9 +45,6 @@
 	$index_header_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_header.php");
 	$index_footer_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_index_footer.php");
 
-	// create index.html (include view1.php)
-	// $index_fp = fopen($tmp_dir_path . "/index.html", "w");
-
 	// Create view1.html
 	$view1_fp = fopen($tmp_dir_path . "view1.html", "w");
 	$view1_fileContents = file_get_contents(APP_PATH_URL . "portable_files/portable_view1.php");
