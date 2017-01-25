@@ -174,8 +174,34 @@
 	$zip->close();
 
 	// Download ZIP file
-	header('Content-Type: application/zip');
+	// Open file
+	$file = @fopen($zipFilePath,"rb");
+	$fileSize = fstat($file)['size'];
+
+	// Force download
+	header("Content-Type: application/zip");
+	header("Content-Length: " . $fileSize);
+	header("Content-Disposition: attachment; filename=\"$zipFilename\"");
+
+	// IE6-7 compatibility
+	header("Pragma: public");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+	// output the file in chunks to prevent potential memory problems when dealing with large files
+	set_time_limit(0); // override default time limit - no time limit imposed	
+	while(!feof($file))
+	{
+		print(@fread($file, 1024*8));
+		ob_flush();
+		flush();
+	}
+	fclose($file);
+
+
+
+
+	/*header('Content-Type: application/zip');
 	header('Content-Disposition: attachment; filename="'. basename($zipFilename) .'"');
 	header('Content-Length: '. filesize($zipFilePath));
-	readfile($zipFilePath);
+	readfile($zipFilePath);*/
 ?>
