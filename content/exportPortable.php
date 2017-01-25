@@ -12,9 +12,9 @@
 	mkdir($tmp_dir_path);
 	mkdir($tmp_dir_path . "app/"); // create app directory for all of the app files
 
-	// copy batch file to tmp directory
-	$batchFilename = "CLICK TO RUN.bat";
-	copy($batchFilename, $tmp_dir_path . $batchFilename);
+	// copy the click to run file to tmp directory
+	$runFilename = "CLICK TO RUN.html";
+	copy($runFilename, $tmp_dir_path . $runFilename);
 
 	// copy resource files to tmp directory
 	$resources_dir_path = $tmp_dir_path . "app/resources/";
