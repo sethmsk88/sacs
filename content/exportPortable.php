@@ -10,7 +10,7 @@
 	$dateTimeStr = date("YmdHis");
 
 	$tmp_dir_name = $dateTimeStr . "_sacs_portable"; // make dir name unique to prevent naming conflicts
-	$tmp_dir_path = sys_get_temp_dir() . "/" . $tmp_dir_name . "/";
+	$tmp_dir_path = ini_get('upload_tmp_dir') . "/" . $tmp_dir_name . "/";
 	mkdir($tmp_dir_path);
 	mkdir($tmp_dir_path . "app/"); // create app directory for all of the app files
 
@@ -117,7 +117,7 @@
 	$tmp_dir_name_exploded = explode("_", $tmp_dir_name);
 	array_shift($tmp_dir_name_exploded); // remove timestamp (1st element) from array
 	$zipFilename = implode("_", $tmp_dir_name_exploded) . ".zip";
-	$zipFilePath = sys_get_temp_dir() . "/" . $zipFilename;
+	$zipFilePath = ini_get('upload_tmp_dir') . "/" . $zipFilename;
 	$zip = new ZipArchive();
 
 	// Create and open ZIP file
@@ -147,6 +147,7 @@
 	$all_dirs_array[] = array('app/resources/', $resources_array);
 	$all_dirs_array[] = array('app/uploads/', $uploads_array);
 
+	$fileCount = 0;
 	foreach ($all_dirs_array as $dir_array) {
 		$dir_path = $dir_array[0];
 
@@ -156,9 +157,14 @@
 			if (is_file($tmp_dir_path . $file_path)) {
 				if (file_exists($tmp_dir_path . $file_path) && is_readable($tmp_dir_path . $file_path)) {
 
-					echo 'Adding: ' . $file_path . '<br>'; // TESTING
-					// $zip->addFile($tmp_dir_path . $file_path, $file_path);
+					$zip->addFile($tmp_dir_path . $file_path, $file_path);
+					$fileCount++;
 
+					// close and reopen ZIP archive after every 5 files to prevent memory overload
+					if ( ($fileCount % 5) == 0) {
+						$zip->close();
+						$zip->open($zipFilePath);
+					}
 				} else {
 					exit('Error: File not added ("'. $file_path .'")');
 				}
@@ -167,6 +173,7 @@
 	}
 	$zip->close();
 
+	// Download ZIP file
 	header('Content-Type: application/zip');
 	header('Content-Disposition: attachment; filename="'. basename($zipFilename) .'"');
 	header('Content-Length: '. filesize($zipFilePath));
