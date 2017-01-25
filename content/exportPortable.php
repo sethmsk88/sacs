@@ -180,7 +180,6 @@
 
 	// Force download
 	header("Content-Type: application/zip");
-	header("Content-Length: " . $fileSize);
 	header("Content-Disposition: attachment; filename=\"$zipFilename\"");
 
 	// IE6-7 compatibility
@@ -202,6 +201,6 @@
 
 	/*header('Content-Type: application/zip');
 	header('Content-Disposition: attachment; filename="'. basename($zipFilename) .'"');
-	header('Content-Length: '. filesize($zipFilePath));
+	// header('Content-Length: '. filesize($zipFilePath));
 	readfile($zipFilePath);*/
 ?>
