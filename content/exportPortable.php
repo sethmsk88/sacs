@@ -155,9 +155,17 @@
 
 			if (is_file($tmp_dir_path . $file_path)) {
 				if (file_exists($tmp_dir_path . $file_path) && is_readable($tmp_dir_path . $file_path)) {
+<<<<<<< HEAD
 
 					echo 'Adding: ' . $file_path . '<br>'; // TESTING
 					// $zip->addFile($tmp_dir_path . $file_path, $file_path);
+||||||| merged common ancestors
+					$zip->addFile($tmp_dir_path . $file_path, $file_path);
+=======
+
+					echo 'Adding: ' . $file_path . '<br>'; // TESTING
+					$zip->addFile($tmp_dir_path . $file_path, $file_path);
+>>>>>>> origin/master
 				} else {
 					exit('Error: File not added ("'. $file_path .'")');
 				}
