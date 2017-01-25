@@ -5,6 +5,15 @@
 ?>
 
 <?php
+	function getComplianceMark($val, $choice)
+	{
+		$mark = '<span style="font-weight:bold; color: red; font-size:1.15em;font-family:\'Courier New\';">X</span>';
+		if ($val === $choice)
+			return $mark;
+		else
+			return "";
+	}
+
 	$sel_files = "
 		SELECT file_upload_id, fileName
 		FROM ". TABLE_FILE_UPLOAD ."
@@ -40,12 +49,6 @@
 	else if ($sr_type == 's')
 		$header .= 'C.S. ';
 	$header .= $srNum;
-
-	// set compliance selection
-	$complianceChoice_arr[-1] = "";
-	$complianceChoice_arr[0] = "";
-	$complianceChoice_arr[1] = "";
-	$complianceChoice_arr[$compliance] = "glyphicon glyphicon-remove";
 ?>
 
 <div class="container">
@@ -63,9 +66,9 @@
 	<!-- Compliance Status -->
 	<table style="width:35%;">
 		<tr>
-			<td><span class="<?= $complianceChoice_arr[-1] ?>"></span>&nbsp;Non-Compliance</td>
-			<td><span class="<?= $complianceChoice_arr[0] ?>"></span>&nbsp;Partial Compliance</td>
-			<td><span class="<?= $complianceChoice_arr[1] ?>"></span>&nbsp;Compliance</td>
+			<td></td>
+			<td></td>
+			<td></td>
 		</tr>
 	</table>
 	<br>

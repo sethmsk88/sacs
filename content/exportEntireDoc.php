@@ -108,9 +108,6 @@
 
 	<table style="width:75%;">
 		<tr>
-			<!-- <td><span class="<?= getComplianceClass(-1, $compliance) ?>"></span>&nbsp;Non-Compliance</td>
-			<td><span class="<?= getComplianceClass(0, $compliance) ?>"></span>&nbsp;Partial Compliance</td>
-			<td><span class="<?= getComplianceClass(1, $compliance) ?>"></span>&nbsp;Compliance</td> -->
 			<td><?= getComplianceMark(-1, $compliance) ?>&nbsp;Non-Compliance</td>
 			<td><?= getComplianceMark(0, $compliance) ?>&nbsp;Partial Compliance</td>
 			<td><?= getComplianceMark(1, $compliance) ?>&nbsp;Compliant</td>
