@@ -179,6 +179,7 @@
 	// Force download
 	header("Content-Type: application/zip");
 	header("Content-Disposition: attachment; filename=\"$zipFilename\"");
+	header('Content-Length: '. $fileSize);
 
 	// IE6-7 compatibility
 	header("Pragma: public");
