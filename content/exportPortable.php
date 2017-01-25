@@ -173,7 +173,7 @@
 
 	// Download ZIP file
 	// Open file
-	$file = @fopen($zipFilePath,"rb");
+	/*$file = @fopen($zipFilePath,"rb");
 	$fileSize = fstat($file)['size'];
 
 	// Force download
@@ -192,5 +192,10 @@
 		ob_flush();
 		flush();
 	}
-	fclose($file);
+	fclose($file);*/
+	
+	header('Content-Type: application/zip');
+	header('Content-Disposition: attachment; filename="'. basename($zipFilename) .'"');
+	header('Content-Length: '. filesize($zipFilePath));
+	readfile($zipFilePath);
 ?>
