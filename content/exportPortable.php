@@ -1,4 +1,6 @@
 <?php
+	ini_set('memory_limit', '-1');
+
 	require_once "../includes/globals.php";
 	require_once "../includes/functions.php";
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap/apps/shared/db_connect.php';
@@ -153,6 +155,8 @@
 
 			if (is_file($tmp_dir_path . $file_path)) {
 				if (file_exists($tmp_dir_path . $file_path) && is_readable($tmp_dir_path . $file_path)) {
+
+					echo 'Adding: ' . $file_path . '<br>'; // TESTING
 					$zip->addFile($tmp_dir_path . $file_path, $file_path);
 				} else {
 					exit('Error: File not added ("'. $file_path .'")');
