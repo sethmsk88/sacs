@@ -103,9 +103,9 @@
 			$sectionHasChildren = hasChildren($sid, $srid, $conn);
 
 			if ($sectionHasChildren) {
-				echo '<li>' . $sectionName . '<ol class="begin">';
+				echo '<li><a href="#'.$sid.'">' . $sectionName . '</a><ol class="begin">';
 			} else {
-				echo '<li>' . $sectionName . '</li>';
+				echo '<li><a href="#'.$sid.'">' . $sectionName . '</a></li>';
 			}
 
 			printTOCSection($sid, $srid, $conn);
@@ -143,8 +143,10 @@
 				$numberingClass = "continue";
 
 			if ($sectionHasChildren) {
+				echo '<a name="'.$sid.'"></a>';
 				echo '<ol class="' . $numberingClass . '"><li class="h5">' . $sectionName;
 			} else {
+				echo '<a name="'.$sid.'"></a>';
 				echo '<ol class="' . $numberingClass . '"><li class="h5">' . $sectionName . '</li></ol>';
 				echo '<div class="section-body">';
 
