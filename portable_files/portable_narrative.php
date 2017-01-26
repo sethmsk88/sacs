@@ -66,7 +66,7 @@
 	<!-- Compliance Status -->
 	<table style="width:35%;">
 		<tr>
-			<td><?= getComplianceMark(-1, $compliance) ?>&nbsp;Non-CCompliance</td>
+			<td><?= getComplianceMark(-1, $compliance) ?>&nbsp;Non-Compliance</td>
 			<td><?= getComplianceMark(0, $compliance) ?>&nbsp;Partial Compliance</td>
 			<td><?= getComplianceMark(1, $compliance) ?>&nbsp;Compliant</td>
 		</tr>
