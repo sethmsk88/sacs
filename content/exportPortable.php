@@ -167,7 +167,7 @@
 			}
 		}
 	}
-	$printFilename = $zip->filename;
+	$zipFilePath = $zip->filename;
 	$zip->close();
 
 	// Download ZIP file
@@ -175,12 +175,7 @@
 	$file = @fopen($zipFilePath,"rb");
 	$fileSize = fstat($file)['size'];
 
-	echo 'Initial File Size: ' . $fileSize . '<br>';
-	echo 'Print File Size: ' . filesize($printFilename) . '<br>';
-	echo 'zipFilePath: ' . $zipFilePath . '<br>';
-	echo 'printFilename: ' . $printFilename . '<br>';
-
-	/*// Force download
+	// Force download
 	header("Content-Type: application/zip");
 	header("Content-Disposition: attachment; filename=\"$zipFilename\"");
 
@@ -195,6 +190,6 @@
 		print(@fread($file, 1024*8));
 		ob_flush();
 		flush();
-	}*/
+	}
 	fclose($file);
 ?>
