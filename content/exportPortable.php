@@ -153,6 +153,8 @@
 			if (is_file($tmp_dir_path . $file_path)) {
 				if (file_exists($tmp_dir_path . $file_path) && is_readable($tmp_dir_path . $file_path)) {
 
+					echo 'adding file: ' . $tmp_dir_path . $file_path . '<br>'; // TESTING
+
 					$zip->addFile($tmp_dir_path . $file_path, $file_path);
 					$fileCount++;
 
