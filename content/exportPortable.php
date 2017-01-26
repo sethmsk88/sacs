@@ -177,6 +177,7 @@
 
 	echo 'Initial File Size: ' . $fileSize . '<br>';
 	echo 'Print File Size: ' . filesize($printFilename) . '<br>';
+	echo 'zipFilePath: ' . $zipFilePath . '<br>';
 	echo 'printFilename: ' . $printFilename . '<br>';
 
 	/*// Force download
