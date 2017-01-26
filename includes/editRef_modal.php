@@ -131,8 +131,6 @@
 	// Dialog show event handler
 	$('#editRefModal').on('show.bs.modal', function (e) {
 
-		console.log('showing');
-
 		resetModalFields();
 
 		$clickedButton = $(e.relatedTarget);
