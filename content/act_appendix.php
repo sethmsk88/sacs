@@ -26,8 +26,13 @@
 	// Replace reference links in text with new links
 	function editReference($str, $ref, $url)
 	{
+		global $json_arr; // TESTING
+
 		$newLink = '<a href="'. $url .'" target="_blank">['. $ref .']</a>';
 		$refLink_pattern = "~<a\s[^>]*href=\"([^\"]*)\"[^>]*>\s*\[". $ref ."\]\s*</a>~siU";
+
+		$json_arr['test'] = preg_replace($refLink_pattern, $newLink, $str); // TESTING
+
 		return preg_replace($refLink_pattern, $newLink, $str);
 	}
 
@@ -149,7 +154,10 @@
 
 	$uploadsDir = "../uploads/";
 
-	// Change Order
+
+	////////////////////////////////
+	//  ACTION TYPE: Change Order
+	////////////////////////////////
 	if (isset($_POST['actionType']) && $_POST['actionType'] == 0) {
 
 		// Get ref num of first link
@@ -249,7 +257,10 @@
 			$stmt2->execute();
 		}
 
-	// Delete Reference
+
+	///////////////////////////////////
+	//  ACTION TYPE: Delete Reference
+	///////////////////////////////////
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 1) {
 		// get info related to this ref
 		$sel_refNum = "
@@ -433,7 +444,10 @@
 			$updateSection_stmt->execute();
 		}
 
-	// Edit Reference
+
+	////////////////////////////////
+	//  ACTION TYPE: Edit Reference
+	////////////////////////////////
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 2) {
 
 		$json_arr = array(); // ajax response object
@@ -452,7 +466,7 @@
 		$editLinkRefNum = $result_row['refNum']; // ref num of the link being edited
 		$srid = $result_row['srid'];
 
-		// If refURL was left blank, set to appendix page
+		// It was decided that blank references should point to the Appendix page
 		$refURL = $_POST['refURL'];
 		if ($refURL == "") {
 			$refURL =  APP_PATH_URL . '?page=appendix&id=' . $srid;
@@ -474,10 +488,6 @@
 		$stmt->bind_result($descr, $narrative, $summary);
 		$stmt->fetch();
 
-		$descr = editReference($descr, $editLinkRefNum, $refURL);
-		$narrative = editReference($narrative, $editLinkRefNum, $refURL);
-		$summary = editReference($summary, $editLinkRefNum, $refURL);
-
 		// if attaching a file
 		if ($_FILES['fileToUpload']['name'] !== '') {
 			$uploadResultObj = uploadFile($_FILES['fileToUpload']);
@@ -490,6 +500,11 @@
 				$refURL = $uploadResultObj['linkURL']; // assign new url for uploaded file
 			}
 		}
+
+		// Update all references within the text with the changes
+		$descr = editReference($descr, $editLinkRefNum, $refURL);
+		$narrative = editReference($narrative, $editLinkRefNum, $refURL);
+		$summary = editReference($summary, $editLinkRefNum, $refURL);
 
 		// Update the link name and link URL for this reference
 		$update_ref = "
@@ -547,7 +562,10 @@
 		// Respond with json error messages if any
 		echo json_encode($json_arr);
 
-	// Remove file
+
+	////////////////////////////////
+	//  ACTION TYPE: Remove File
+	////////////////////////////////
 	} else if (isset($_POST['actionType']) && $_POST['actionType'] == 3) {
 
 		// Delete the file from the server
