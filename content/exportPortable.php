@@ -46,8 +46,6 @@
 		}
 	}
 
-	echo APP_PATH_IP_URL . "portable_files/portable_index_header.php";
-
 	// Get file contents for header and footer
 	$index_header_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_index_header.php");
 	$index_footer_fileContents = file_get_contents(APP_PATH_IP_URL . "portable_files/portable_index_footer.php");
@@ -169,6 +167,7 @@
 			}
 		}
 	}
+	$printFilename = $zip->filename;
 	$zip->close();
 
 	// Download ZIP file
@@ -176,10 +175,13 @@
 	$file = @fopen($zipFilePath,"rb");
 	$fileSize = fstat($file)['size'];
 
-	// Force download
+	echo 'Initial File Size: ' . $fileSize . '<br>';
+	echo 'Print File Size: ' . filesize($printFilename) . '<br>';
+	echo 'printFilename: ' . $printFilename . '<br>';
+
+	/*// Force download
 	header("Content-Type: application/zip");
 	header("Content-Disposition: attachment; filename=\"$zipFilename\"");
-	// header('Content-Length: '. $fileSize);
 
 	// IE6-7 compatibility
 	header("Pragma: public");
@@ -192,6 +194,6 @@
 		print(@fread($file, 1024*8));
 		ob_flush();
 		flush();
-	}
+	}*/
 	fclose($file);
 ?>
